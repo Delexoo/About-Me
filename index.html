@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="dark"/>
 <title>DELEXO</title>
+<link rel="preconnect" href="https://raw.githubusercontent.com"/>
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -126,16 +128,23 @@ button.icon-item:focus-visible .icon-link{box-shadow:0 3px 10px rgba(0,0,0,.34)}
 .rail-section{margin-top:56px}
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 22px 22px;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
 .rail::-webkit-scrollbar{display:none;height:0}
-.chip{flex:0 0 270px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:border-color .2s ease,transform .2s ease}
+.chip{flex:0 0 270px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:border-color .2s ease,transform .2s ease;overflow:hidden}
 .chip:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
 .chip:focus-visible{outline:none;box-shadow:var(--focus)}
-.chip .chip-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:auto}
+.chip__thumb{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center;background:#0c0c0c;border-bottom:1px solid var(--line);display:block;flex-shrink:0}
+.chip__body{padding:18px 20px 20px;display:flex;flex-direction:column;justify-content:flex-end;flex:1;min-height:118px}
+.chip .chip-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .chip h4{margin:0 0 4px;font-size:1rem;font-weight:600}
 .chip p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
-.chip--spoiler{cursor:default}
-.chip--spoiler:hover{border-color:rgba(255,255,255,.12);transform:none}
-.chip-spoiler-mark{display:inline-block;margin-left:8px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:rgba(232,99,154,.14);color:var(--pink);border:1px solid rgba(232,99,154,.32);vertical-align:middle}
-.chip--spoiler h4{color:#c8c8c8}
+.chip--soon{cursor:default;pointer-events:none;opacity:.78;background:#141414;border-color:rgba(255,255,255,.07)}
+.chip--soon:hover{border-color:rgba(255,255,255,.07);transform:none}
+.chip--soon .chip__body{opacity:.95}
+.chip--soon h4{color:#7a7a7a}
+.chip--soon p{color:#5c5c5c}
+.chip--soon .chip-tag{color:#666}
+.chip__thumb--soon{aspect-ratio:16/9;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,.12);background:linear-gradient(165deg,#fafafa 0%,#e4e4e4 42%,#c9c9c9 100%);display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.chip__thumb--soon::after{content:"Coming soon";font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#777}
+.chip--soon .tag-soon{margin-left:8px;vertical-align:middle}
 
 /* ── 7  command palette ── */
 .pal-trigger{position:fixed;bottom:20px;right:20px;z-index:50;display:inline-flex;align-items:center;gap:10px;padding:11px 14px 11px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(22,22,22,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--muted);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
@@ -399,7 +408,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
 <!-- ═══ 2. HERO (Lab 17 enhanced) ═══ -->
 <section class="hero" id="top" aria-label="Hero">
   <div class="hero-img" id="heroClip">
-    <img src="../Porsche911GT3RS.png" alt="" width="1200" height="800"/>
+    <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Porsche911GT3RS.png" alt="" width="1200" height="800"/>
   </div>
   <p class="handle">@delexo</p>
   <div class="hero-content reveal">
@@ -417,19 +426,19 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
       <ul class="icon-row">
         <li>
           <a class="icon-item" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link icon-link--on-light"><img src="Github.png" alt="" decoding="async"/></span>
+            <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Github.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">GitHub</span>
           </a>
         </li>
         <li>
           <a class="icon-item" href="https://www.instagram.com/delexoo/" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link icon-link--on-light"><img src="Instagram.png" alt="" decoding="async"/></span>
+            <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Instagram.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">Instagram</span>
           </a>
         </li>
         <li>
           <button type="button" class="icon-item" id="dcOpen" aria-haspopup="dialog" aria-controls="dcModal">
-            <span class="icon-link icon-link--on-light" aria-hidden="true"><img src="Discord.png" alt="" decoding="async"/></span>
+            <span class="icon-link icon-link--on-light" aria-hidden="true"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Discord.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">Discord</span>
           </button>
         </li>
@@ -443,19 +452,19 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
         </li>
         <li>
           <a class="icon-item" href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link"><img src="Venmo.png" alt="" decoding="async"/></span>
+            <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Venmo.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">Venmo</span>
           </a>
         </li>
         <li>
           <a class="icon-item" href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link"><img src="Cashapp.png" alt="" decoding="async"/></span>
+            <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Cashapp.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">Cashapp</span>
           </a>
         </li>
         <li>
           <a class="icon-item" href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link"><img src="Stripe.png" alt="" decoding="async"/></span>
+            <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Stripe.png" alt="" decoding="async"/></span>
             <span class="icon-item-label">Support Me!</span>
           </a>
         </li>
@@ -467,7 +476,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
       <div class="project-featured">
         <a class="project-card" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
           <div class="project-card__media">
-            <img src="landingpages/FreeUniversityToolsLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
+            <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/FreeUniversityToolsLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
           </div>
           <div class="project-card__cap">
             <span class="project-card__title">Free University Tools</span>
@@ -476,7 +485,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
         </a>
         <a class="project-card" href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer">
           <div class="project-card__media">
-            <img src="landingpages/ServerlyLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
+            <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/ServerlyLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
           </div>
           <div class="project-card__cap">
             <span class="project-card__title">Build Your Own Discord Server</span>
@@ -535,17 +544,17 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
   <div class="wrap">
     <p class="kicker">Courses</p>
     <h2 class="section-title">How I make money online.</h2>
-    <p class="section-sub">Swipe to browse — each card links to the course.</p>
+    <p class="section-sub">Coming soon — swipe to browse previews. Links go live when each course is ready.</p>
   </div>
-  <div class="rail" tabindex="0" role="region" aria-label="How I make money online — courses">
-    <a class="chip" href="#"><span class="chip-tag">01</span><h4>Website Selling</h4><p>Build &amp; flip websites for profit.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">02</span><h4>AI Receptionist Course</h4><p>Automate front-desk with AI.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">03</span><h4>AI Empire Course</h4><p>Scale an AI-first business.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">04</span><h4>AI Leads Course</h4><p>Generate leads on autopilot.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">05</span><h4>OpenClaw AI Agency</h4><p>Launch your own AI agency.</p></a>
-    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">06 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
-    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">07 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
-    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">08 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
+  <div class="rail" tabindex="0" role="region" aria-label="How I make money online — courses (coming soon)">
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">01 <span class="tag-soon">Coming soon</span></span><h4>Website Selling</h4><p>Build &amp; flip websites for profit.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">02 <span class="tag-soon">Coming soon</span></span><h4>AI Receptionist Course</h4><p>Automate front-desk with AI.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">03 <span class="tag-soon">Coming soon</span></span><h4>AI Empire Course</h4><p>Scale an AI-first business.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">04 <span class="tag-soon">Coming soon</span></span><h4>AI Leads Course</h4><p>Generate leads on autopilot.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">05 <span class="tag-soon">Coming soon</span></span><h4>OpenClaw AI Agency</h4><p>Launch your own AI agency.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">06 <span class="tag-soon">Coming soon</span></span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">07 <span class="tag-soon">Coming soon</span></span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">08 <span class="tag-soon">Coming soon</span></span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></div>
   </div>
 </section>
 
@@ -553,15 +562,16 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
 <section class="rail-section reveal" id="courses-skills">
   <div class="wrap">
     <h2 class="section-title">My favorite courses.</h2>
+    <p class="section-sub">Coming soon — links will be added when each course is available.</p>
   </div>
-  <div class="rail" tabindex="0" role="region" aria-label="My favorite courses">
-    <a class="chip" href="#"><span class="chip-tag">01</span><h4>Discord Server Hustle</h4><p>Monetise community from day one.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">02</span><h4>Cybersecurity Course</h4><p>Defensive skills that pay.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">03</span><h4>AP Computer Science Principles</h4><p>Ace the AP exam.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">04</span><h4>Notion Marketplace Course</h4><p>Sell templates at scale.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">05</span><h4>The Faceless Blueprint</h4><p>Anonymous content empire.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">06</span><h4>Cold Call</h4><p>Close on the first ring.</p></a>
-    <a class="chip" href="#"><span class="chip-tag">07</span><h4>AI Course</h4><p>Fundamentals to advanced AI.</p></a>
+  <div class="rail" tabindex="0" role="region" aria-label="My favorite courses (coming soon)">
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">01 <span class="tag-soon">Coming soon</span></span><h4>Discord Server Hustle</h4><p>Monetise community from day one.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">02 <span class="tag-soon">Coming soon</span></span><h4>Cybersecurity Course</h4><p>Defensive skills that pay.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">03 <span class="tag-soon">Coming soon</span></span><h4>AP Computer Science Principles</h4><p>Ace the AP exam.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">04 <span class="tag-soon">Coming soon</span></span><h4>Notion Marketplace Course</h4><p>Sell templates at scale.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">05 <span class="tag-soon">Coming soon</span></span><h4>The Faceless Blueprint</h4><p>Anonymous content empire.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">06 <span class="tag-soon">Coming soon</span></span><h4>Cold Call</h4><p>Close on the first ring.</p></div></div>
+    <div class="chip chip--soon" aria-disabled="true"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag">07 <span class="tag-soon">Coming soon</span></span><h4>AI Course</h4><p>Fundamentals to advanced AI.</p></div></div>
           </div>
 </section>
 
@@ -571,12 +581,13 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
     <h2 class="section-title">Personal use or resell these products.</h2>
   </div>
   <div class="rail" tabindex="0" role="region" aria-label="Personal use or resell these products">
-    <a class="chip" href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noreferrer"><span class="chip-tag">PLR</span><h4>1400+ Viral Women's Reels</h4><p>Ready to post with PLR rights.</p></a>
-    <a class="chip" href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noreferrer"><span class="chip-tag">B-Roll</span><h4>100k Ultimate B-Roll Bundle</h4><p>Massive clip library.</p></a>
-    <a class="chip" href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noreferrer"><span class="chip-tag">Luxury</span><h4>Luxurious B-Roll + Bonuses</h4><p>Premium aesthetic clips.</p></a>
-    <a class="chip" href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noreferrer"><span class="chip-tag">Master</span><h4>Master Bundle for Creators</h4><p>Everything a creator needs.</p></a>
-    <a class="chip" href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noreferrer"><span class="chip-tag">18 TB</span><h4>All-In-One Money Making Bundle</h4><p>18 terabytes of value.</p></a>
-    <a class="chip" href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noreferrer"><span class="chip-tag">30k</span><h4>30,000+ High Quality Clips</h4><p>Curated, high-res footage.</p></a>
+    <!-- PLR thumbnail: About-Me/doc/1400+ Viral Women’s Reels with Full PLR Rights – Ready-to-Post Video Pack.png (GitHub uses ’ U+2019 and – U+2013 in the filename; encode in URL) -->
+    <a class="chip" href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/main/doc/1400%2B%20Viral%20Women%E2%80%99s%20Reels%20with%20Full%20PLR%20Rights%20%E2%80%93%20Ready-to-Post%20Video%20Pack.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">PLR</span><h4>1400+ Viral Women's Reels</h4><p>Ready to post with PLR rights.</p></div></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/100k%20Ultimate%20B-Roll%20Clips%20Bundle.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">B-Roll</span><h4>100k Ultimate B-Roll Bundle</h4><p>Massive clip library.</p></div></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Luxurious%20B-Roll%20Clips%20%2B%20Bonuses.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">Luxury</span><h4>Luxurious B-Roll + Bonuses</h4><p>Premium aesthetic clips.</p></div></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/MASTER%20BUNDLE%20FOR%20CONTENT%20CREATORS.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">Master</span><h4>Master Bundle for Creators</h4><p>Everything a creator needs.</p></div></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/18%20Terabyte%20All%20In%20One%20Money%20Making%20Course%20Bundle.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">18 TB</span><h4>All-In-One Money Making Bundle</h4><p>18 terabytes of value.</p></div></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/30%2C000%2B%20High%20Quality%20Clips.png" alt="" loading="eager" decoding="async" width="270" height="152" fetchpriority="low"/><div class="chip__body"><span class="chip-tag">30k</span><h4>30,000+ High Quality Clips</h4><p>Curated, high-res footage.</p></div></a>
           </div>
 </section>
 
@@ -679,7 +690,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
       <div class="tl-node"></div>
       <div class="tl-media">
         <figure class="tl-media-card">
-          <img src="../Porsche911GT3RS.png" alt="" loading="lazy" decoding="async" width="800" height="500"/>
+          <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Porsche911GT3RS.png" alt="" loading="lazy" decoding="async" width="800" height="500"/>
         </figure>
       </div>
       <div class="tl-content">
@@ -739,6 +750,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
       <a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" role="option"><span>Nothing. (app)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21" target="_blank" rel="noopener noreferrer" role="option"><span>Loading. (app)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30" target="_blank" rel="noopener noreferrer" role="option"><span>Capes++ (app)</span><span class="pal-hint">↗</span></a>
+      <a href="https://namemc.com/profile/Delexo" target="_blank" rel="noopener noreferrer" role="option"><span>NameMC — Minecraft profile (@delexo)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noopener noreferrer" role="option"><span>1400+ Viral Women's Reels (PLR)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noopener noreferrer" role="option"><span>100k Ultimate B-Roll Bundle</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noopener noreferrer" role="option"><span>Luxurious B-Roll + Bonuses</span><span class="pal-hint">↗</span></a>
@@ -758,7 +770,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
     <div class="dc-banner" aria-hidden="true"></div>
     <div class="dc-header">
       <div class="dc-av-wrap">
-        <div class="dc-av" aria-hidden="true"><img src="discordpfp.png" alt="" width="88" height="88" decoding="async"/></div>
+        <div class="dc-av" aria-hidden="true"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/discordpfp.png" alt="" width="88" height="88" decoding="async"/></div>
         <span class="dc-status" title="Offline" aria-hidden="true"></span>
       </div>
       <div class="dc-names">
@@ -788,11 +800,11 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
   </p>
 
   <ul class="cert-list">
-    <li><img class="badge" src="../verified.png" alt="Verified"/> Google Cybersecurity Certificate</li>
-    <li><img class="badge" src="../verified.png" alt="Verified"/> Harvard CS50 Certificate</li>
-    <li><img class="badge" src="../verified.png" alt="Verified"/> The Ultimate Dark Web, Anonymity, Privacy &amp; Security Course</li>
-    <li><img class="badge" src="../verified.png" alt="Verified"/> Learn Ethical Hacking From Scratch</li>
-    <li><img class="badge" src="../verified.png" alt="Verified"/> 100 Days of Code: The Complete Python Pro Bootcamp</li>
+    <li><img class="badge" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="Verified"/> Google Cybersecurity Certificate</li>
+    <li><img class="badge" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="Verified"/> Harvard CS50 Certificate</li>
+    <li><img class="badge" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="Verified"/> The Ultimate Dark Web, Anonymity, Privacy &amp; Security Course</li>
+    <li><img class="badge" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="Verified"/> Learn Ethical Hacking From Scratch</li>
+    <li><img class="badge" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="Verified"/> 100 Days of Code: The Complete Python Pro Bootcamp</li>
   </ul>
 
   <blockquote>
@@ -808,7 +820,7 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
   <p class="faq-sub">Tap a question to expand — no script required.</p>
   <details name="faq">
     <summary>What's your Minecraft username?</summary>
-    <div class="faq-body"><strong>@delexo</strong> — same handle I use here.</div>
+    <div class="faq-body"><strong>@delexo</strong> — same handle I use here. <a href="https://namemc.com/profile/Delexo" target="_blank" rel="noopener noreferrer">Minecraft profile on NameMC</a>.</div>
   </details>
   <details name="faq">
     <summary>How did you come up with your handle?</summary>
@@ -1026,11 +1038,6 @@ footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
   window.addEventListener("resize",updateScrub);
   updateScrub();
 })();
-
-/* spoiler course chips — no link jump */
-document.querySelectorAll(".chip--spoiler").forEach(el=>{
-  el.addEventListener("click",e=>e.preventDefault());
-});
 
 /* discord profile popout */
 (function(){
