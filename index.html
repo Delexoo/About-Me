@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="color-scheme" content="dark"/>
+<title>DELEXO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <style>
+/* ── tokens ── */
+:root{
+  --bg:#111111;--card:#161616;--text:#f2f2f2;--muted:#888;
+  --line:rgba(255,255,255,.1);--pink:#e8639a;
+  --focus:0 0 0 3px rgba(255,255,255,.3);
+  --clip:16%;
+  --hero-img-shift:-27vmin;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter",system-ui,sans-serif;
+  --serif:"Instrument Serif",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none;width:0;height:0}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;scrollbar-width:none;-ms-overflow-style:none}
+body::-webkit-scrollbar{display:none;width:0;height:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+
+/* ── utilities ── */
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.section-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
+.section-sub{margin:0 0 28px;color:var(--muted);font-size:15px;line-height:1.6}
+.divider{border:none;border-top:1px solid var(--line);margin:48px 0}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+
+/* ── 1  banner (fixed: does not shift page layout; slides in after load) ── */
+.announce{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,26,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:calc(11px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 11px max(20px,env(safe-area-inset-left,0px));display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;text-align:center;font-size:14px;box-shadow:0 10px 28px rgba(0,0,0,.35);transform:translateY(-120%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .45s ease,visibility 0s .55s}
+.announce.announce--open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto;transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .45s ease,visibility 0s 0s}
+.announce.announce--closing{transition:transform .45s ease-out,opacity .38s ease-out,visibility 0s .45s !important}
+.announce[hidden]{display:none}
+.announce .a-text{color:#ccc;text-decoration:none;cursor:pointer}
+.announce .a-text:hover{color:#fff;text-decoration:underline}
+.announce .a-text:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.announce .a-btn{font-family:inherit;font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.announce .a-btn:hover{background:rgba(255,255,255,.06)}
+.announce .a-btn:focus-visible{outline:none;box-shadow:var(--focus)}
+
+/* ── 2  hero (lab 17 enhanced) ── */
+.hero{height:78vh;min-height:480px;position:relative;display:grid;grid-template-columns:1fr;grid-template-rows:1fr;place-items:center;overflow:hidden}
+.hero-img{grid-column:1;grid-row:1;position:absolute;inset:0;clip-path:inset(var(--clip) round 24px)}
+.hero-img img{display:block;width:100%;height:155%;object-fit:cover;object-position:center 44%;transform:translate3d(0,var(--hero-img-shift),0)}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,17,17,0) 50%,rgba(17,17,17,.85) 100%);pointer-events:none}
+.hero .handle{grid-column:1;grid-row:1;position:absolute;z-index:3;left:calc(var(--clip) + clamp(14px,3.5vw,28px));bottom:calc(var(--clip) + clamp(12px,3vw,22px));margin:0;font-size:clamp(13px,2.1vw,15px);font-weight:600;letter-spacing:.04em;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.85),0 0 28px rgba(0,0,0,.5);pointer-events:none}
+.hero-content{grid-column:1;grid-row:1;position:relative;z-index:2;place-self:center;text-align:center;padding:0 20px;width:100%;max-width:100%;box-sizing:border-box}
+.hero-content h1{margin:0 auto;font-size:clamp(2.6rem,7vw,4.5rem);font-weight:900;letter-spacing:.045em;line-height:1;text-shadow:0 4px 50px rgba(0,0,0,.7);text-align:center;transform-origin:center center;will-change:transform}
+
+/* ── 3  bento ── */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:10px}
+.cell{border-radius:18px;padding:22px;border:1px solid var(--line);transition:transform .25s ease,border-color .25s ease}
+.cell:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18)}
+.cell--wide{grid-column:span 8;background:var(--card);min-height:160px}
+.cell--full{grid-column:1 / -1;background:var(--card)}
+.cell--sq{grid-column:span 4;background:var(--card)}
+.cell--outline{grid-column:span 4;background:transparent}
+.cell h3{margin:0 0 8px;font-size:.95rem;font-weight:600}
+.cell p{margin:0;font-size:14px;color:var(--muted);line-height:1.55}
+.cell .stat{font-size:2.2rem;font-weight:700;letter-spacing:-.04em;margin-bottom:4px}
+.cell .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+/* buttons (solid / ghost / underline) */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid transparent;font-family:inherit;cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+.btn:focus-visible{outline:none;box-shadow:var(--focus)}
+.btn--solid{background:#e8e8e8;color:#0a0a0a;border-color:transparent}
+.btn--solid:hover{transform:translateY(-2px);background:#fff}
+.btn--ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn--ghost:hover{transform:translateY(-2px);background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22)}
+.btn--soon{cursor:default;pointer-events:none;color:#a8a8a8;border-color:rgba(255,255,255,.1)}
+.btn--soon:hover{transform:none;background:transparent;border-color:rgba(255,255,255,.1)}
+.tag-soon{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:rgba(232,99,154,.12);color:var(--pink);border:1px solid rgba(232,99,154,.28)}
+.btn--launch{gap:10px}
+.btn--launch .launch-ic{width:16px;height:16px;flex-shrink:0;opacity:.88}
+.btn-launch-thumb{flex-shrink:0;width:40px;height:40px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid var(--line);display:grid;place-items:center;box-sizing:border-box}
+.btn-launch-thumb img{width:100%;height:100%;object-fit:contain;display:block}
+.project-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.project-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.project-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 12px 32px rgba(0,0,0,.38)}
+.project-card:hover .project-card__go{color:#b0b0b0}
+.project-card:focus-visible{outline:none;box-shadow:var(--focus)}
+.project-card__media{aspect-ratio:16/9;background:#0c0c0c;overflow:hidden}
+.project-card__media img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.project-card__cap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid var(--line);min-height:52px;box-sizing:border-box}
+.project-card__title{font-size:14px;font-weight:600;line-height:1.35;margin:0}
+.project-card__go{display:flex;align-items:center;justify-content:center;color:var(--muted);flex-shrink:0}
+.project-card__go .launch-ic{width:16px;height:16px;opacity:.88}
+.cell--wide .project-featured + .links{margin-top:12px}
+.cell .links--stack{flex-direction:column;align-items:stretch;gap:10px}
+.cell .links--stack .btn--launch{width:100%;justify-content:space-between;align-items:center}
+.btn-launch-main{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;text-align:left;min-width:0;flex:1}
+.btn-launch-title{font-size:13px;font-weight:600;line-height:1.25;min-width:0}
+.program-tag{flex-shrink:0;display:inline-block;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.05);color:#9a9a9a;border:1px solid rgba(255,255,255,.1)}
+.icon-row{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-start;margin-top:14px;padding:0;list-style:none}
+.icon-row li{margin:0}
+.icon-item{display:flex;flex-direction:column;align-items:center;gap:5px;max-width:80px;text-decoration:none;color:inherit;text-align:center}
+.icon-item:focus-visible{outline:none;border-radius:10px;box-shadow:var(--focus)}
+.icon-item:focus-visible .icon-link{box-shadow:0 3px 10px rgba(0,0,0,.34)}
+.icon-item:hover .icon-link,.icon-item:focus-visible .icon-link{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 5px 14px rgba(0,0,0,.4)}
+.icon-link{position:relative;display:block;width:48px;height:48px;border-radius:12px;aspect-ratio:1;transition:transform .22s ease,box-shadow .22s ease,filter .22s ease;box-shadow:0 2px 12px rgba(0,0,0,.45);background:var(--card);border:none;flex-shrink:0;box-sizing:border-box;overflow:hidden;isolation:isolate}
+.icon-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block;pointer-events:none;border-radius:inherit}
+.icon-link svg.icon-svg{position:absolute;inset:0;width:58%;height:58%;max-width:30px;max-height:30px;margin:auto;display:block;pointer-events:none}
+.icon-link--on-light{background:#e8e8e8;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.icon-item-label{font-size:10px;line-height:1.2;color:var(--muted);font-weight:500;max-width:100%}
+.icon-item:hover .icon-item-label,.icon-item:focus-visible .icon-item-label{color:#b0b0b0}
+button.icon-item{font-family:inherit;font-size:inherit;color:inherit;padding:0;border:none;background:none;cursor:pointer}
+button.icon-item:focus-visible{outline:none;border-radius:10px;box-shadow:var(--focus)}
+button.icon-item:focus-visible .icon-link{box-shadow:0 3px 10px rgba(0,0,0,.34)}
+.uline{position:relative;text-decoration:none;color:var(--text);font-weight:500;font-size:14px;padding:4px 0}
+.uline::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .35s ease}
+.uline:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* ── 4-6  scroll-snap rails ── */
+.rail-section{margin-top:56px}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 22px 22px;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+.rail::-webkit-scrollbar{display:none;height:0}
+.chip{flex:0 0 270px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:border-color .2s ease,transform .2s ease}
+.chip:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.chip:focus-visible{outline:none;box-shadow:var(--focus)}
+.chip .chip-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:auto}
+.chip h4{margin:0 0 4px;font-size:1rem;font-weight:600}
+.chip p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.chip--spoiler{cursor:default}
+.chip--spoiler:hover{border-color:rgba(255,255,255,.12);transform:none}
+.chip-spoiler-mark{display:inline-block;margin-left:8px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:rgba(232,99,154,.14);color:var(--pink);border:1px solid rgba(232,99,154,.32);vertical-align:middle}
+.chip--spoiler h4{color:#c8c8c8}
+
+/* ── 7  command palette ── */
+.pal-trigger{position:fixed;bottom:20px;right:20px;z-index:50;display:inline-flex;align-items:center;gap:10px;padding:11px 14px 11px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(22,22,22,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--muted);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.pal-trigger:hover{border-color:rgba(255,255,255,.22);box-shadow:0 14px 44px rgba(0,0,0,.6);transform:translateY(-1px)}
+.pal-trigger:focus-visible{outline:none;box-shadow:var(--focus)}
+.pal-trigger__ic{width:15px;height:15px;flex-shrink:0;opacity:.5}
+.pal-trigger__text{color:#999;white-space:nowrap}
+.pal-trigger kbd{padding:3px 8px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-family:inherit;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s;z-index:200;display:grid;place-items:start center;padding-top:14vh}
+.backdrop.is-open{opacity:1;visibility:visible}
+.palette{width:min(500px,calc(100vw - 32px));background:#131313;border:1px solid var(--line);border-radius:16px;box-shadow:0 40px 80px rgba(0,0,0,.65);overflow:hidden;transform:translateY(-8px) scale(.98);transition:transform .2s ease}
+.backdrop.is-open .palette{transform:translateY(0) scale(1)}
+.pal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.pal-head input{flex:1;border:none;background:transparent;color:var(--text);font-family:inherit;font-size:15px;outline:none}
+.pal-list{max-height:320px;overflow:auto;padding:6px;scrollbar-width:none;-ms-overflow-style:none}
+.pal-list::-webkit-scrollbar{display:none;width:0;height:0}
+.pal-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-radius:10px;text-decoration:none;color:#ccc;font-size:14px}
+.pal-list a:hover,.pal-list a:focus-visible{background:rgba(255,255,255,.06);color:var(--text);outline:none}
+.pal-list a span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pal-list .pal-hint{flex-shrink:0;font-size:11px;color:var(--muted);padding:2px 8px;border:1px solid var(--line);border-radius:6px}
+
+/* discord profile popout — display name, handle, bio only */
+.dc-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);opacity:0;visibility:hidden;z-index:210;display:grid;place-items:center;padding:24px;transition:opacity .2s ease,visibility .2s}
+.dc-overlay.is-open{opacity:1;visibility:visible}
+.dc-panel{position:relative;width:min(400px,calc(100vw - 40px));border-radius:8px;overflow:hidden;background:#2b2d31;box-shadow:0 24px 48px rgba(0,0,0,.65),0 0 0 1px rgba(0,0,0,.5);transform:scale(.96) translateY(8px);transition:transform .2s ease;font-family:var(--font);text-align:left}
+.dc-overlay.is-open .dc-panel{transform:scale(1) translateY(0)}
+.dc-x{position:absolute;top:8px;right:8px;z-index:5;width:32px;height:32px;border-radius:4px;border:none;background:rgba(0,0,0,.35);color:#dbdee1;font-size:20px;line-height:1;cursor:pointer;font-family:inherit;display:grid;place-items:center;padding:0}
+.dc-x:hover{background:rgba(0,0,0,.5);color:#fff}
+.dc-x:focus-visible{outline:none;box-shadow:var(--focus)}
+.dc-banner{height:56px;background:linear-gradient(135deg,#5865F2 0%,#4752C4 50%,#3c45a5 100%)}
+.dc-header{display:flex;flex-direction:row;align-items:flex-end;gap:12px;padding:0 16px 0;margin-top:-36px;position:relative;z-index:2}
+.dc-av-wrap{position:relative;flex-shrink:0}
+.dc-av{width:88px;height:88px;border-radius:50%;border:6px solid #2b2d31;box-sizing:border-box;overflow:hidden;background:#1e1f22}
+.dc-av img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.08)}
+.dc-status{position:absolute;bottom:2px;right:2px;width:22px;height:22px;border-radius:50%;background:#2b2d31;border:4px solid #2b2d31;box-sizing:border-box;display:grid;place-items:center}
+.dc-status::after{content:"";width:10px;height:10px;border-radius:50%;background:#81848f}
+.dc-names{flex:1;min-width:0;padding-bottom:8px;padding-top:40px}
+.dc-display{margin:0;font-size:22px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.02em}
+.dc-handle{margin:6px 0 0;font-size:15px;font-weight:400;color:#b5bac1;line-height:1.35}
+.dc-sheet{padding:12px 16px 18px}
+.dc-about{margin:0;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+.dc-about-label{margin:0 0 8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#b5bac1}
+.dc-bio-text{margin:0;font-size:15px;line-height:1.45;color:#fff;font-weight:400}
+.dc-store{display:inline-block;margin-top:10px;font-size:15px;font-weight:500;color:#00a8fc;text-decoration:none;word-break:break-all}
+.dc-store:hover{text-decoration:underline}
+.dc-store:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+
+/* ── 8a  timeline ── */
+.tl{margin-top:64px;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 22px}
+.tl .tl-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.tl .tl-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
+.tl .tl-sub{margin:0 0 40px;color:var(--muted);font-size:15px;line-height:1.6}
+
+.tl-track{position:relative;padding:0}
+.tl-track::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0%,var(--line) 4%,var(--line) 96%,transparent 100%);transform:translateX(-50%)}
+.tl-line-glow{position:absolute;left:50%;top:0;width:2px;height:0;background:var(--pink);transform:translateX(-50%);transition:none;pointer-events:none;z-index:1}
+.tl-scrub-dot{position:absolute;left:50%;top:0;width:16px;height:16px;border-radius:50%;background:var(--pink);border:none;box-shadow:none;transform:translate3d(-50%,-50%,0);z-index:4;pointer-events:none;will-change:transform}
+
+.tl-item{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:start;padding-bottom:60px}
+.tl-item:last-child{padding-bottom:0}
+
+.tl-item--left .tl-content{grid-column:1;padding-right:48px;text-align:right}
+.tl-item--left .tl-media{grid-column:2;padding-left:48px}
+.tl-item--right .tl-content{grid-column:2;padding-left:48px;text-align:left}
+.tl-item--right .tl-media{grid-column:1;grid-row:1;padding-right:48px}
+
+/* node dots — static on the line; fill pink when scrub dot passes */
+.tl-node{position:absolute;left:50%;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,.22);background:var(--bg);transform:translateX(-50%);z-index:2;box-sizing:border-box;transition:background .35s ease,border-color .35s ease}
+.tl-node.is-passed{background:var(--pink);border-color:var(--pink)}
+
+.tl-date{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+.tl-item--done .tl-date{color:var(--pink)}
+.tl-label{font-size:1.1rem;font-weight:600;line-height:1.35;margin:0 0 8px}
+.tl-desc{font-size:14px;color:var(--muted);line-height:1.65;margin:0}
+.tl-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--pink);text-decoration:none;margin-top:10px;transition:color .2s ease}
+.tl-link:hover{color:#f0a5c5}
+.tl-link svg{width:14px;height:14px;flex-shrink:0}
+
+/* media cards */
+.tl-media-card{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--card);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.tl-media-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.tl-media-card img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:center 40%;display:block}
+.tl-media-card figcaption{padding:14px 16px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+
+/* featured item (Porsche) — pink accent */
+.tl-item--featured .tl-media-card{border-color:rgba(232,99,154,.3);background:linear-gradient(135deg,rgba(232,99,154,.06) 0%,var(--card) 100%)}
+.tl-item--featured .tl-media-card:hover{border-color:rgba(232,99,154,.5);box-shadow:0 20px 50px rgba(232,99,154,.12)}
+.tl-item--featured .tl-label{font-family:var(--serif);font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:400;letter-spacing:-.02em}
+.tl-item--featured .tl-node{width:12px;height:12px;border-color:rgba(255,255,255,.22);background:var(--bg);box-shadow:none}
+
+/* year bookend markers */
+.tl-year{position:relative;text-align:center;font-size:clamp(.85rem,2vw,1rem);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);padding:18px 0;z-index:2}
+.tl-year::before{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;background:var(--pink);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 14px rgba(232,99,154,.5)}
+.tl-year--start{padding-top:0;padding-bottom:32px}
+.tl-year--end{padding-top:32px;padding-bottom:0}
+
+/* scroll-in animation per item */
+.tl-item{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.tl-item--left{transform:translateX(-32px) translateY(16px)}
+.tl-item--right{transform:translateX(32px) translateY(16px)}
+.tl-item.is-tl-visible{opacity:1;transform:translate(0,0)}
+
+/* ── 8b  about me (editorial) ── */
+.about{margin-top:56px;max-width:660px;margin-left:auto;margin-right:auto;padding:0 22px 64px}
+.about .about-kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.about h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;margin:0 0 28px}
+.about .lead{font-size:1.1rem;line-height:1.7;color:#b0b0b0;font-weight:300;margin:0 0 32px}
+.about p{font-size:1rem;line-height:1.75;color:#9a9a9a;margin:0 0 20px;font-weight:300}
+.about blockquote{margin:40px 0;padding:24px 0 24px 24px;border-left:1px solid rgba(255,255,255,.2);font-family:var(--serif);font-size:1.4rem;font-style:italic;line-height:1.45;color:#d4d4d4}
+.about blockquote .credit{display:block;margin-top:14px;font-family:var(--font);font-style:normal;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cert-list{list-style:none;padding:0;margin:0 0 28px}
+.cert-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;color:#bbb}
+.cert-list li:last-child{border-bottom:none}
+.cert-list .badge{width:18px;height:18px;flex-shrink:0}
+/* FAQ — Lab 10 accordion (<details>) */
+.faq{margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;padding:0 22px 64px}
+.faq .faq-kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.faq .faq-title{margin:0 0 8px;font-size:clamp(1.5rem,4vw,1.85rem);font-weight:600;letter-spacing:-.03em;line-height:1.15}
+.faq .faq-sub{margin:0 0 28px;color:var(--muted);font-size:15px;line-height:1.6}
+.faq details{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:10px;overflow:hidden}
+.faq details[open] summary{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;padding:18px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600;font-size:15px;line-height:1.35;color:var(--text)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:18px;color:var(--muted);flex-shrink:0;transition:transform .25s ease;line-height:1}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq summary:focus-visible{outline:none;box-shadow:inset 0 0 0 3px rgba(255,255,255,.2)}
+.faq .faq-body{padding:16px 20px 20px;color:var(--muted);font-size:14px;line-height:1.65;font-weight:400}
+.faq .faq-body strong{color:#c8c8c8;font-weight:600}
+.faq .faq-body a{color:var(--pink);font-weight:600;text-decoration:none}
+.faq .faq-body a:hover{text-decoration:underline}
+
+/* ── 9  footer ── */
+footer{padding:44px 22px 28px;max-width:960px;margin:56px auto 0}
+.foot-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-bottom:36px}
+.foot-col h4{margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.foot-col a{display:block;padding:5px 0;color:#b0b0b0;text-decoration:none;font-size:14px}
+.foot-col a:hover{color:var(--text)}
+.foot-col a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.foot-bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px 16px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.foot-bottom__left{justify-self:start;margin:0}
+.foot-bottom__center{justify-self:center;margin:0;font-size:11px;letter-spacing:.04em;color:#6a6a6a;text-align:center}
+.foot-bottom__right{justify-self:end}
+.foot-bottom a{color:#b0b0b0;text-decoration:none}
+.foot-bottom a:hover{color:var(--text)}
+.foot-bottom a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+
+/* ── rail scroll-end fix (prevents collapsed padding) ── */
+.rail::after{content:"";flex:0 0 8px;height:1px}
+
+/* ── responsive ── */
+
+/* tablets & small laptops */
+@media(max-width:860px){
+  .hero{height:72vh;min-height:400px}
+  .bento{grid-template-columns:1fr}
+  .cell--wide,.cell--sq,.cell--outline{grid-column:span 1}
+  .project-featured{grid-template-columns:1fr}
+  .foot-cols{grid-template-columns:repeat(2,1fr)}
+  /* timeline → single-column stack */
+  .tl-track::before{left:20px}
+  .tl-line-glow{left:20px}
+  .tl-scrub-dot{left:20px}
+  .tl-item{grid-template-columns:1fr;gap:0}
+  .tl-item--left .tl-content,.tl-item--right .tl-content{grid-column:1;padding:0 0 0 52px;text-align:left}
+  .tl-item--left .tl-media,.tl-item--right .tl-media{grid-column:1;grid-row:auto;padding:12px 0 0 52px}
+  .tl-node{left:20px;top:4px}
+  .tl-item--left,.tl-item--right,.tl-item{transform:translateY(28px);opacity:0}
+  .tl-item.is-tl-visible{transform:translateY(0);opacity:1}
+  .tl-item{padding-bottom:44px}
+  .tl-year{text-align:left;padding-left:52px}
+  .tl-year::before{left:20px;transform:translate(-50%,-50%)}
+}
+
+/* large phones / small tablets */
+@media(max-width:680px){
+  .about blockquote{font-size:1.2rem}
+  .tl .tl-title,.section-title{font-size:1.35rem}
+  .foot-cols{gap:24px 20px}
+}
+
+/* phones */
+@media(max-width:520px){
+  .hero{height:65vh;min-height:340px}
+  .chip{flex:0 0 85vw}
+  .about blockquote{font-size:1.1rem;padding-left:18px}
+  .about h2{margin-bottom:20px}
+  .foot-cols{grid-template-columns:1fr;text-align:center}
+  .foot-col a{padding:6px 0}
+  .foot-bottom{grid-template-columns:1fr;justify-items:center;text-align:center;gap:8px}
+  .foot-bottom__left,.foot-bottom__right{justify-self:center}
+  .pal-trigger{bottom:14px;right:14px;left:14px;justify-content:center;border-radius:14px;padding:14px 18px}
+  .backdrop{padding-top:8vh}
+  .palette{border-radius:14px}
+  .pal-list{max-height:min(320px,50vh)}
+  .tl-track::before{left:16px}
+  .tl-line-glow{left:16px}
+  .tl-scrub-dot{left:16px}
+  .tl-node{left:16px}
+  .tl-item--left .tl-content,.tl-item--right .tl-content{padding-left:44px}
+  .tl-item--left .tl-media,.tl-item--right .tl-media{padding-left:44px}
+  .tl-item{padding-bottom:36px}
+  .tl-item--featured .tl-label{font-size:1.2rem}
+  .tl-year{padding-left:44px}
+  .tl-year::before{left:16px}
+}
+
+/* very narrow phones (iPhone SE, Galaxy Fold) */
+@media(max-width:380px){
+  .hero{min-height:300px}
+  .wrap{padding:0 16px}
+  .cell{padding:18px}
+  .chip{flex:0 0 88vw}
+  .tl{padding:0 16px}
+  .about,.faq{padding:0 16px 48px}
+  .icon-link{width:42px;height:42px;border-radius:10px}
+  .pal-trigger{bottom:10px;right:10px;left:10px;padding:12px 14px;font-size:12px}
+  .tl-year{padding-left:36px}
+  .tl-year::before{left:12px}
+  .tl-track::before{left:12px}
+  .tl-line-glow{left:12px}
+  .tl-scrub-dot{left:12px}
+  .tl-node{left:12px;width:12px;height:12px}
+  .tl-item--left .tl-content,.tl-item--right .tl-content{padding-left:36px}
+  .tl-item--left .tl-media,.tl-item--right .tl-media{padding-left:36px}
+}
+
+/* safe-area insets for notched / home-indicator devices */
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .pal-trigger{padding-bottom:calc(11px + env(safe-area-inset-bottom,0px));bottom:max(14px,env(safe-area-inset-bottom,0px))}
+  footer{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))}
+}
+
+/* landscape phones */
+@media(max-height:500px) and (orientation:landscape){
+  .hero{height:auto;min-height:300px}
+  .backdrop{padding-top:4vh}
+  .pal-list{max-height:180px}
+  .pal-trigger{bottom:10px;left:auto;right:10px}
+}
+
+/* prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .announce{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto;transition:none}
+  .hero .handle{left:calc(8% + clamp(14px,3.5vw,28px));bottom:calc(8% + clamp(12px,3vw,22px))}
+  .hero-img{transition:none;clip-path:inset(8% round 24px)}
+  .btn,.cell,.chip,.backdrop,.palette,.pal-trigger,.tl-item,.tl-node,.tl-media-card,.faq summary::after,.dc-overlay,.dc-panel{transition:none}
+  .tl-item{opacity:1;transform:none}
+  .tl-line-glow{height:100%}
+}
+    </style>
+  </head>
+  <body>
+
+<!-- ═══ 1. BANNER ═══ -->
+<div class="announce" id="announce" role="region" aria-label="Announcement" aria-hidden="true">
+  <a class="a-text" href="#courses-ai">New courses available.</a>
+  <button type="button" class="a-btn" id="dismissBtn">Dismiss</button>
+</div>
+
+<!-- ═══ 2. HERO (Lab 17 enhanced) ═══ -->
+<section class="hero" id="top" aria-label="Hero">
+  <div class="hero-img" id="heroClip">
+    <img src="../Porsche911GT3RS.png" alt="" width="1200" height="800"/>
+  </div>
+  <p class="handle">@delexo</p>
+  <div class="hero-content reveal">
+            <h1>DELEXO</h1>
+          </div>
+</section>
+
+<!-- ═══ 3. BENTO GRID ═══ -->
+<section class="wrap" id="links" style="margin-top:-28px">
+  <p class="kicker reveal">Links</p>
+  <div class="bento">
+    <!-- My Links (icon row) -->
+    <div class="cell cell--full reveal">
+      <h3>My Links</h3>
+      <ul class="icon-row">
+        <li>
+          <a class="icon-item" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link icon-link--on-light"><img src="Github.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">GitHub</span>
+          </a>
+        </li>
+        <li>
+          <a class="icon-item" href="https://www.instagram.com/delexoo/" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link icon-link--on-light"><img src="Instagram.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">Instagram</span>
+          </a>
+        </li>
+        <li>
+          <button type="button" class="icon-item" id="dcOpen" aria-haspopup="dialog" aria-controls="dcModal">
+            <span class="icon-link icon-link--on-light" aria-hidden="true"><img src="Discord.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">Discord</span>
+          </button>
+        </li>
+        <li>
+          <a class="icon-item" href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link" aria-hidden="true">
+              <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1DB954" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+            <span class="icon-item-label">Spotify</span>
+          </a>
+        </li>
+        <li>
+          <a class="icon-item" href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link"><img src="Venmo.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">Venmo</span>
+          </a>
+        </li>
+        <li>
+          <a class="icon-item" href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link"><img src="Cashapp.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">Cashapp</span>
+          </a>
+        </li>
+        <li>
+          <a class="icon-item" href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link"><img src="Stripe.png" alt="" decoding="async"/></span>
+            <span class="icon-item-label">Support Me!</span>
+          </a>
+        </li>
+      </ul>
+        </div>
+    <!-- projects -->
+    <div class="cell cell--wide reveal">
+      <h3>Projects</h3>
+      <div class="project-featured">
+        <a class="project-card" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
+          <div class="project-card__media">
+            <img src="landingpages/FreeUniversityToolsLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
+          </div>
+          <div class="project-card__cap">
+            <span class="project-card__title">Free University Tools</span>
+            <span class="project-card__go" aria-hidden="true"><svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></span>
+          </div>
+        </a>
+        <a class="project-card" href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer">
+          <div class="project-card__media">
+            <img src="landingpages/ServerlyLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
+          </div>
+          <div class="project-card__cap">
+            <span class="project-card__title">Build Your Own Discord Server</span>
+            <span class="project-card__go" aria-hidden="true"><svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></span>
+          </div>
+        </a>
+      </div>
+      <div class="links links--stack">
+        <span class="btn btn--ghost btn--launch btn--soon" aria-disabled="true">
+          <span class="btn-launch-main">
+            <span class="btn-launch-title">Securely</span>
+            <span class="tag-soon">Coming soon</span>
+          </span>
+        </span>
+      </div>
+              </div>
+    <!-- apps -->
+    <div class="cell cell--sq reveal">
+      <h3>Apps</h3>
+      <p>Designed, built, and shipped by me.</p>
+      <div class="links links--stack">
+        <a class="btn btn--ghost btn--launch" href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer">
+          <span class="btn-launch-main">
+            <span class="btn-launch-title">Nothing.</span>
+            <span class="program-tag">Game</span>
+          </span>
+          <svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+        <a class="btn btn--ghost btn--launch" href="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21" target="_blank" rel="noopener noreferrer">
+          <span class="btn-launch-main">
+            <span class="btn-launch-title">Loading.</span>
+            <span class="program-tag">Game</span>
+          </span>
+          <svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+        <a class="btn btn--ghost btn--launch" href="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30" target="_blank" rel="noopener noreferrer">
+          <span class="btn-launch-main">
+            <span class="btn-launch-title">Capes++</span>
+            <span class="program-tag">Client</span>
+          </span>
+          <svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+        <span class="btn btn--ghost btn--launch btn--soon" aria-disabled="true">
+          <span class="btn-launch-main">
+            <span class="btn-launch-title">AskBar</span>
+            <span class="tag-soon">Coming soon</span>
+          </span>
+        </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<!-- ═══ 4. RAIL 1 — How I make money online ═══ -->
+<section class="rail-section reveal" id="courses-ai">
+  <div class="wrap">
+    <p class="kicker">Courses</p>
+    <h2 class="section-title">How I make money online.</h2>
+    <p class="section-sub">Swipe to browse — each card links to the course.</p>
+  </div>
+  <div class="rail" tabindex="0" role="region" aria-label="How I make money online — courses">
+    <a class="chip" href="#"><span class="chip-tag">01</span><h4>Website Selling</h4><p>Build &amp; flip websites for profit.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">02</span><h4>AI Receptionist Course</h4><p>Automate front-desk with AI.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">03</span><h4>AI Empire Course</h4><p>Scale an AI-first business.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">04</span><h4>AI Leads Course</h4><p>Generate leads on autopilot.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">05</span><h4>OpenClaw AI Agency</h4><p>Launch your own AI agency.</p></a>
+    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">06 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
+    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">07 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
+    <a class="chip chip--spoiler" href="#" aria-label="Private course — not listed publicly."><span class="chip-tag">08 <span class="chip-spoiler-mark">spoiler</span></span><h4>Private Course</h4></a>
+  </div>
+</section>
+
+<!-- ═══ 5. RAIL 2 — My favorite courses ═══ -->
+<section class="rail-section reveal" id="courses-skills">
+  <div class="wrap">
+    <h2 class="section-title">My favorite courses.</h2>
+  </div>
+  <div class="rail" tabindex="0" role="region" aria-label="My favorite courses">
+    <a class="chip" href="#"><span class="chip-tag">01</span><h4>Discord Server Hustle</h4><p>Monetise community from day one.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">02</span><h4>Cybersecurity Course</h4><p>Defensive skills that pay.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">03</span><h4>AP Computer Science Principles</h4><p>Ace the AP exam.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">04</span><h4>Notion Marketplace Course</h4><p>Sell templates at scale.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">05</span><h4>The Faceless Blueprint</h4><p>Anonymous content empire.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">06</span><h4>Cold Call</h4><p>Close on the first ring.</p></a>
+    <a class="chip" href="#"><span class="chip-tag">07</span><h4>AI Course</h4><p>Fundamentals to advanced AI.</p></a>
+          </div>
+</section>
+
+<!-- ═══ 6. RAIL 3 — Personal use or resell these products ═══ -->
+<section class="rail-section reveal" id="bundles">
+  <div class="wrap">
+    <h2 class="section-title">Personal use or resell these products.</h2>
+  </div>
+  <div class="rail" tabindex="0" role="region" aria-label="Personal use or resell these products">
+    <a class="chip" href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noreferrer"><span class="chip-tag">PLR</span><h4>1400+ Viral Women's Reels</h4><p>Ready to post with PLR rights.</p></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noreferrer"><span class="chip-tag">B-Roll</span><h4>100k Ultimate B-Roll Bundle</h4><p>Massive clip library.</p></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noreferrer"><span class="chip-tag">Luxury</span><h4>Luxurious B-Roll + Bonuses</h4><p>Premium aesthetic clips.</p></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noreferrer"><span class="chip-tag">Master</span><h4>Master Bundle for Creators</h4><p>Everything a creator needs.</p></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noreferrer"><span class="chip-tag">18 TB</span><h4>All-In-One Money Making Bundle</h4><p>18 terabytes of value.</p></a>
+    <a class="chip" href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noreferrer"><span class="chip-tag">30k</span><h4>30,000+ High Quality Clips</h4><p>Curated, high-res footage.</p></a>
+          </div>
+</section>
+
+<!-- ═══ 7a. TIMELINE ═══ -->
+<section class="tl reveal" id="goals">
+  <p class="tl-kicker">The Journey</p>
+  <h2 class="tl-title">Where I've been &amp; where I'm going.</h2>
+  <p class="tl-sub">Milestones I've hit and ambitious goals still ahead — mapped out on one timeline.</p>
+
+  <div class="tl-track" id="tlTrack">
+    <div class="tl-line-glow" id="tlGlow"></div>
+    <div class="tl-scrub-dot" id="tlScrubDot" aria-hidden="true"></div>
+
+    <!-- year marker: 2025 -->
+    <div class="tl-year tl-year--start">2025</div>
+
+    <!-- ✓ 01  Start College (timeline progress starts here) -->
+    <div class="tl-item tl-item--left tl-item--done" id="tlCollege">
+      <div class="tl-node"></div>
+      <div class="tl-content">
+        <p class="tl-date">Completed</p>
+        <h3 class="tl-label">Started College</h3>
+        <p class="tl-desc">Enrolled in Cybersecurity &amp; Computer Science — the foundation for everything that followed.</p>
+      </div>
+      <div class="tl-media"></div>
+    </div>
+
+    <!-- ✓ 02  Google Cert -->
+    <div class="tl-item tl-item--right tl-item--done">
+      <div class="tl-node"></div>
+      <div class="tl-media"></div>
+      <div class="tl-content">
+        <p class="tl-date">Completed</p>
+        <h3 class="tl-label">Google Cybersecurity Certificate</h3>
+        <p class="tl-desc">Earned the Google Cybersecurity Professional Certificate — my first industry credential.</p>
+      </div>
+    </div>
+
+    <!-- ✓ 03  Harvard CS50 -->
+    <div class="tl-item tl-item--left tl-item--done">
+      <div class="tl-node"></div>
+      <div class="tl-content">
+        <p class="tl-date">Completed</p>
+        <h3 class="tl-label">Harvard CS50 Certificate</h3>
+        <p class="tl-desc">Completed CS50 — Harvard's legendary intro to computer science. The course that levelled up my thinking.</p>
+      </div>
+      <div class="tl-media"></div>
+    </div>
+
+    <!-- ✓ 04  AI Contest (scrub dot pauses here until startup nears viewport) -->
+    <div class="tl-item tl-item--right tl-item--done" id="tlAiContest">
+      <div class="tl-node"></div>
+      <div class="tl-media"></div>
+      <div class="tl-content">
+        <p class="tl-date">Completed</p>
+        <h3 class="tl-label">AI Contest Creation at School</h3>
+        <p class="tl-desc">Built an AI-powered system for my school's contest — designing, coding and shipping a real product under pressure.</p>
+      </div>
+    </div>
+
+    <!-- 05  Startup -->
+    <div class="tl-item tl-item--left" id="tlStartup">
+      <div class="tl-node"></div>
+      <div class="tl-content">
+        <p class="tl-date">Goal</p>
+        <h3 class="tl-label">Launch My Own Startup</h3>
+        <p class="tl-desc">Ship real products under my own brand. Securely is just the beginning.</p>
+        <a class="tl-link" href="https://instagram.com/trysecurely" target="_blank" rel="noopener noreferrer">
+          @trysecurely
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        </a>
+      </div>
+      <div class="tl-media"></div>
+    </div>
+
+    <!-- 06  Harvard visit -->
+    <div class="tl-item tl-item--right">
+      <div class="tl-node"></div>
+      <div class="tl-media"></div>
+      <div class="tl-content">
+        <p class="tl-date">Goal</p>
+        <h3 class="tl-label">Harvard — Meet David Malan</h3>
+        <p class="tl-desc">Travel to Cambridge, walk Harvard Yard, connect with CS50's David Malan face-to-face, and build relationships with the sharpest minds on campus.</p>
+      </div>
+    </div>
+
+    <!-- 07  VPAL -->
+    <div class="tl-item tl-item--left">
+      <div class="tl-node"></div>
+      <div class="tl-content">
+        <p class="tl-date">Goal</p>
+        <h3 class="tl-label">Graduate &amp; Earn Harvard VPAL Credentials</h3>
+        <p class="tl-desc">Complete the Cybersecurity for Business program and add Harvard VPAL credentials to the wall — proof that the grind paid off.</p>
+      </div>
+      <div class="tl-media"></div>
+    </div>
+
+    <!-- ★ 08  Porsche — featured -->
+    <div class="tl-item tl-item--right tl-item--featured">
+      <div class="tl-node"></div>
+      <div class="tl-media">
+        <figure class="tl-media-card">
+          <img src="../Porsche911GT3RS.png" alt="" loading="lazy" decoding="async" width="800" height="500"/>
+        </figure>
+      </div>
+      <div class="tl-content">
+        <p class="tl-date">Goal</p>
+        <h3 class="tl-label">Porsche 911 GT3 RS</h3>
+        <p class="tl-desc">The dream car — the finish line I see when I close my eyes. Every project, late night, line of code, and side hustle is another step until that picture becomes real.</p>
+      </div>
+    </div>
+
+    <!-- 09  Retire parents + friends -->
+    <div class="tl-item tl-item--left">
+      <div class="tl-node"></div>
+      <div class="tl-content">
+        <p class="tl-date">Goal</p>
+        <h3 class="tl-label">Retire My Parents &amp; Hang Out with Friends More</h3>
+        <p class="tl-desc">The real endgame. Give back to the two people who made everything possible — and make more time for the people who were there before any of this.</p>
+      </div>
+      <div class="tl-media"></div>
+    </div>
+
+    <!-- year marker: 2029 -->
+    <div class="tl-year tl-year--end">2029</div>
+
+  </div>
+</section>
+
+<!-- ═══ 7b. COMMAND PALETTE (Lab 15) ═══ -->
+<button type="button" class="pal-trigger" id="palOpen">
+  <svg class="pal-trigger__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <span class="pal-trigger__text">Quick Search</span>
+  <kbd>Enter</kbd>
+</button>
+<div class="backdrop" id="palBg" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+  <div class="palette" role="document">
+    <div class="pal-head">
+      <span aria-hidden="true">⌕</span>
+      <input type="search" id="palInput" placeholder="Jump to…" autocomplete="off"/>
+    </div>
+    <div class="pal-list" id="palList" role="listbox">
+      <a href="#top" role="option"><span>Landing Page</span><span class="pal-hint">↑</span></a>
+      <a href="#links" role="option"><span>My Links</span><span class="pal-hint">↓</span></a>
+      <a href="#courses-ai" role="option"><span>How I make money online</span><span class="pal-hint">↓</span></a>
+      <a href="#courses-skills" role="option"><span>My favorite courses</span><span class="pal-hint">↓</span></a>
+      <a href="#bundles" role="option"><span>Personal use or resell these products</span><span class="pal-hint">↓</span></a>
+      <a href="#goals" role="option"><span>The Journey</span><span class="pal-hint">↓</span></a>
+      <a href="#about" role="option"><span>About me</span><span class="pal-hint">↓</span></a>
+      <a href="#faq" role="option"><span>FAQ</span><span class="pal-hint">↓</span></a>
+      <a href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer" role="option"><span>Github</span><span class="pal-hint">↗</span></a>
+      <a href="https://www.instagram.com/delexoo/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (delexoo)</span><span class="pal-hint">↗</span></a>
+      <a href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer" role="option"><span>Spotify</span><span class="pal-hint">↗</span></a>
+      <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (securely)</span><span class="pal-hint">↗</span></a>
+      <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer" role="option"><span>Venmo</span><span class="pal-hint">↗</span></a>
+      <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer" role="option"><span>Cashapp</span><span class="pal-hint">↗</span></a>
+      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer" role="option"><span>Support Me!</span><span class="pal-hint">↗</span></a>
+      <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" role="option"><span>Free University Tools</span><span class="pal-hint">↗</span></a>
+      <a href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer" role="option"><span>Build Your Own Discord Server</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" role="option"><span>Nothing. (app)</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21" target="_blank" rel="noopener noreferrer" role="option"><span>Loading. (app)</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30" target="_blank" rel="noopener noreferrer" role="option"><span>Capes++ (app)</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noopener noreferrer" role="option"><span>1400+ Viral Women's Reels (PLR)</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noopener noreferrer" role="option"><span>100k Ultimate B-Roll Bundle</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noopener noreferrer" role="option"><span>Luxurious B-Roll + Bonuses</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noopener noreferrer" role="option"><span>Master Bundle for Creators</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noopener noreferrer" role="option"><span>All-In-One Money Making Bundle (18 TB)</span><span class="pal-hint">↗</span></a>
+      <a href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noopener noreferrer" role="option"><span>30,000+ High Quality Clips</span><span class="pal-hint">↗</span></a>
+      <a href="https://delexo.store" target="_blank" rel="noopener noreferrer" role="option"><span>delexo.store</span><span class="pal-hint">↗</span></a>
+      <a href="legal.html#privacy" role="option"><span>Privacy</span><span class="pal-hint">→</span></a>
+      <a href="legal.html#terms" role="option"><span>Terms</span><span class="pal-hint">→</span></a>
+    </div>
+    </div>
+          </div>
+
+<div class="dc-overlay" id="dcBackdrop" role="presentation" hidden>
+  <div class="dc-panel" id="dcModal" role="dialog" aria-modal="true" aria-labelledby="dcDisplay">
+    <button type="button" class="dc-x" id="dcClose" aria-label="Close profile popout">×</button>
+    <div class="dc-banner" aria-hidden="true"></div>
+    <div class="dc-header">
+      <div class="dc-av-wrap">
+        <div class="dc-av" aria-hidden="true"><img src="discordpfp.png" alt="" width="88" height="88" decoding="async"/></div>
+        <span class="dc-status" title="Offline" aria-hidden="true"></span>
+      </div>
+      <div class="dc-names">
+        <p class="dc-display" id="dcDisplay">Delexo</p>
+        <p class="dc-handle">celebraciones</p>
+      </div>
+    </div>
+    <div class="dc-sheet">
+      <div class="dc-about">
+        <p class="dc-about-label">Bio</p>
+        <p class="dc-bio-text">➤ [✦] Cybersecurity</p>
+        <a class="dc-store" href="https://delexo.store/" target="_blank" rel="noopener noreferrer">https://delexo.store</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 8. ABOUT ME (Lab 08 editorial) ═══ -->
+<section class="about reveal" id="about">
+  <p class="about-kicker">About</p>
+  <h2>The person behind the page.</h2>
+  <p class="lead">
+    I'm a Cybersecurity and Computer Science Major, I spend a lot of my time creating new projects, tools and courses, and I like the color pink!
+  </p>
+  <p>
+    Below are the verified certifications I've earned along the way.
+  </p>
+
+  <ul class="cert-list">
+    <li><img class="badge" src="../verified.png" alt="Verified"/> Google Cybersecurity Certificate</li>
+    <li><img class="badge" src="../verified.png" alt="Verified"/> Harvard CS50 Certificate</li>
+    <li><img class="badge" src="../verified.png" alt="Verified"/> The Ultimate Dark Web, Anonymity, Privacy &amp; Security Course</li>
+    <li><img class="badge" src="../verified.png" alt="Verified"/> Learn Ethical Hacking From Scratch</li>
+    <li><img class="badge" src="../verified.png" alt="Verified"/> 100 Days of Code: The Complete Python Pro Bootcamp</li>
+  </ul>
+
+  <blockquote>
+    "People may laugh at you, but it's not their future, it's yours."
+    <span class="credit">— Delexo</span>
+  </blockquote>
+</section>
+
+<!-- ═══ 8c. FAQ (Lab 10 accordion) ═══ -->
+<section class="faq reveal" id="faq">
+  <p class="faq-kicker">FAQ</p>
+  <h2 class="faq-title">Questions people ask.</h2>
+  <p class="faq-sub">Tap a question to expand — no script required.</p>
+  <details name="faq">
+    <summary>What's your Minecraft username?</summary>
+    <div class="faq-body"><strong>@delexo</strong> — same handle I use here.</div>
+  </details>
+  <details name="faq">
+    <summary>How did you come up with your handle?</summary>
+    <div class="faq-body">Long story short: I got hacked when I was younger. I got scared and really wanted to change my identity online. I randomly put letters together and I liked it — <strong>Delexo</strong> sounded clean, so I ran with it. I still like it to this day.</div>
+  </details>
+  <details name="faq">
+    <summary>Why are you doing all of this?</summary>
+    <div class="faq-body">When I was younger I was scared I wouldn't make enough money. I'm working my butt off to build something real, and I'm not stopping until I get what I want.</div>
+  </details>
+  <details name="faq">
+    <summary>How can I donate? Ur cool ig.</summary>
+    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">Support Me</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Support.”</div>
+  </details>
+  <details name="faq">
+    <summary>What's your Geometry Dash username?</summary>
+    <div class="faq-body"><strong>@Vans</strong> — that's where I am if you're looking me up.</div>
+  </details>
+</section>
+
+<!-- ═══ 9. FOOTER (Lab 16) ═══ -->
+<footer>
+  <div class="foot-cols">
+    <div class="foot-col">
+      <h4>Socials</h4>
+      <a href="https://github.com/Delexoo/" target="_blank" rel="noreferrer">Github</a>
+      <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer">Instagram (securely)</a>
+      <a href="https://www.instagram.com/delexoo/" target="_blank" rel="noopener noreferrer">Instagram (delexoo)</a>
+      <a href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer">Spotify</a>
+    </div>
+    <div class="foot-col">
+      <h4>Payments</h4>
+      <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noreferrer">Venmo</a>
+      <a href="https://cash.app/$vxqq" target="_blank" rel="noreferrer">Cashapp</a>
+      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noreferrer">Support Me!</a>
+    </div>
+    <div class="foot-col">
+      <h4>Courses</h4>
+      <a href="#courses-ai">How I make money online</a>
+      <a href="#courses-skills">My favorite courses</a>
+      <a href="#bundles">Personal use or resell these products</a>
+    </div>
+    <div class="foot-col">
+      <h4>Legal</h4>
+      <a href="legal.html#privacy">Privacy</a>
+      <a href="legal.html#terms">Terms</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-bottom__left">© 2026 DELEXO</span>
+    <p class="foot-bottom__center">I made this website.</p>
+    <a class="foot-bottom__right" href="https://delexo.store" target="_blank" rel="noopener noreferrer">delexo.store</a>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+/* banner: slide in after load, then stay until dismissed */
+(function(){
+  const announce=document.getElementById("announce");
+  const dismissBtn=document.getElementById("dismissBtn");
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function openBanner(){
+    announce.classList.add("announce--open");
+    announce.setAttribute("aria-hidden","false");
+  }
+  if(reduce){
+    announce.setAttribute("aria-hidden","false");
+  }else{
+    window.setTimeout(openBanner,480);
+  }
+  dismissBtn.addEventListener("click",()=>{
+    announce.setAttribute("aria-hidden","true");
+    if(reduce){
+      announce.classList.remove("announce--open");
+      announce.hidden=true;
+      return;
+    }
+    dismissBtn.disabled=true;
+    announce.classList.add("announce--closing");
+    announce.classList.remove("announce--open");
+    const finish=()=>{
+      announce.hidden=true;
+      announce.classList.remove("announce--closing");
+      dismissBtn.disabled=false;
+    };
+    const onEnd=(e)=>{
+      if(e.target!==announce||e.propertyName!=="transform") return;
+      announce.removeEventListener("transitionend",onEnd);
+      finish();
+    };
+    announce.addEventListener("transitionend",onEnd);
+    window.setTimeout(()=>{
+      announce.removeEventListener("transitionend",onEnd);
+      if(!announce.hidden) finish();
+    },550);
+  });
+})();
+
+/* hero clip-path scroll + title grows slightly as you scroll */
+(function(){
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce) return;
+  const heroTitle=document.querySelector(".hero-content h1");
+  const growPx=380;
+  const maxScale=1.12;
+  function onScroll(){
+    const max=Math.min(document.documentElement.scrollHeight-window.innerHeight,700);
+    const t=Math.min(1,window.scrollY/max);
+    const inset=16-t*12;
+    const insetPct=Math.max(4,inset);
+    document.documentElement.style.setProperty("--clip",`${insetPct}%`);
+    if(heroTitle){
+      const p=Math.min(1,window.scrollY/growPx);
+      const scale=1+(maxScale-1)*p;
+      heroTitle.style.opacity="1";
+      heroTitle.style.transform=`scale(${scale})`;
+    }
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  onScroll();
+})();
+
+/* scroll reveal */
+(function(){
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const els=document.querySelectorAll(".reveal");
+  if(reduce){ els.forEach(el=>el.classList.add("is-visible")); return; }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add("is-visible"); io.unobserve(e.target); }
+    });
+  },{rootMargin:"0px 0px -6% 0px",threshold:.06});
+  els.forEach(el=>io.observe(el));
+})();
+
+/* timeline: staggered item reveal + scroll-scrub dot (stops just before startup) */
+(function(){
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const items=[...document.querySelectorAll(".tl-item")];
+  const glow=document.getElementById("tlGlow");
+  const dot=document.getElementById("tlScrubDot");
+  const track=document.getElementById("tlTrack");
+  const startup=document.getElementById("tlStartup");
+  const collegeWrap=document.getElementById("tlCollege");
+  if(!items.length||!track) return;
+
+  if(reduce){
+    items.forEach(el=>el.classList.add("is-tl-visible"));
+    if(glow&&collegeWrap){
+      const cn=collegeWrap.querySelector(".tl-node");
+      const tr=track.getBoundingClientRect();
+      const cy=cn?cn.getBoundingClientRect().top+cn.offsetHeight/2-tr.top:0;
+      glow.style.top=cy+"px";
+      glow.style.height=Math.max(0,track.offsetHeight-cy)+"px";
+    }else if(glow){ glow.style.top="0"; glow.style.height="100%"; }
+    if(dot) dot.style.top=track.offsetHeight+"px";
+    track.querySelectorAll(".tl-node").forEach(n=>n.classList.add("is-passed"));
+    return;
+  }
+
+  let revealed=0;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el=e.target;
+      const idx=items.indexOf(el);
+      const delay=Math.max(0,(idx-revealed)*80);
+      setTimeout(()=>el.classList.add("is-tl-visible"),delay);
+      revealed=Math.max(revealed,idx+1);
+      io.unobserve(el);
+    });
+  },{rootMargin:"0px 0px -8% 0px",threshold:.15});
+  items.forEach(el=>io.observe(el));
+
+  const allNodes=[...track.querySelectorAll(".tl-node")];
+
+  function updateScrub(){
+    if(!dot) return;
+    const tr=track.getBoundingClientRect();
+    const h=tr.height;
+    if(h<=0) return;
+    const collegeNode=collegeWrap?.querySelector(".tl-node");
+    let collegeY=0;
+    if(collegeNode){
+      const cr=collegeNode.getBoundingClientRect();
+      collegeY=cr.top+cr.height/2-tr.top;
+    }
+    const anchor=window.innerHeight*0.42;
+    let rawY=anchor-tr.top;
+    rawY=Math.max(0,Math.min(h,rawY));
+    let y=Math.max(rawY,collegeY);
+
+    if(startup){
+      const sn=startup.querySelector(".tl-node");
+      if(sn){
+        const snR=sn.getBoundingClientRect();
+        const stopY=snR.top+snR.height/2-tr.top-20;
+        if(y>stopY) y=stopY;
+      }
+    }
+
+    dot.style.top=y+"px";
+    if(glow){
+      glow.style.top=collegeY+"px";
+      glow.style.height=Math.max(0,y-collegeY)+"px";
+    }
+
+    allNodes.forEach(n=>{
+      const nY=n.getBoundingClientRect().top+n.offsetHeight/2-tr.top;
+      n.classList.toggle("is-passed",nY>=collegeY-1&&y>=nY);
+    });
+  }
+
+  window.addEventListener("scroll",updateScrub,{passive:true});
+  window.addEventListener("resize",updateScrub);
+  updateScrub();
+})();
+
+/* spoiler course chips — no link jump */
+document.querySelectorAll(".chip--spoiler").forEach(el=>{
+  el.addEventListener("click",e=>e.preventDefault());
+});
+
+/* discord profile popout */
+(function(){
+  const bd=document.getElementById("dcBackdrop");
+  const openBtn=document.getElementById("dcOpen");
+  const closeBtn=document.getElementById("dcClose");
+  if(!bd||!openBtn||!closeBtn) return;
+  function openD(){
+    bd.hidden=false;
+    requestAnimationFrame(()=>bd.classList.add("is-open"));
+    closeBtn.focus();
+  }
+  function closeD(){
+    bd.classList.remove("is-open");
+    setTimeout(()=>{bd.hidden=true;},200);
+    openBtn.focus();
+  }
+  openBtn.addEventListener("click",openD);
+  closeBtn.addEventListener("click",closeD);
+  bd.addEventListener("click",e=>{ if(e.target===bd) closeD(); });
+  window.__dcClose=closeD;
+})();
+
+/* command palette */
+(function(){
+  const bg=document.getElementById("palBg");
+  const openBtn=document.getElementById("palOpen");
+  const input=document.getElementById("palInput");
+  const list=document.getElementById("palList");
+  const allLinks=[...list.querySelectorAll("a")];
+
+  function openP(){ bg.hidden=false; requestAnimationFrame(()=>bg.classList.add("is-open")); input.value=""; filter(""); input.focus(); }
+  function closeP(){ bg.classList.remove("is-open"); setTimeout(()=>{bg.hidden=true;},200); openBtn.focus(); }
+  function enterIgnoresPaletteToggle(t){
+    if(!t) return false;
+    if(t.isContentEditable) return true;
+    const tag=t.tagName;
+    if(/^TEXTAREA|SELECT$/i.test(tag)) return true;
+    if(/^INPUT$/i.test(tag)) return t.id!=="palInput";
+    if(/^BUTTON$/i.test(tag)) return true;
+    if(/^A$/i.test(tag)&&t.hasAttribute("href")) return true;
+    return false;
+  }
+  openBtn.addEventListener("click",openP);
+  bg.addEventListener("click",e=>{ if(e.target===bg) closeP(); });
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){
+      const dcb=document.getElementById("dcBackdrop");
+      if(dcb&&!dcb.hidden){ window.__dcClose?.(); return; }
+    }
+    if(e.key==="Escape"&&!bg.hidden){ closeP(); return; }
+    if(e.key==="Enter"&&!e.shiftKey&&!e.ctrlKey&&!e.metaKey&&!e.altKey){
+      if(enterIgnoresPaletteToggle(e.target)) return;
+      e.preventDefault();
+      bg.hidden?openP():closeP();
+    }
+  });
+  list.addEventListener("click",e=>{
+    const a=e.target.closest("a");
+    if(a) closeP();
+  });
+
+  function filter(q){
+    const lc=q.toLowerCase();
+    allLinks.forEach(a=>{
+      a.style.display=a.textContent.toLowerCase().includes(lc)?"":"none";
+    });
+  }
+  input.addEventListener("input",()=>filter(input.value));
+})();
+</script>
+  </body>
+</html>
