@@ -1158,28 +1158,54 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 .tl-item.is-tl-visible .tl-media-card{opacity:1;transform:scale(1);transition-delay:.1s}
 .tl-item .tl-media-card{transform:scale(.94) translateY(8px)}
 
-/* ── 8a2  top supporters (unified card — coming soon) ── */
+/* ── 8a2  top supporters (leaderboard) ── */
 .supporters{
-  margin-top:clamp(40px,8vh,96px);max-width:680px;margin-left:auto;margin-right:auto;
+  margin-top:clamp(40px,8vh,96px);max-width:760px;margin-left:auto;margin-right:auto;
   padding:0 max(22px,env(safe-area-inset-right,0px)) max(40px,min(10vh,88px)) max(22px,env(safe-area-inset-left,0px));
 }
 /* Nudge below geometric center when snapped (top UI / scroll-padding feel top-heavy) */
 #supporters.supporters{padding-top:clamp(24px,5vh,56px)}
 .supporters-card{
-  border-radius:20px;border:1px solid var(--line);
-  background:
-    linear-gradient(145deg,rgba(232,99,154,.08) 0%,transparent 42%),
-    linear-gradient(180deg,rgba(255,255,255,.04) 0%,transparent 55%),
-    var(--card);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.07) inset,
-    0 24px 48px -28px rgba(0,0,0,.55);
+  border-radius:18px;border:1px solid rgba(255,255,255,.12);
+  background:var(--card);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 24px 54px -34px rgba(0,0,0,.7);
   position:relative;overflow:hidden;
+}
+.supporters-live{
+  position:absolute;
+  top:16px;
+  right:16px;
+  z-index:3;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#ffd6d6;
+  background:rgba(255,64,64,.12);
+  border:1px solid rgba(255,64,64,.28);
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 10px 28px rgba(0,0,0,.35);
+  user-select:none;
+  pointer-events:none;
+}
+.supporters-live__dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#ff3d3d;
+  box-shadow:0 0 0 3px rgba(255,61,61,.18),0 0 18px rgba(255,61,61,.35);
+  animation:sup-live-pulse 1.35s ease-in-out infinite;
+}
+@keyframes sup-live-pulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 3px rgba(255,61,61,.18),0 0 18px rgba(255,61,61,.35)}
+  50%{transform:scale(1.25);box-shadow:0 0 0 8px rgba(255,61,61,0),0 0 28px rgba(255,61,61,.55)}
 }
 .supporters-card::before{
   content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(232,99,154,.45),transparent);
-  opacity:.85;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
+  opacity:1;pointer-events:none;
 }
 .supporters-card__head{padding:26px 22px 0}
 @media(min-width:520px){
@@ -1187,65 +1213,117 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 }
 .supporters-kicker{
   display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;
-  padding:7px 14px 7px 12px;border-radius:999px;
+  padding:6px 12px 6px 10px;border-radius:999px;
   font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#f0a8c4;
-  background:rgba(232,99,154,.12);
-  border:1px solid rgba(232,99,154,.28);
-  box-shadow:0 0 28px -8px rgba(232,99,154,.35);
+  color:#bdbdbd;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:none;
 }
 .supporters-kicker__dot{
   width:6px;height:6px;border-radius:50%;
   background:var(--pink);
-  box-shadow:0 0 10px rgba(232,99,154,.8);
+  box-shadow:0 0 0 3px rgba(232,99,154,.14);
   flex-shrink:0;
 }
 .supporters-card__title{
-  margin:0 0 16px;font-family:var(--serif);font-weight:400;font-size:clamp(1.85rem,4.5vw,2.35rem);
+  margin:0 0 14px;font-family:var(--serif);font-weight:400;font-size:clamp(1.85rem,4.5vw,2.35rem);
   letter-spacing:-.02em;line-height:1.12;color:var(--text);
 }
+.supporters-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.supporters-live{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#ffbcbc;
+  background:rgba(255,59,59,.14);
+  border:1px solid rgba(255,59,59,.28);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
+  flex-shrink:0;
+}
+.supporters-live__dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#ff3b3b;
+  box-shadow:0 0 0 0 rgba(255,59,59,.55);
+  animation:sup-live-pulse 1.25s ease-in-out infinite;
+}
+@keyframes sup-live-pulse{
+  0%,100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,59,59,.55)}
+  50%{transform:scale(1.15);box-shadow:0 0 0 8px rgba(255,59,59,0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .supporters-live__dot{animation:none}
+}
 .supporters-blurb{
-  margin:0;padding:0 22px 22px;font-size:15px;line-height:1.68;color:#9a9a9a;font-weight:400;
+  margin:0;padding:0 22px 20px;font-size:14px;line-height:1.65;color:var(--muted);font-weight:400;
 }
 @media(min-width:520px){
   .supporters-blurb{padding-left:26px;padding-right:26px;padding-bottom:24px}
 }
 .supporters-blurb strong{color:#c8c8c8;font-weight:600}
-.supporters-card__table{border-top:1px solid var(--line);background:rgba(0,0,0,.12)}
+.supporters-card__table{border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
 .supporters-card__scroll{
-  max-height:540px; /* ~10 rows + header */
+  max-height:520px; /* ~10 rows + header */
   overflow:auto;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
   touch-action:pan-x pan-y;
 }
-.sup-table{width:100%;min-width:360px;border-collapse:collapse;font-size:14px}
+.sup-table{width:100%;min-width:360px;border-collapse:separate;border-spacing:0;font-size:14px}
 .sup-table thead th{
-  padding:14px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);border-bottom:1px solid var(--line);background:rgba(0,0,0,.2);
+  padding:12px 16px;text-align:left;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18);
   position:sticky;top:0;z-index:2;
 }
 .sup-table thead th:nth-child(1){width:3.5rem}
 .sup-table thead th:nth-child(4){text-align:right}
 .sup-table tbody td{
-  padding:14px 16px;border-bottom:1px solid var(--line);color:#a8a8a8;font-weight:500;
+  padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.06);color:#a8a8a8;font-weight:500;
   vertical-align:middle;
 }
-.sup-table tbody tr:hover td{background:rgba(255,255,255,.03)}
+.sup-table tbody tr:hover td{background:rgba(255,255,255,.02)}
 .sup-table tbody tr:last-child td{border-bottom:none}
 .sup-table .sup-rank{
-  font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--pink);letter-spacing:-.02em;
+  font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:#d7d7d7;letter-spacing:-.02em;
 }
-.sup-table tbody tr:nth-child(1) .sup-rank{color:#ffb8d9;text-shadow:0 0 24px rgba(232,99,154,.25)}
-.sup-table .sup-name{color:#8a8a8a;font-weight:500}
+.sup-table tbody tr:nth-child(1) .sup-rank,
+.sup-table tbody tr:nth-child(2) .sup-rank,
+.sup-table tbody tr:nth-child(3) .sup-rank{color:var(--pink)}
+.sup-table .sup-name{color:#c8c8c8;font-weight:600}
 .sup-table .sup-note{
-  color:#7a7a7a;font-size:13px;line-height:1.45;font-weight:400;max-width:14rem;
+  color:#8a8a8a;font-size:13px;line-height:1.45;font-weight:400;max-width:18rem;
   vertical-align:middle;overflow-wrap:anywhere;
 }
-.sup-table .sup-amt{text-align:right;font-variant-numeric:tabular-nums;color:#6a6a6a;font-size:13px}
+.sup-table .sup-amt{text-align:right}
+.sup-amt-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:4px 10px;
+  border-radius:999px;
+  font-variant-numeric:tabular-nums;
+  color:#e9e9e9;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.02em;
+  background:rgba(232,99,154,.16);
+  border:1px solid rgba(232,99,154,.28);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
+  white-space:nowrap;
+}
+.sup-name-link{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px solid rgba(232,99,154,.35);
+  text-underline-offset:2px;
+}
+.sup-name-link:hover{border-bottom-color:rgba(232,99,154,.65);color:#f0c0d4}
+.sup-name-link:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px}
 .supporters-card__foot{
-  padding:20px 22px 24px;border-top:1px solid var(--line);text-align:center;
-  background:linear-gradient(180deg,rgba(232,99,154,.05) 0%,rgba(0,0,0,.2) 100%);
+  padding:18px 22px 22px;border-top:1px solid rgba(255,255,255,.08);text-align:center;
+  background:transparent;
 }
 .sup-donate-btn{margin:0 auto;display:flex;justify-content:center;min-width:min(240px,100%)}
 .sup-donate-btn[aria-busy="true"]{opacity:.7;cursor:progress}
@@ -1254,7 +1332,7 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   margin:14px auto 0;max-width:520px;
   padding:12px 12px 14px;border-radius:14px;
   border:1px solid rgba(255,255,255,.1);
-  background:rgba(0,0,0,.22);
+  background:rgba(255,255,255,.03);
   text-align:left;
 }
 .sup-thanks[hidden]{display:none!important}
@@ -1283,12 +1361,49 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   font-size:14px;
   outline:none;
 }
+.sup-social-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+@media(min-width:520px){
+  .sup-social-grid{grid-template-columns:1fr 1fr}
+}
+.sup-social-grid .sup-social-item{display:flex;flex-direction:column;gap:6px}
+.sup-social-hint{margin:0;color:#7f7f7f;font-size:12px;line-height:1.45}
+.sup-social-grid input[disabled]{opacity:.55;cursor:not-allowed}
 .sup-field textarea{min-height:74px;resize:vertical}
 .sup-field input:focus-visible,.sup-field textarea:focus-visible{box-shadow:var(--focus)}
 .sup-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-start;margin-top:6px}
 .sup-actions .btn{min-width:160px;justify-content:center}
 .sup-msg{margin:10px 0 0;color:#8a8a8a;font-size:12px;line-height:1.45}
 .sup-foot-msg{margin:10px auto 0;max-width:520px;color:#8a8a8a;font-size:12px;line-height:1.45}
+
+/* Supporters table — mobile cleanup (avoid super-tall wrapping rows) */
+@media(max-width:520px){
+  .supporters{max-width:720px}
+  .supporters-live{top:12px;right:12px}
+  .sup-table{
+    min-width:0;
+    table-layout:fixed;
+    font-size:13px;
+  }
+  .sup-table thead th,
+  .sup-table tbody td{padding:10px 12px}
+  .sup-table thead th:nth-child(1){width:52px}
+  .sup-table thead th:nth-child(2){width:32%}
+  .sup-table thead th:nth-child(4){width:92px}
+  .sup-table .sup-note{
+    max-width:none;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-clamp:2;
+    word-break:break-word;
+  }
+  .sup-amt-tag{padding:3px 9px;font-size:11px}
+}
 
 /* ── 8b  about me (editorial) ── */
 .about{margin-top:clamp(32px,6vh,72px);max-width:660px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) max(40px,min(8vh,72px)) max(22px,env(safe-area-inset-left,0px))}
@@ -2128,7 +2243,13 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   <div class="supporters-card">
     <header class="supporters-card__head">
       <p class="supporters-kicker"><span class="supporters-kicker__dot" aria-hidden="true"></span> Support the journey</p>
-      <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
+      <div class="supporters-title-row">
+        <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
+        <span class="supporters-live" aria-label="Live leaderboard">
+          <span class="supporters-live__dot" aria-hidden="true"></span>
+          Live
+        </span>
+      </div>
     </header>
     <p class="supporters-blurb" id="supportersDesc">
       A quick thank-you wall for voluntary support — <strong>rank, support level, and a short note</strong> per person. <strong>No obligation.</strong>
@@ -2145,11 +2266,11 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             </tr>
           </thead>
           <tbody id="supportersTbody" data-static-fallback="1">
-            <tr><td class="sup-rank">1</td><td class="sup-name">Jesus</td><td class="sup-note">—</td><td class="sup-amt">$5</td></tr>
-            <tr><td class="sup-rank">2</td><td class="sup-name">Bri</td><td class="sup-note">tysm i will save this website forever youre an actual life saver</td><td class="sup-amt">$3</td></tr>
-            <tr><td class="sup-rank">3</td><td class="sup-name">Joseph</td><td class="sup-note">I'm buggin im broke</td><td class="sup-amt">$1.67</td></tr>
-            <tr><td class="sup-rank">4</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
-            <tr><td class="sup-rank">5</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
+            <tr><td class="sup-rank">1</td><td class="sup-name">Jesus</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">$5</span></td></tr>
+            <tr><td class="sup-rank">2</td><td class="sup-name">Bri</td><td class="sup-note">tysm i will save this website forever youre an actual life saver</td><td class="sup-amt"><span class="sup-amt-tag">$3</span></td></tr>
+            <tr><td class="sup-rank">3</td><td class="sup-name">Joseph</td><td class="sup-note">I'm buggin im broke</td><td class="sup-amt"><span class="sup-amt-tag">$1.67</span></td></tr>
+            <tr><td class="sup-rank">4</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
+            <tr><td class="sup-rank">5</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -2161,12 +2282,45 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         <form class="sup-thanks" id="supportersThanks" hidden>
           <div class="sup-thanks__head">
             <p class="sup-thanks__title">Add your name + note</p>
-            <button type="button" class="sup-thanks__close" id="supCloseBtn" aria-label="Close">×</button>
           </div>
           <p class="sup-thanks__sub">This shows on the leaderboard (max 40 chars name, 140 chars note).</p>
           <div class="sup-field">
             <label for="supName">Name (required) <span class="sup-count" id="supNameCount">0/40</span></label>
             <input id="supName" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="Your name"/>
+          </div>
+          <div class="sup-field">
+            <label>Social media (pick 1)</label>
+            <p class="sup-social-hint">If you add one, your name becomes a link on the leaderboard.</p>
+            <div class="sup-social-grid" id="supSocialGrid">
+              <div class="sup-social-item">
+                <label for="supIg">Instagram (optional)</label>
+                <input id="supIg" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supTt">TikTok (optional)</label>
+                <input id="supTt" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supSc">Snapchat (optional)</label>
+                <input id="supSc" type="text" inputmode="text" autocomplete="off" placeholder="username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supPi">Pinterest (optional)</label>
+                <input id="supPi" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supFb">Facebook (optional)</label>
+                <input id="supFb" type="text" inputmode="text" autocomplete="off" placeholder="username/page or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supYt">YouTube (optional)</label>
+                <input id="supYt" type="text" inputmode="text" autocomplete="off" placeholder="@handle or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supX">X (optional)</label>
+                <input id="supX" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+            </div>
           </div>
           <div class="sup-field">
             <label for="supNote">Note (optional) <span class="sup-count" id="supNoteCount">0/140</span></label>
@@ -3553,10 +3707,16 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   const supMsg=document.getElementById("supMsg");
   const supFootMsg=document.getElementById("supFootMsg");
   const skipBtn=document.getElementById("supSkipBtn");
-  const closeBtn=document.getElementById("supCloseBtn");
   const saveBtn=document.getElementById("supSaveNoteBtn");
   const supName=document.getElementById("supName");
   const supNote=document.getElementById("supNote");
+  const supIg=document.getElementById("supIg");
+  const supTt=document.getElementById("supTt");
+  const supSc=document.getElementById("supSc");
+  const supPi=document.getElementById("supPi");
+  const supFb=document.getElementById("supFb");
+  const supYt=document.getElementById("supYt");
+  const supX=document.getElementById("supX");
   const nameCount=document.getElementById("supNameCount");
   const noteCount=document.getElementById("supNoteCount");
   if(!tbody) return;
@@ -3583,7 +3743,10 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
         const name=(r.display_name||"—").toString();
         const note=(r.note||"—").toString();
         const amt=Number.isFinite(Number(r.total_cents))?fmtMoneyFromCents(r.total_cents):"—";
-        return `<tr><td class="sup-rank">${i+1}</td><td class="sup-name">${escapeHtml(name)}</td><td class="sup-note">${escapeHtml(note)}</td><td class="sup-amt">${escapeHtml(amt)}</td></tr>`;
+        const social=(r.social_url||"").toString();
+        const safeSocial=safeUrl(social);
+        const nameHtml=safeSocial ? `<a class="sup-name-link" href="${escapeHtml(safeSocial)}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>` : escapeHtml(name);
+        return `<tr><td class="sup-rank">${i+1}</td><td class="sup-name">${nameHtml}</td><td class="sup-note">${escapeHtml(note)}</td><td class="sup-amt"><span class="sup-amt-tag">${escapeHtml(amt)}</span></td></tr>`;
       }).join("");
       tbody.dataset.staticFallback="0";
     }catch(_){}
@@ -3596,6 +3759,67 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
       .replaceAll(">","&gt;")
       .replaceAll("\"","&quot;")
       .replaceAll("'","&#39;");
+  }
+  function safeUrl(url){
+    const u=(url||"").trim();
+    if(!u) return "";
+    if(u.length>220) return "";
+    try{
+      const parsed=new URL(u);
+      if(parsed.protocol==="http:"||parsed.protocol==="https:") return parsed.toString();
+    }catch(_){}
+    return "";
+  }
+  function normalizeHandle(s){
+    return (s||"").trim().replace(/^@+/,"").replace(/\s+/g,"");
+  }
+  function buildSocialUrl(kind,val){
+    const raw=(val||"").trim();
+    if(!raw) return "";
+    if(/^https?:\/\//i.test(raw)) return raw;
+    const h=normalizeHandle(raw);
+    if(!h) return "";
+    if(kind==="instagram") return `https://www.instagram.com/${h}/`;
+    if(kind==="tiktok") return `https://www.tiktok.com/@${h}`;
+    if(kind==="snapchat") return `https://www.snapchat.com/add/${h}`;
+    if(kind==="pinterest") return `https://www.pinterest.com/${h}/`;
+    if(kind==="facebook") return `https://www.facebook.com/${h}`;
+    if(kind==="youtube") return `https://www.youtube.com/@${h}`;
+    if(kind==="x") return `https://x.com/${h}`;
+    return "";
+  }
+  function getPickedSocial(){
+    const items=[
+      {kind:"instagram",el:supIg},
+      {kind:"tiktok",el:supTt},
+      {kind:"snapchat",el:supSc},
+      {kind:"pinterest",el:supPi},
+      {kind:"facebook",el:supFb},
+      {kind:"youtube",el:supYt},
+      {kind:"x",el:supX},
+    ].filter(x=>x.el);
+    const filled=items
+      .map(it=>({kind:it.kind,val:(it.el.value||"").trim()}))
+      .filter(it=>it.val);
+    if(filled.length===0) return {social_url:""};
+    if(filled.length>1) return {error:"Please fill only 1 social media box."};
+    const one=filled[0];
+    const built=buildSocialUrl(one.kind,one.val);
+    const safe=safeUrl(built);
+    if(!safe) return {error:"That social link looks invalid. Paste a full https:// link or just your username."};
+    return {social_url:safe};
+  }
+  function lockSocialInputs(active){
+    const els=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
+    const hasActive=!!active;
+    els.forEach(el=>{
+      const mine=el===active;
+      if(!hasActive){
+        el.disabled=false;
+      }else{
+        el.disabled=!mine;
+      }
+    });
   }
 
   function setMsg(t){
@@ -3611,6 +3835,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     try{
       const prev=localStorage.getItem("sup_display_name");
       if(prev && supName && !supName.value) supName.value=prev.slice(0,40);
+    }catch(_){}
+    // Prefill note if they've used it before (so repeat donors can edit it)
+    try{
+      const prevNote=localStorage.getItem("sup_note");
+      if(prevNote && supNote && !supNote.value) supNote.value=prevNote.slice(0,140);
     }catch(_){}
     updateCounts();
     if(supName && !supName.value) supName.focus();
@@ -3654,25 +3883,34 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     const sessionId=thanks.dataset.sessionId||"";
     const name=(supName&&supName.value||"").trim();
     const note=(supNote&&supNote.value||"").trim();
+    const picked=getPickedSocial();
     if(!sessionId){ setMsg("Missing session. Please finish checkout first."); return; }
     if(!name){ setMsg("Please enter your name."); supName?.focus(); return; }
+    if(picked && picked.error){ setMsg(picked.error); return; }
     try{
       setMsg("Saving…");
       if(saveBtn){ saveBtn.disabled=true; saveBtn.setAttribute("aria-busy","true"); }
       const res=await fetch((api?`${api}/save-note`:"/save-note"),{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({session_id:sessionId,display_name:name,note})
+        body:JSON.stringify({session_id:sessionId,display_name:name,note,social_url:(picked&&picked.social_url)||""})
       });
       const data=await res.json().catch(()=>null);
       if(!res.ok){
         setMsg((data&&(data.detail||data.error)) || "Couldn’t save your note.");
         throw new Error((data&&data.error)||"save_failed");
       }
-      try{ localStorage.setItem("sup_display_name",name.slice(0,40)); }catch(_){}
+      try{
+        localStorage.setItem("sup_display_name",name.slice(0,40));
+        if(note) localStorage.setItem("sup_note",note.slice(0,140));
+      }catch(_){}
       setMsg("Saved. Thank you for supporting!");
       await load();
-      // Keep it visible so they see confirmation.
+      // Refresh so the user sees their updated spot immediately.
+      window.setTimeout(()=>{
+        if(window.location.hash!=="#supporters") window.location.hash="#supporters";
+        window.location.reload();
+      },650);
     }catch(_e){
       if(!supFootMsg?.textContent && !supMsg?.textContent){
         setMsg("Couldn’t save your note. Check backend logs for /save-note.");
@@ -3700,10 +3938,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   skipBtn?.addEventListener("click",()=>{
     if(thanks) thanks.hidden=true;
     setMsg("");
-  });
-  closeBtn?.addEventListener("click",()=>{
-    if(thanks) thanks.hidden=true;
-    setMsg("");
+    // Refresh so they can see the current leaderboard state right away.
+    window.setTimeout(()=>{
+      if(window.location.hash!=="#supporters") window.location.hash="#supporters";
+      window.location.reload();
+    },250);
   });
   function updateCounts(){
     if(nameCount && supName) nameCount.textContent=`${(supName.value||"").length}/40`;
@@ -3711,6 +3950,20 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   }
   supName?.addEventListener("input",updateCounts);
   supNote?.addEventListener("input",updateCounts);
+  const socialEls=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
+  socialEls.forEach(el=>{
+    el.addEventListener("input",()=>{
+      const v=(el.value||"").trim();
+      if(v){
+        // Clear other boxes and lock to this one so they only pick one.
+        socialEls.forEach(o=>{ if(o!==el) o.value=""; });
+        lockSocialInputs(el);
+      }else{
+        const any=socialEls.find(x=>(x.value||"").trim());
+        lockSocialInputs(any||null);
+      }
+    });
+  });
 
   load();
   readThanksParams();

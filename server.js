@@ -83,7 +83,7 @@ app.get("/leaderboard", async (req, res) => {
     const sb = supabaseAdmin();
     const { data, error } = await sb
       .from("supporters")
-      .select("display_name,note,total_cents")
+      .select("display_name,note,total_cents,social_url")
       .order("total_cents", { ascending: false })
       .limit(limit);
     if (error) return res.status(500).json({ error: "db_error", detail: error.message, code: error.code });
@@ -144,6 +144,7 @@ app.post("/save-note", express.json(), async (req, res) => {
     const sessionId = typeof req.body?.session_id === "string" ? req.body.session_id : "";
     const displayName = typeof req.body?.display_name === "string" ? req.body.display_name.trim().slice(0, 40) : "";
     const note = typeof req.body?.note === "string" ? req.body.note.trim().slice(0, 140) : "";
+    const socialUrlRaw = typeof req.body?.social_url === "string" ? req.body.social_url.trim().slice(0, 220) : "";
     if (!sessionId || !displayName) return res.status(400).json({ error: "missing_fields" });
 
     const stripe = stripeServer();
@@ -153,11 +154,28 @@ app.post("/save-note", express.json(), async (req, res) => {
     const email = session.customer_details?.email || session.customer_email;
     if (!email) return res.status(400).json({ error: "missing_email" });
 
+    let social_url = null;
+    if (socialUrlRaw) {
+      try {
+        const u = new URL(socialUrlRaw);
+        if (u.protocol === "http:" || u.protocol === "https:") social_url = u.toString();
+      } catch {
+        social_url = null;
+      }
+    }
+
+    // IMPORTANT:
+    // - If a repeat donor leaves fields blank, do NOT wipe their existing note/link.
+    // - Only include optional fields when they are explicitly provided.
+    const upsertRow = { email, display_name: displayName };
+    if (note) upsertRow.note = note;
+    if (social_url) upsertRow.social_url = social_url;
+
     const sb = supabaseAdmin();
     const { data, error } = await sb
       .from("supporters")
-      .upsert({ email, display_name: displayName, note: note || null }, { onConflict: "email" })
-      .select("display_name,note,total_cents")
+      .upsert(upsertRow, { onConflict: "email" })
+      .select("display_name,note,total_cents,social_url")
       .single();
 
     if (error) return res.status(500).json({ error: "db_error", detail: error.message, code: error.code });

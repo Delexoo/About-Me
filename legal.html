@@ -13,6 +13,7 @@
 <style>
 :root{
   --bg:#111111;--text:#f2f2f2;--muted:#888;--line:rgba(255,255,255,.1);
+  --pink:#e8639a;
   --focus:0 0 0 3px rgba(255,255,255,.3);
   --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;
 }
@@ -52,6 +53,27 @@ h1{margin:0 0 8px;font-size:1.75rem;font-weight:600;letter-spacing:-.03em}
 .legal-panel h2{margin:0 0 16px;font-size:1.05rem;font-weight:600;letter-spacing:.02em}
 .legal-panel p{margin:0 0 14px;color:#c4c4c4}
 .legal-panel p:last-child{margin-bottom:0}
+.legal-accent-link{
+  color:var(--pink);
+  font-weight:700;
+  text-decoration:none;
+}
+.legal-accent-link:hover{color:#f2a6c7}
+.legal-accent-link:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px}
+.legal-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:2px 8px;
+  border-radius:8px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#d0d0d0;
+  font-size:12px;
+  line-height:1.2;
+  font-weight:600;
+  white-space:nowrap;
+  vertical-align:baseline;
+}
 /* One line per row, no horizontal scroll — long text ellipsizes; full URL stays on link title="" */
 .legal-links-wrap{overflow-x:hidden;margin:0;padding:0;max-width:100%}
 .legal-links-table{
@@ -142,8 +164,9 @@ h1{margin:0 0 8px;font-size:1.75rem;font-weight:600;letter-spacing:-.03em}
 
   <div class="legal-panel" id="panel-privacy" role="tabpanel" aria-labelledby="tab-privacy">
     <h2>Privacy</h2>
-    <p>I do not collect any personal information on this website. There are no cookies used to identify you, no analytics or tracking scripts, no advertising. I do not collect &amp; sell your data.</p>
-    <p>If you open links to other sites (Ex. Stripe, Spotify, Github), those services have their own privacy practices. I do not control what they collect.</p>
+    <p>I do not collect personal information for normal browsing on this website. There are no cookies used to identify you, no analytics or tracking scripts, and no advertising. I do not collect &amp; sell your data.</p>
+    <p>If you donate to the <a class="legal-accent-link" href="index.html#supporters" title="Homepage → Top supporters → Donate">Top Supporter Leaderboard</a>, I collect <span class="legal-tag">Donation amount</span> and <span class="legal-tag">Email</span>, plus an optional <span class="legal-tag">Name</span> and optional <span class="legal-tag">Note</span> (if you choose to provide them). This information is used to process your donation and (if provided) display your name/note on the leaderboard.</p>
+    <p>If you open links to other sites (ex. Stripe, Spotify, GitHub), those services have their own privacy practices. I do not control what they collect.</p>
   </div>
 
   <div class="legal-panel" id="panel-terms" role="tabpanel" aria-labelledby="tab-terms" hidden>
@@ -187,7 +210,7 @@ h1{margin:0 0 8px;font-size:1.75rem;font-weight:600;letter-spacing:-.03em}
     </div>
   </div>
 
-  <p class="updated">Last updated: April 12, 2026</p>
+  <p class="updated">Last updated: April 13, 2026</p>
 </div>
 <script>
 (function(){
