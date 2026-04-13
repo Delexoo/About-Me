@@ -69,6 +69,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root (quick sanity check)
+app.get("/", (_req, res) => res.type("text").send("support-leaderboard-backend: ok"));
+
 // Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
@@ -104,8 +107,15 @@ app.post("/create-checkout-session", express.json(), async (req, res) => {
       metadata: { display_name: displayName },
     });
     res.json({ url: session.url });
-  } catch (_e) {
-    res.status(500).json({ error: "server_error" });
+  } catch (e) {
+    // Helpful diagnostics for setup issues (no secrets are included in these messages)
+    console.error("create-checkout-session error:", e);
+    const msg = (e && e.message) ? String(e.message) : "";
+    if (msg.startsWith("Missing env var:")) {
+      res.status(500).json({ error: "missing_env", detail: msg });
+      return;
+    }
+    res.status(500).json({ error: "server_error", detail: msg || "unknown" });
   }
 });
 

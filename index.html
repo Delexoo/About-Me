@@ -874,8 +874,12 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
     transform:translateY(20px)!important;
     transition:none!important;
   }
-  .now-playing-wrap__exit{
-    position:absolute;top:6px;right:-10px;z-index:6;
+  .now-playing-wrap__controls{
+    position:absolute;top:6px;right:-14px;z-index:6;
+    display:flex;flex-direction:row;align-items:center;gap:6px;
+  }
+  .now-playing-wrap__exit,
+  .now-playing-wrap__min{
     width:22px;height:22px;padding:0;margin:0;border:none;border-radius:999px;
     display:grid;place-items:center;cursor:pointer;box-sizing:border-box;
     background:rgba(24,24,24,.96);
@@ -885,14 +889,17 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
     transition:background .15s ease,color .15s ease,border-color .15s ease,transform .15s ease;
     -webkit-tap-highlight-color:transparent;
   }
-  .now-playing-wrap__exit:hover{
+  .now-playing-wrap__exit:hover,
+  .now-playing-wrap__min:hover{
     background:rgba(34,34,34,.98);
     border-color:rgba(255,255,255,.22);
     color:var(--text);
     transform:scale(1.05);
   }
-  .now-playing-wrap__exit:focus-visible{outline:none;box-shadow:var(--focus),0 6px 20px rgba(0,0,0,.55)}
+  .now-playing-wrap__exit:focus-visible,
+  .now-playing-wrap__min:focus-visible{outline:none;box-shadow:var(--focus),0 6px 20px rgba(0,0,0,.55)}
   .now-playing-wrap__exit svg{width:11px;height:11px;display:block}
+  .now-playing-wrap__min svg{width:12px;height:12px;display:block}
   .now-playing-caption{
     margin:0;padding:0 36px 0 4px;
     font-size:10px;font-weight:500;letter-spacing:.02em;line-height:1.3;
@@ -1647,9 +1654,14 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   </button>
 </div>
 <div class="now-playing-wrap" id="nowPlayingWrap" aria-hidden="true" inert>
-  <button type="button" class="now-playing-wrap__exit" id="npDismiss" title="Close player" aria-label="Close player and show music button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
+  <div class="now-playing-wrap__controls" aria-label="Player controls">
+    <button type="button" class="now-playing-wrap__min" id="npMinimize" title="Minimize player" aria-label="Minimize player (keeps music playing)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>
+    </button>
+    <button type="button" class="now-playing-wrap__exit" id="npDismiss" title="Close player" aria-label="Close player and show music button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
   <a class="now-playing-caption" href="https://open.spotify.com/artist/18NhQ8aKvZIQYAvpjZglMB?si=6Fx9WCswR8u4pcq-GB1nHA" target="_blank" rel="noopener noreferrer" aria-label="Follow LiNHALi on Spotify">Go Follow My Sis!</a>
   <div class="now-playing-card">
     <div class="now-playing-card__main">
@@ -2801,6 +2813,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     syncIslandPanel();
     try{btn.focus({preventScroll:true});}catch(_){try{btn.focus();}catch(__){}}
   }
+  function minimizePlayer(){
+    npPanelOpen=false;
+    syncIslandPanel();
+    try{btn.focus({preventScroll:true});}catch(_){try{btn.focus();}catch(__){}}
+  }
   function applyTrackVisual(){
     const t=currentTrack();
     if(artEl) artEl.src=t.art;
@@ -2840,6 +2857,12 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   }
   btn.addEventListener("click",async()=>{
     if(npPanelOpen) return;
+    // If music is already playing but the panel is hidden (minimized), just reopen the panel.
+    if(!audio.paused){
+      npPanelOpen=true;
+      syncIslandPanel();
+      return;
+    }
     npPanelOpen=true;
     syncIslandPanel();
     try{
@@ -2865,6 +2888,10 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   document.getElementById("npDismiss")?.addEventListener("click",e=>{
     e.preventDefault();
     collapsePlayer();
+  });
+  document.getElementById("npMinimize")?.addEventListener("click",e=>{
+    e.preventDefault();
+    minimizePlayer();
   });
   npPlay?.addEventListener("click",async e=>{
     e.preventDefault();
