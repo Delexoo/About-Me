@@ -202,8 +202,14 @@ app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (re
   }
 });
 
-// Static file serving (so you can still run locally)
-app.get("*", async (req, res) => {
+// Final handler (no invalid "*" route in Express 5)
+// On Render you typically only need the API routes above.
+// If you run this locally and want it to serve the site, set SERVE_STATIC=1.
+app.use(async (req, res) => {
+  if (process.env.SERVE_STATIC !== "1") {
+    res.status(404).type("text").send("Not found");
+    return;
+  }
   try {
     let filePath = safePath(req.path);
     if (!filePath) return res.status(403).send("Forbidden");
