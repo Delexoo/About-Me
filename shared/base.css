@@ -1,0 +1,125 @@
+:root{
+  --bg: #0b0c0f;
+  --panel: rgba(255,255,255,.06);
+  --panel2: rgba(255,255,255,.085);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.68);
+  --line: rgba(255,255,255,.12);
+  --shadow: 0 18px 55px rgba(0,0,0,.45);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max: 1040px;
+  --focus: 0 0 0 4px rgba(255,255,255,.16);
+  --brand: #d7d7d7;
+  --accent: #c7a46a;
+  --good: #49d17c;
+  --bad: #ff4d4d;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background: radial-gradient(1400px 700px at 25% -10%, rgba(255,255,255,.11), transparent 60%),
+              radial-gradient(1000px 600px at 90% 0%, rgba(199,164,106,.10), transparent 55%),
+              linear-gradient(180deg, #08090c, #0b0c0f 40%, #07070a);
+}
+
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+
+.container{max-width:var(--max);margin:0 auto;padding:24px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:18px 20px;border:1px solid var(--line);border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow:var(--shadow);
+}
+.brand{
+  display:flex;align-items:center;gap:12px;min-width:0;
+}
+.brand img{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#111}
+.brand h1{margin:0;font-size:14px;letter-spacing:.22em;text-transform:uppercase}
+.brand p{margin:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.pillRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.06);text-decoration:none;
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.pill:hover{transform:translateY(-1px);background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}
+.pill:focus-visible{outline:none;box-shadow:var(--focus)}
+.pill kbd{
+  font-family:var(--mono);
+  font-size:12px;color:var(--muted);
+  padding:2px 7px;border-radius:8px;border:1px solid var(--line);
+  background:rgba(0,0,0,.22)
+}
+
+.grid{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:18px;
+}
+.card{
+  grid-column:span 6;
+  border-radius:var(--radius-xl);
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+}
+.cardHeader{
+  padding:18px 18px 0 18px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+}
+.cardHeader h2{margin:0;font-size:16px;letter-spacing:.08em;text-transform:uppercase}
+.cardHeader .meta{margin:0;color:var(--muted);font-size:12px}
+.cardBody{padding:18px}
+.cardBody p{margin:0 0 12px 0;color:var(--muted);line-height:1.55}
+
+.button{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px 14px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);
+  text-decoration:none;
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+  width:100%;
+}
+.button:hover{transform:translateY(-1px);background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.26)}
+.button:active{transform:translateY(0px) scale(.99)}
+.button:focus-visible{outline:none;box-shadow:var(--focus)}
+
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.24);
+  color:var(--muted);
+  font-size:12px;
+}
+
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.srOnly{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+@media (max-width: 880px){
+  .card{grid-column:span 12}
+  .pillRow{justify-content:flex-start}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto !important}
+  .pill,.button{transition:none}
+}
+

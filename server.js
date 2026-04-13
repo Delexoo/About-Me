@@ -1,0 +1,230 @@
+import express from "express";
+import { readFile, stat } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PORT = Number(process.env.PORT || 3000);
+
+const MIME = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".svg": "image/svg+xml; charset=utf-8",
+  ".ico": "image/x-icon",
+  ".txt": "text/plain; charset=utf-8",
+  ".mp3": "audio/mpeg",
+};
+
+function safePath(urlPath) {
+  const decoded = decodeURIComponent(urlPath.split("?")[0] || "/");
+  const clean = decoded.replaceAll("\\", "/");
+  const rel = clean.startsWith("/") ? clean.slice(1) : clean;
+  const resolved = path.resolve(__dirname, rel || "index.html");
+  if (!resolved.startsWith(__dirname)) return null;
+  return resolved;
+}
+
+function mustEnv(name) {
+  const v = process.env[name];
+  if (!v) throw new Error(`Missing env var: ${name}`);
+  return v;
+}
+
+function stripeServer() {
+  return new Stripe(mustEnv("STRIPE_SECRET_KEY"), { apiVersion: "2024-06-20" });
+}
+
+function supabaseAdmin() {
+  return createClient(mustEnv("SUPABASE_URL"), mustEnv("SUPABASE_SERVICE_ROLE_KEY"), {
+    auth: { persistSession: false },
+  });
+}
+
+const app = express();
+
+// CORS (so your delexo.store frontend can call the Render backend)
+app.use((req, res, next) => {
+  const allow = (process.env.CORS_ORIGIN || "*").split(",").map((s) => s.trim()).filter(Boolean);
+  const origin = req.headers.origin;
+  if (origin && (allow.includes("*") || allow.includes(origin))) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  } else if (allow.includes("*")) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Stripe-Signature");
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
+// Health check
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
+// Leaderboard API (used by index.html)
+app.get("/leaderboard", async (_req, res) => {
+  try {
+    const sb = supabaseAdmin();
+    const { data, error } = await sb
+      .from("supporters")
+      .select("display_name,note,total_cents")
+      .order("total_cents", { ascending: false })
+      .limit(5);
+    if (error) return res.status(500).json({ error: "db_error" });
+    res.json({ rows: data || [] });
+  } catch (_e) {
+    res.status(500).json({ error: "server_error" });
+  }
+});
+
+// Stripe checkout (simple: single PRICE_ID)
+app.post("/create-checkout-session", express.json(), async (req, res) => {
+  try {
+    const stripe = stripeServer();
+    const siteUrl = mustEnv("SITE_URL");
+    const priceId = mustEnv("PRICE_ID");
+    const displayName = typeof req.body?.display_name === "string" ? req.body.display_name.slice(0, 40) : "";
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${siteUrl}/?thanks=1&session_id={CHECKOUT_SESSION_ID}#supporters`,
+      cancel_url: `${siteUrl}/#supporters`,
+      metadata: { display_name: displayName },
+    });
+    res.json({ url: session.url });
+  } catch (_e) {
+    res.status(500).json({ error: "server_error" });
+  }
+});
+
+// Save note (after payment)
+app.post("/save-note", express.json(), async (req, res) => {
+  try {
+    const sessionId = typeof req.body?.session_id === "string" ? req.body.session_id : "";
+    const displayName = typeof req.body?.display_name === "string" ? req.body.display_name.trim().slice(0, 40) : "";
+    const note = typeof req.body?.note === "string" ? req.body.note.trim().slice(0, 140) : "";
+    if (!sessionId || !displayName) return res.status(400).json({ error: "missing_fields" });
+
+    const stripe = stripeServer();
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!session || session.payment_status !== "paid") return res.status(403).json({ error: "not_paid" });
+
+    const email = session.customer_details?.email || session.customer_email;
+    if (!email) return res.status(400).json({ error: "missing_email" });
+
+    const sb = supabaseAdmin();
+    const { data, error } = await sb
+      .from("supporters")
+      .upsert({ email, display_name: displayName, note: note || null }, { onConflict: "email" })
+      .select("display_name,note,total_cents")
+      .single();
+
+    if (error) return res.status(500).json({ error: "db_error" });
+    res.json({ supporter: data });
+  } catch (_e) {
+    res.status(500).json({ error: "server_error" });
+  }
+});
+
+// Stripe webhook (Render endpoint you mentioned)
+app.post("/stripe-webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  try {
+    const stripe = stripeServer();
+    const whsec = mustEnv("STRIPE_WEBHOOK_SECRET");
+    const sig = req.headers["stripe-signature"];
+    if (!sig) return res.status(400).send("missing signature");
+
+    let evt;
+    try {
+      evt = stripe.webhooks.constructEvent(req.body, sig, whsec);
+    } catch (_e) {
+      return res.status(400).send("bad signature");
+    }
+
+    if (evt.type !== "checkout.session.completed") return res.json({ received: true });
+    const session = evt.data.object;
+    if (!session || session.payment_status !== "paid") return res.json({ received: true });
+
+    const email = session.customer_details?.email || session.customer_email;
+    const amountTotal = Number(session.amount_total || 0);
+    const paymentIntentId = session.payment_intent;
+    if (!email || !paymentIntentId || !Number.isFinite(amountTotal)) return res.json({ received: true });
+
+    const sb = supabaseAdmin();
+
+    const { data: supporter, error: supErr } = await sb
+      .from("supporters")
+      .upsert(
+        {
+          email,
+          display_name: (session.metadata?.display_name || "Supporter").slice(0, 40),
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "email" }
+      )
+      .select("id,total_cents")
+      .single();
+
+    if (supErr || !supporter) return res.json({ received: true });
+
+    const { error: donErr } = await sb.from("donations").insert({
+      supporter_id: supporter.id,
+      amount_cents: amountTotal,
+      stripe_payment_intent_id: paymentIntentId,
+    });
+
+    // Unique violation means already processed; don't double-add.
+    if (donErr) return res.json({ received: true });
+
+    await sb
+      .from("supporters")
+      .update({
+        total_cents: (supporter.total_cents || 0) + amountTotal,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", supporter.id);
+
+    res.json({ received: true });
+  } catch (_e) {
+    res.status(500).json({ error: "server_error" });
+  }
+});
+
+// Static file serving (so you can still run locally)
+app.get("*", async (req, res) => {
+  try {
+    let filePath = safePath(req.path);
+    if (!filePath) return res.status(403).send("Forbidden");
+
+    try {
+      const s = await stat(filePath);
+      if (s.isDirectory()) filePath = path.join(filePath, "index.html");
+    } catch (_) {}
+
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType = MIME[ext] || "application/octet-stream";
+    const data = await readFile(filePath);
+    res.setHeader("Content-Type", contentType);
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).send(data);
+  } catch (_e) {
+    res.status(404).type("text").send("Not found");
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+

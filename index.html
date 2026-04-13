@@ -42,7 +42,7 @@ html{
 /* Snap only on wider viewports; proximity snap (not mandatory) so wheel/touch isn’t fighting the browser */
 @media(prefers-reduced-motion:no-preference) and (min-width:681px){
   html{
-    scroll-snap-type:y proximity;
+    scroll-snap-type:y mandatory;
     scroll-behavior:auto;
     scroll-padding-top:max(32px,calc(env(safe-area-inset-top,0px) + 22px));
     scroll-padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 22px));
@@ -52,12 +52,18 @@ html{
 @media(prefers-reduced-motion:reduce){
   html{scroll-snap-type:none}
 }
-@media(max-width:680px) and (prefers-reduced-motion:no-preference){
-  html{
-    scroll-snap-type:y proximity;
-    scroll-behavior:auto;
-    scroll-padding-top:max(20px,calc(env(safe-area-inset-top,0px) + 12px));
-    scroll-padding-bottom:max(20px,calc(env(safe-area-inset-bottom,0px) + 12px));
+@media(max-width:680px){
+  html{scroll-snap-type:none}
+  .snap-section,
+  .snap-section.snap-section--courses,
+  section#links.snap-section,
+  #goals,
+  #supporters,
+  .about,
+  #faq,
+  body > footer{
+    scroll-snap-align:none;
+    scroll-snap-stop:normal;
   }
 }
 html::-webkit-scrollbar{display:none;width:0;height:0}
@@ -251,6 +257,22 @@ section#faq.faq{
 .fut-info-copy a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
 .fut-info-copy strong{color:var(--text);font-weight:600}
 #futInfoOverlay .qr-panel{width:min(400px,calc(100vw - 40px))}
+@media(max-width:680px){
+  /* Mobile: make the Free University Tools info dialog a square + scrollable */
+  #futInfoOverlay .qr-panel{
+    width:min(92vw,420px);
+    aspect-ratio:1/1;
+    display:flex;
+    flex-direction:column;
+  }
+  #futInfoOverlay .qr-panel__head{flex:0 0 auto}
+  #futInfoOverlay .qr-panel__body--fut{
+    flex:1 1 auto;
+    min-height:0;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+}
 .hero-panel{
   position:relative;z-index:8;display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;background:var(--card);border-top:1px solid var(--line);pointer-events:auto;
 }
@@ -267,6 +289,14 @@ section#faq.faq{
 }
 .hero-verified{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;line-height:0;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
 .hero-verified img{display:block;width:clamp(20px,4.6vw,26px);height:clamp(20px,4.6vw,26px);object-fit:contain}
+/* If any icon PNGs have baked-in white backgrounds, blend them out on dark UI */
+.hero-verified img,
+.tl-verified-badge img,
+.cert-list .badge,
+.faq details[data-gd-egg] .gd-icon{
+  mix-blend-mode:multiply;
+  background:transparent;
+}
 .hero-status-column{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;min-width:0;max-width:100%}
 .hero-status{display:inline-flex;align-items:center;gap:9px;padding:7px 14px 7px 11px;border-radius:10px;background:rgba(34,197,94,.14);border:1px solid rgba(74,222,128,.38);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#86efac;line-height:1.15}
 .hero-status__dot{position:relative;flex-shrink:0;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,.65),0 0 0 2px rgba(34,197,94,.2)}
@@ -724,8 +754,18 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 @media(max-width:680px){
   .side-island-stack .section-rail,
   .side-island-stack .side-audio-btn{display:none!important}
+  .side-island-stack .pal-trigger kbd{display:none!important}
 }
 @media(min-width:681px){
+  /* Desktop: remove glass blur (backdrop-filter) */
+  .hero-followers-label,
+  .side-island-stack .pal-trigger,
+  .section-rail,
+  .side-audio-btn,
+  .now-playing-card{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
   .side-island-stack{
     top:50%;
     bottom:auto;
@@ -808,7 +848,7 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 @media(min-width:681px){
   .now-playing-wrap{
     position:fixed;
-    right:max(12px,env(safe-area-inset-right,0px));
+    right:max(24px,env(safe-area-inset-right,0px));
     bottom:max(16px,env(safe-area-inset-bottom,0px));
     z-index:61;
     display:flex;flex-direction:column;align-items:stretch;gap:6px;
@@ -835,8 +875,8 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
     transition:none!important;
   }
   .now-playing-wrap__exit{
-    position:absolute;top:-2px;right:-2px;z-index:6;
-    width:28px;height:28px;padding:0;margin:0;border:none;border-radius:50%;
+    position:absolute;top:6px;right:-10px;z-index:6;
+    width:22px;height:22px;padding:0;margin:0;border:none;border-radius:999px;
     display:grid;place-items:center;cursor:pointer;box-sizing:border-box;
     background:rgba(24,24,24,.96);
     border:1px solid rgba(255,255,255,.14);
@@ -852,7 +892,7 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
     transform:scale(1.05);
   }
   .now-playing-wrap__exit:focus-visible{outline:none;box-shadow:var(--focus),0 6px 20px rgba(0,0,0,.55)}
-  .now-playing-wrap__exit svg{width:13px;height:13px;display:block}
+  .now-playing-wrap__exit svg{width:11px;height:11px;display:block}
   .now-playing-caption{
     margin:0;padding:0 36px 0 4px;
     font-size:10px;font-weight:500;letter-spacing:.02em;line-height:1.3;
@@ -1230,23 +1270,25 @@ section#about.about{padding-top:clamp(24px,5vh,56px)}
 .faq details[data-gd-egg] .gd-egg{
   position:relative;
   display:inline-block;
-  padding:0 22px 12px 2px;
+  padding:0 22px 16px 2px;
   vertical-align:baseline;
 }
 .faq details[data-gd-egg] .gd-handle{position:relative;z-index:2}
 .faq details[data-gd-egg] .gd-icon{
   position:absolute;
   left:0;
-  bottom:2px;
+  bottom:-3px;
   width:16px;height:16px;
   opacity:0;
   z-index:1;
   pointer-events:none;
   filter:drop-shadow(0 8px 18px rgba(0,0,0,.55));
-  transform:translateX(-140%) translateY(6px);
+  transform:translate3d(-140%,6px,0);
+  will-change:transform;
 }
 .faq details[data-gd-egg][open] .gd-icon{
-  animation:gd-slide-under 900ms cubic-bezier(.22,1,.36,1) 80ms both;
+  opacity:1;
+  animation:none;
 }
 @keyframes gd-slide-under{
   0%{opacity:0;transform:translateX(-140%) translateY(6px)}
@@ -1841,6 +1883,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 <section class="rail-section reveal" id="bundles">
   <div class="wrap">
     <h2 class="section-title">Personal use or resell these products.</h2>
+    <p class="section-sub">Tap a product to view details and purchase.</p>
   </div>
   <div class="rail" tabindex="0" role="region" aria-label="Personal use or resell these products">
     <!-- PLR thumbnail: About-Me/doc/1400+ Viral Women’s Reels… (URL encoded; chip order swapped with Luxurious) -->
@@ -2044,10 +2087,10 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
               <th scope="col">Support</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td class="sup-rank">1</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
-            <tr><td class="sup-rank">2</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
-            <tr><td class="sup-rank">3</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
+          <tbody id="supportersTbody" data-static-fallback="1">
+            <tr><td class="sup-rank">1</td><td class="sup-name">Jesus</td><td class="sup-note">—</td><td class="sup-amt">$5</td></tr>
+            <tr><td class="sup-rank">2</td><td class="sup-name">Bri</td><td class="sup-note">tysm i will save this website forever youre an actual life saver</td><td class="sup-amt">$3</td></tr>
+            <tr><td class="sup-rank">3</td><td class="sup-name">Joseph</td><td class="sup-note">I'm buggin im broke</td><td class="sup-amt">$1.67</td></tr>
             <tr><td class="sup-rank">4</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
             <tr><td class="sup-rank">5</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt">—</td></tr>
           </tbody>
@@ -2309,9 +2352,9 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     </div>
   </div>
   <div class="foot-bottom">
-    <span class="foot-bottom__left">© 2026 DELEXO</span>
+    <a class="foot-bottom__left" href="https://delexo.store" target="_blank" rel="noopener noreferrer">delexo.store</a>
     <p class="foot-bottom__center">Thank you so much <a href="https://open.spotify.com/artist/18NhQ8aKvZIQYAvpjZglMB?si=6Fx9WCswR8u4pcq-GB1nHA" target="_blank" rel="noopener noreferrer">LiNHALi</a>! <span aria-hidden="true">♪</span></p>
-    <a class="foot-bottom__right" href="https://delexo.store" target="_blank" rel="noopener noreferrer">delexo.store</a>
+    <span class="foot-bottom__right">© 2026 DELEXO</span>
   </div>
 </footer>
 
@@ -3261,6 +3304,96 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   },msToNextBoundary());
 })();
 
+/* Geometry Dash easter egg — icon runs + jump on tap/space */
+(function(){
+  const details=document.querySelector('.faq details[data-gd-egg]');
+  if(!details) return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const icon=details.querySelector(".gd-icon");
+  const egg=details.querySelector(".gd-egg");
+  if(!icon||!egg) return;
+
+  let raf=0;
+  let lastT=0;
+  let x=0;
+  let y=0;
+  let vy=0;
+  const gravity=2400;   // px/s^2
+  const jumpV=780;      // px/s
+  const speed=140;      // px/s
+
+  function isRunning(){ return details.open; }
+  function bounds(){
+    const w=egg.getBoundingClientRect().width;
+    const iw=icon.getBoundingClientRect().width||16;
+    return{w,iw};
+  }
+
+  function setPos(){
+    // baseline is +6px to match original vibe; y is negative when jumping
+    icon.style.transform=`translate3d(${x}px,${6-y}px,0)`;
+  }
+
+  function tick(t){
+    if(!isRunning()){
+      raf=0;
+      lastT=0;
+      return;
+    }
+    const dt=Math.min(0.033,Math.max(0.001,(t-(lastT||t))/1000));
+    lastT=t;
+
+    const {w,iw}=bounds();
+    x+=speed*dt;
+    if(x>w+iw) x=-iw;
+
+    vy-=gravity*dt;
+    y+=vy*dt;
+    if(y<0){ y=0; vy=0; }
+
+    setPos();
+    raf=requestAnimationFrame(tick);
+  }
+
+  function start(){
+    const {iw}=bounds();
+    x=-iw;
+    y=0;vy=0;
+    setPos();
+    if(!raf) raf=requestAnimationFrame(tick);
+  }
+
+  function jump(){
+    if(!isRunning()) return;
+    if(y!==0) return;
+    vy=jumpV;
+  }
+
+  details.addEventListener("toggle",()=>{
+    if(details.open) start();
+    else{
+      if(raf){ cancelAnimationFrame(raf); raf=0; }
+      lastT=0;
+      icon.style.transform="";
+    }
+  });
+
+  document.addEventListener("keydown",e=>{
+    if(e.code!=="Space") return;
+    if(!isRunning()) return;
+    // avoid scrolling the page when using Space to jump
+    e.preventDefault();
+    jump();
+  });
+
+  // Tap/click anywhere while open to jump (mobile + desktop)
+  document.addEventListener("pointerdown",()=>{
+    if(!isRunning()) return;
+    jump();
+  },{passive:true});
+})();
+
 /* Free University Tools — story modal (timeline info) */
 (function(){
   const ov=document.getElementById("futInfoOverlay");
@@ -3313,6 +3446,47 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     closeP();
   });
   window.__porscheLightboxClose=closeP;
+})();
+
+/* Supporters leaderboard — render from API when available */
+(function(){
+  const tbody=document.getElementById("supportersTbody");
+  if(!tbody) return;
+
+  function fmtMoneyFromCents(cents){
+    const n=Number(cents||0)/100;
+    return n.toLocaleString(undefined,{style:"currency",currency:"USD"});
+  }
+
+  async function load(){
+    try{
+      const api=(window.SUPPORTERS_API_BASE||"").replace(/\/+$/,"");
+      const res=await fetch((api?`${api}/leaderboard`:"/leaderboard"),{headers:{"Accept":"application/json"}});
+      if(!res.ok) return;
+      const data=await res.json();
+      if(!data||!Array.isArray(data.rows)) return;
+      const rows=data.rows.slice(0,5);
+      if(rows.length===0) return;
+      tbody.innerHTML=rows.map((r,i)=>{
+        const name=(r.display_name||"—").toString();
+        const note=(r.note||"—").toString();
+        const amt=Number.isFinite(Number(r.total_cents))?fmtMoneyFromCents(r.total_cents):"—";
+        return `<tr><td class="sup-rank">${i+1}</td><td class="sup-name">${escapeHtml(name)}</td><td class="sup-note">${escapeHtml(note)}</td><td class="sup-amt">${escapeHtml(amt)}</td></tr>`;
+      }).join("");
+      tbody.dataset.staticFallback="0";
+    }catch(_){}
+  }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll("\"","&quot;")
+      .replaceAll("'","&#39;");
+  }
+
+  load();
 })();
 
 /* Course / product detail modal (rails) */
