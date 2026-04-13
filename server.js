@@ -53,6 +53,15 @@ function supabaseAdmin() {
 
 const app = express();
 
+// Baseline security headers (public API + static)
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  next();
+});
+
 // CORS (so your delexo.store frontend can call the Render backend)
 app.use((req, res, next) => {
   const allow = (process.env.CORS_ORIGIN || "*").split(",").map((s) => s.trim()).filter(Boolean);
@@ -143,7 +152,7 @@ app.post("/save-note", express.json(), async (req, res) => {
   try {
     const sessionId = typeof req.body?.session_id === "string" ? req.body.session_id : "";
     const displayName = typeof req.body?.display_name === "string" ? req.body.display_name.trim().slice(0, 40) : "";
-    const note = typeof req.body?.note === "string" ? req.body.note.trim().slice(0, 140) : "";
+    const note = typeof req.body?.note === "string" ? req.body.note.trim().slice(0, 100) : "";
     const socialUrlRaw = typeof req.body?.social_url === "string" ? req.body.social_url.trim().slice(0, 220) : "";
     if (!sessionId || !displayName) return res.status(400).json({ error: "missing_fields" });
 
