@@ -86,7 +86,7 @@ app.get("/leaderboard", async (req, res) => {
       .select("display_name,note,total_cents")
       .order("total_cents", { ascending: false })
       .limit(limit);
-    if (error) return res.status(500).json({ error: "db_error" });
+    if (error) return res.status(500).json({ error: "db_error", detail: error.message, code: error.code });
     res.json({ rows: data || [] });
   } catch (_e) {
     res.status(500).json({ error: "server_error" });
@@ -160,7 +160,7 @@ app.post("/save-note", express.json(), async (req, res) => {
       .select("display_name,note,total_cents")
       .single();
 
-    if (error) return res.status(500).json({ error: "db_error" });
+    if (error) return res.status(500).json({ error: "db_error", detail: error.message, code: error.code });
     res.json({ supporter: data });
   } catch (e) {
     console.error("save-note error:", e);
