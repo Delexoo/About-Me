@@ -1213,14 +1213,17 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 .supporters-blurb strong{color:#c8c8c8;font-weight:600}
 .supporters-card__table{border-top:1px solid var(--line);background:rgba(0,0,0,.12)}
 .supporters-card__scroll{
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
-  overscroll-behavior-x:contain;
+  max-height:540px; /* ~10 rows + header */
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
   touch-action:pan-x pan-y;
 }
-.sup-table{width:100%;min-width:400px;border-collapse:collapse;font-size:14px}
+.sup-table{width:100%;min-width:360px;border-collapse:collapse;font-size:14px}
 .sup-table thead th{
   padding:14px 16px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
   color:var(--muted);border-bottom:1px solid var(--line);background:rgba(0,0,0,.2);
+  position:sticky;top:0;z-index:2;
 }
 .sup-table thead th:nth-child(1){width:3.5rem}
 .sup-table thead th:nth-child(4){text-align:right}
@@ -1228,6 +1231,7 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   padding:14px 16px;border-bottom:1px solid var(--line);color:#a8a8a8;font-weight:500;
   vertical-align:middle;
 }
+.sup-table tbody tr:hover td{background:rgba(255,255,255,.03)}
 .sup-table tbody tr:last-child td{border-bottom:none}
 .sup-table .sup-rank{
   font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--pink);letter-spacing:-.02em;
@@ -1254,9 +1258,20 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   text-align:left;
 }
 .sup-thanks[hidden]{display:none!important}
-.sup-thanks__title{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#cfcfcf}
+.sup-thanks__head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px}
+.sup-thanks__title{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#cfcfcf}
+.sup-thanks__close{
+  width:32px;height:32px;border:none;border-radius:10px;
+  background:rgba(255,255,255,.06);color:var(--text);
+  font-size:20px;line-height:1;cursor:pointer;
+  display:grid;place-items:center;padding:0;flex-shrink:0;
+}
+.sup-thanks__close:hover{background:rgba(255,255,255,.1)}
+.sup-thanks__close:focus-visible{outline:none;box-shadow:var(--focus)}
+.sup-thanks__sub{margin:0 0 12px;color:#7f7f7f;font-size:12px;line-height:1.45}
 .sup-field{display:flex;flex-direction:column;gap:6px;margin:0 0 10px}
-.sup-field label{font-size:12px;color:#9a9a9a;font-weight:600}
+.sup-field label{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:12px;color:#9a9a9a;font-weight:600}
+.sup-count{font-size:11px;color:#777;font-weight:600;letter-spacing:.02em}
 .sup-field input,.sup-field textarea{
   width:100%;
   border-radius:10px;
@@ -2144,13 +2159,17 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         <p class="sup-foot-msg" id="supFootMsg" aria-live="polite"></p>
 
         <form class="sup-thanks" id="supportersThanks" hidden>
-          <p class="sup-thanks__title">Add your name + note</p>
+          <div class="sup-thanks__head">
+            <p class="sup-thanks__title">Add your name + note</p>
+            <button type="button" class="sup-thanks__close" id="supCloseBtn" aria-label="Close">×</button>
+          </div>
+          <p class="sup-thanks__sub">This shows on the leaderboard (max 40 chars name, 140 chars note).</p>
           <div class="sup-field">
-            <label for="supName">Name (required)</label>
+            <label for="supName">Name (required) <span class="sup-count" id="supNameCount">0/40</span></label>
             <input id="supName" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="Your name"/>
           </div>
           <div class="sup-field">
-            <label for="supNote">Note (optional)</label>
+            <label for="supNote">Note (optional) <span class="sup-count" id="supNoteCount">0/140</span></label>
             <textarea id="supNote" name="note" maxlength="140" placeholder="Short message…"></textarea>
           </div>
           <div class="sup-actions">
@@ -3534,8 +3553,12 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   const supMsg=document.getElementById("supMsg");
   const supFootMsg=document.getElementById("supFootMsg");
   const skipBtn=document.getElementById("supSkipBtn");
+  const closeBtn=document.getElementById("supCloseBtn");
+  const saveBtn=document.getElementById("supSaveNoteBtn");
   const supName=document.getElementById("supName");
   const supNote=document.getElementById("supNote");
+  const nameCount=document.getElementById("supNameCount");
+  const noteCount=document.getElementById("supNoteCount");
   if(!tbody) return;
 
   function fmtMoneyFromCents(cents){
@@ -3550,11 +3573,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   async function load(){
     try{
       const api=apiBase();
-      const res=await fetch((api?`${api}/leaderboard`:"/leaderboard"),{headers:{"Accept":"application/json"}});
+      const res=await fetch((api?`${api}/leaderboard?limit=50`:"/leaderboard?limit=50"),{headers:{"Accept":"application/json"}});
       if(!res.ok) return;
       const data=await res.json();
       if(!data||!Array.isArray(data.rows)) return;
-      const rows=data.rows.slice(0,5);
+      const rows=data.rows.slice(0,50);
       if(rows.length===0) return;
       tbody.innerHTML=rows.map((r,i)=>{
         const name=(r.display_name||"—").toString();
@@ -3584,6 +3607,12 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     if(!thanks) return;
     thanks.hidden=false;
     thanks.dataset.sessionId=sessionId||"";
+    // Prefill name if they've used it before
+    try{
+      const prev=localStorage.getItem("sup_display_name");
+      if(prev && supName && !supName.value) supName.value=prev.slice(0,40);
+    }catch(_){}
+    updateCounts();
     if(supName && !supName.value) supName.focus();
   }
 
@@ -3602,12 +3631,17 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({display_name:(supName&&supName.value)||""})
       });
-      if(!res.ok) throw new Error("bad_response");
-      const data=await res.json();
+      const data=await res.json().catch(()=>null);
+      if(!res.ok){
+        setMsg((data&& (data.detail||data.error)) || "Checkout failed.");
+        throw new Error("bad_response");
+      }
       if(!data||!data.url) throw new Error("missing_url");
       window.location.href=data.url;
     }catch(_e){
-      setMsg("Couldn’t start checkout. Make sure the backend is live and CORS_ORIGIN includes your site.");
+      if(!supFootMsg?.textContent && !supMsg?.textContent){
+        setMsg("Couldn’t start checkout. Check backend logs for /create-checkout-session.");
+      }
       donateBtn.disabled=false;
       donateBtn.removeAttribute("aria-busy");
     }
@@ -3624,18 +3658,27 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     if(!name){ setMsg("Please enter your name."); supName?.focus(); return; }
     try{
       setMsg("Saving…");
+      if(saveBtn){ saveBtn.disabled=true; saveBtn.setAttribute("aria-busy","true"); }
       const res=await fetch((api?`${api}/save-note`:"/save-note"),{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({session_id:sessionId,display_name:name,note})
       });
       const data=await res.json().catch(()=>null);
-      if(!res.ok){ throw new Error((data&&data.error)||"save_failed"); }
+      if(!res.ok){
+        setMsg((data&&(data.detail||data.error)) || "Couldn’t save your note.");
+        throw new Error((data&&data.error)||"save_failed");
+      }
+      try{ localStorage.setItem("sup_display_name",name.slice(0,40)); }catch(_){}
       setMsg("Saved. Thank you for supporting!");
       await load();
       // Keep it visible so they see confirmation.
     }catch(_e){
-      setMsg("Couldn’t save your note. If you already donated, try again in a moment.");
+      if(!supFootMsg?.textContent && !supMsg?.textContent){
+        setMsg("Couldn’t save your note. Check backend logs for /save-note.");
+      }
+    }finally{
+      if(saveBtn){ saveBtn.disabled=false; saveBtn.removeAttribute("aria-busy"); }
     }
   }
 
@@ -3658,6 +3701,16 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     if(thanks) thanks.hidden=true;
     setMsg("");
   });
+  closeBtn?.addEventListener("click",()=>{
+    if(thanks) thanks.hidden=true;
+    setMsg("");
+  });
+  function updateCounts(){
+    if(nameCount && supName) nameCount.textContent=`${(supName.value||"").length}/40`;
+    if(noteCount && supNote) noteCount.textContent=`${(supNote.value||"").length}/140`;
+  }
+  supName?.addEventListener("input",updateCounts);
+  supNote?.addEventListener("input",updateCounts);
 
   load();
   readThanksParams();

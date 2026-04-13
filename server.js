@@ -36,7 +36,7 @@ function safePath(urlPath) {
 }
 
 function mustEnv(name) {
-  const v = process.env[name];
+  const v = process.env[name]?.trim();
   if (!v) throw new Error(`Missing env var: ${name}`);
   return v;
 }
@@ -76,14 +76,16 @@ app.get("/", (_req, res) => res.type("text").send("support-leaderboard-backend: 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 // Leaderboard API (used by index.html)
-app.get("/leaderboard", async (_req, res) => {
+app.get("/leaderboard", async (req, res) => {
   try {
+    const n = Number(req.query?.limit || 50);
+    const limit = Number.isFinite(n) ? Math.max(1, Math.min(200, Math.floor(n))) : 50;
     const sb = supabaseAdmin();
     const { data, error } = await sb
       .from("supporters")
       .select("display_name,note,total_cents")
       .order("total_cents", { ascending: false })
-      .limit(5);
+      .limit(limit);
     if (error) return res.status(500).json({ error: "db_error" });
     res.json({ rows: data || [] });
   } catch (_e) {
@@ -99,8 +101,24 @@ app.post("/create-checkout-session", express.json(), async (req, res) => {
     const priceId = mustEnv("PRICE_ID");
     const displayName = typeof req.body?.display_name === "string" ? req.body.display_name.slice(0, 40) : "";
 
+    // Validate the price exists early (helps diagnose test/live mismatch)
+    try {
+      await stripe.prices.retrieve(priceId);
+    } catch (e) {
+      const msg = e?.message ? String(e.message) : "invalid_price";
+      const code = e?.code ? String(e.code) : undefined;
+      res.status(500).json({
+        error: "stripe_price_error",
+        detail: msg,
+        code,
+        hint: "Most common cause: STRIPE_SECRET_KEY mode (test/live) doesn't match PRICE_ID.",
+      });
+      return;
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      customer_creation: "always",
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${siteUrl}/?thanks=1&session_id={CHECKOUT_SESSION_ID}#supporters`,
       cancel_url: `${siteUrl}/#supporters`,
@@ -115,7 +133,8 @@ app.post("/create-checkout-session", express.json(), async (req, res) => {
       res.status(500).json({ error: "missing_env", detail: msg });
       return;
     }
-    res.status(500).json({ error: "server_error", detail: msg || "unknown" });
+    const code = e?.code ? String(e.code) : undefined;
+    res.status(500).json({ error: "server_error", detail: msg || "unknown", code });
   }
 });
 
@@ -143,8 +162,14 @@ app.post("/save-note", express.json(), async (req, res) => {
 
     if (error) return res.status(500).json({ error: "db_error" });
     res.json({ supporter: data });
-  } catch (_e) {
-    res.status(500).json({ error: "server_error" });
+  } catch (e) {
+    console.error("save-note error:", e);
+    const msg = e?.message ? String(e.message) : "";
+    if (msg.startsWith("Missing env var:")) {
+      res.status(500).json({ error: "missing_env", detail: msg });
+      return;
+    }
+    res.status(500).json({ error: "server_error", detail: msg || "unknown" });
   }
 });
 
