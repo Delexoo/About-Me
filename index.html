@@ -1237,6 +1237,36 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   background:linear-gradient(180deg,rgba(232,99,154,.05) 0%,rgba(0,0,0,.2) 100%);
 }
 .sup-donate-btn{margin:0 auto;display:flex;justify-content:center;min-width:min(240px,100%)}
+.sup-donate-btn[aria-busy="true"]{opacity:.7;cursor:progress}
+.sup-donate-help{margin:10px auto 0;max-width:460px;color:#7a7a7a;font-size:12px;line-height:1.45}
+.sup-thanks{
+  margin:14px auto 0;max-width:520px;
+  padding:12px 12px 14px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(0,0,0,.22);
+  text-align:left;
+}
+.sup-thanks[hidden]{display:none!important}
+.sup-thanks__title{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#cfcfcf}
+.sup-field{display:flex;flex-direction:column;gap:6px;margin:0 0 10px}
+.sup-field label{font-size:12px;color:#9a9a9a;font-weight:600}
+.sup-field input,.sup-field textarea{
+  width:100%;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  color:var(--text);
+  padding:10px 12px;
+  font-family:inherit;
+  font-size:14px;
+  outline:none;
+}
+.sup-field textarea{min-height:74px;resize:vertical}
+.sup-field input:focus-visible,.sup-field textarea:focus-visible{box-shadow:var(--focus)}
+.sup-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-start;margin-top:6px}
+.sup-actions .btn{min-width:160px;justify-content:center}
+.sup-msg{margin:10px 0 0;color:#8a8a8a;font-size:12px;line-height:1.45}
+.sup-foot-msg{margin:10px auto 0;max-width:520px;color:#8a8a8a;font-size:12px;line-height:1.45}
 
 /* ── 8b  about me (editorial) ── */
 .about{margin-top:clamp(32px,6vh,72px);max-width:660px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) max(40px,min(8vh,72px)) max(22px,env(safe-area-inset-left,0px))}
@@ -2074,7 +2104,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
     </header>
     <p class="supporters-blurb" id="supportersDesc">
-      A quick thank-you wall for voluntary support — <strong>rank, support level, and a short note</strong> per person when donations go live. <strong>No obligation.</strong> <strong>Coming soon.</strong>
+      A quick thank-you wall for voluntary support — <strong>rank, support level, and a short note</strong> per person. <strong>No obligation.</strong>
     </p>
     <div class="supporters-card__table">
       <div class="supporters-card__scroll">
@@ -2097,7 +2127,26 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         </table>
       </div>
       <div class="supporters-card__foot">
-        <button type="button" class="btn btn--soon sup-donate-btn" disabled aria-disabled="true">Donate — coming soon</button>
+        <button type="button" class="btn btn--solid sup-donate-btn" id="supportersDonateBtn">Donate</button>
+        <p class="sup-donate-help">Donations are processed securely via Stripe. After checkout, you can leave a name + short note for the leaderboard.</p>
+        <p class="sup-foot-msg" id="supFootMsg" aria-live="polite"></p>
+
+        <form class="sup-thanks" id="supportersThanks" hidden>
+          <p class="sup-thanks__title">Add your name + note</p>
+          <div class="sup-field">
+            <label for="supName">Name (required)</label>
+            <input id="supName" name="display_name" type="text" maxlength="40" autocomplete="nickname" placeholder="Your name"/>
+          </div>
+          <div class="sup-field">
+            <label for="supNote">Note (optional)</label>
+            <textarea id="supNote" name="note" maxlength="140" placeholder="Short message…"></textarea>
+          </div>
+          <div class="sup-actions">
+            <button type="submit" class="btn btn--ghost" id="supSaveNoteBtn">Save note</button>
+            <button type="button" class="btn btn--ghost" id="supSkipBtn">Skip</button>
+          </div>
+          <p class="sup-msg" id="supMsg" aria-live="polite"></p>
+        </form>
       </div>
     </div>
   </div>
@@ -3451,6 +3500,13 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 /* Supporters leaderboard — render from API when available */
 (function(){
   const tbody=document.getElementById("supportersTbody");
+  const donateBtn=document.getElementById("supportersDonateBtn");
+  const thanks=document.getElementById("supportersThanks");
+  const supMsg=document.getElementById("supMsg");
+  const supFootMsg=document.getElementById("supFootMsg");
+  const skipBtn=document.getElementById("supSkipBtn");
+  const supName=document.getElementById("supName");
+  const supNote=document.getElementById("supNote");
   if(!tbody) return;
 
   function fmtMoneyFromCents(cents){
@@ -3458,9 +3514,13 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     return n.toLocaleString(undefined,{style:"currency",currency:"USD"});
   }
 
+  function apiBase(){
+    return (window.SUPPORTERS_API_BASE||"").replace(/\/+$/,"");
+  }
+
   async function load(){
     try{
-      const api=(window.SUPPORTERS_API_BASE||"").replace(/\/+$/,"");
+      const api=apiBase();
       const res=await fetch((api?`${api}/leaderboard`:"/leaderboard"),{headers:{"Accept":"application/json"}});
       if(!res.ok) return;
       const data=await res.json();
@@ -3486,7 +3546,92 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       .replaceAll("'","&#39;");
   }
 
+  function setMsg(t){
+    if(supMsg) supMsg.textContent=t||"";
+    if(supFootMsg) supFootMsg.textContent=t||"";
+  }
+
+  function showThanksForm(sessionId){
+    if(!thanks) return;
+    thanks.hidden=false;
+    thanks.dataset.sessionId=sessionId||"";
+    if(supName && !supName.value) supName.focus();
+  }
+
+  async function startCheckout(){
+    if(!donateBtn) return;
+    const api=apiBase();
+    if(!api && window.location.protocol.startsWith("http") && window.location.hostname!=="localhost"){
+      setMsg("Backend not set. Add window.SUPPORTERS_API_BASE = \"https://support-leaderboard-backend.onrender.com\".");
+      return;
+    }
+    try{
+      donateBtn.setAttribute("aria-busy","true");
+      donateBtn.disabled=true;
+      const res=await fetch((api?`${api}/create-checkout-session`:"/create-checkout-session"),{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({display_name:(supName&&supName.value)||""})
+      });
+      if(!res.ok) throw new Error("bad_response");
+      const data=await res.json();
+      if(!data||!data.url) throw new Error("missing_url");
+      window.location.href=data.url;
+    }catch(_e){
+      setMsg("Couldn’t start checkout. Make sure the backend is live and CORS_ORIGIN includes your site.");
+      donateBtn.disabled=false;
+      donateBtn.removeAttribute("aria-busy");
+    }
+  }
+
+  async function saveNote(e){
+    e.preventDefault();
+    if(!thanks) return;
+    const api=apiBase();
+    const sessionId=thanks.dataset.sessionId||"";
+    const name=(supName&&supName.value||"").trim();
+    const note=(supNote&&supNote.value||"").trim();
+    if(!sessionId){ setMsg("Missing session. Please finish checkout first."); return; }
+    if(!name){ setMsg("Please enter your name."); supName?.focus(); return; }
+    try{
+      setMsg("Saving…");
+      const res=await fetch((api?`${api}/save-note`:"/save-note"),{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({session_id:sessionId,display_name:name,note})
+      });
+      const data=await res.json().catch(()=>null);
+      if(!res.ok){ throw new Error((data&&data.error)||"save_failed"); }
+      setMsg("Saved. Thank you for supporting!");
+      await load();
+      // Keep it visible so they see confirmation.
+    }catch(_e){
+      setMsg("Couldn’t save your note. If you already donated, try again in a moment.");
+    }
+  }
+
+  function readThanksParams(){
+    const u=new URL(window.location.href);
+    const thanksFlag=u.searchParams.get("thanks");
+    const sessionId=u.searchParams.get("session_id");
+    if(thanksFlag==="1" && sessionId){
+      showThanksForm(sessionId);
+      // clean URL (keep hash)
+      u.searchParams.delete("thanks");
+      u.searchParams.delete("session_id");
+      window.history.replaceState({}, "", u.pathname + (u.search ? u.search : "") + u.hash);
+    }
+  }
+
+  donateBtn?.addEventListener("click",startCheckout);
+  thanks?.addEventListener("submit",saveNote);
+  skipBtn?.addEventListener("click",()=>{
+    if(thanks) thanks.hidden=true;
+    setMsg("");
+  });
+
   load();
+  readThanksParams();
 })();
 
 /* Course / product detail modal (rails) */
