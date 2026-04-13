@@ -38,18 +38,21 @@ html{
   scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;
   -webkit-text-size-adjust:100%;text-size-adjust:100%;
 }
-@media(prefers-reduced-motion:no-preference){
+/* Snap only on wider viewports; smooth scroll + mandatory snap fights the browser — use auto here */
+@media(prefers-reduced-motion:no-preference) and (min-width:681px){
   html{
     scroll-snap-type:y mandatory;
-    scroll-padding-top:max(60px,calc(env(safe-area-inset-top,0px) + 50px));
+    scroll-behavior:auto;
+    scroll-padding-top:max(40px,calc(env(safe-area-inset-top,0px) + 28px));
+    scroll-padding-bottom:max(28px,calc(env(safe-area-inset-bottom,0px) + 20px));
+    scroll-padding-inline:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
   }
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-snap-type:none}
 }
 @media(max-width:680px) and (prefers-reduced-motion:no-preference){
-  /* Free scroll on phones — snap stays on desktop/tablet only */
-  html{scroll-snap-type:none;scroll-padding-top:0}
+  html{scroll-snap-type:none;scroll-padding:0}
 }
 html::-webkit-scrollbar{display:none;width:0;height:0}
 body{
@@ -78,17 +81,35 @@ html.splash-active,html.splash-active body{overflow:hidden;overscroll-behavior:n
 .wrap{max-width:1060px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 0 max(22px,env(safe-area-inset-left,0px))}
 #links{margin-top:0}
 #links > .kicker{display:none!important}
-/* Links bento: snap + keyboard nav align to viewport center (tall section still snaps on center axis) */
-section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
-.snap-section{scroll-snap-align:start;scroll-snap-stop:always;min-height:100svh;min-height:100dvh;box-sizing:border-box}
+/* Full-viewport snap slides: center block in viewport; avoid scroll-snap-stop:always (janky w/ mandatory snap) */
+.snap-section{
+  scroll-snap-align:center;
+  scroll-snap-stop:normal;
+  min-height:100svh;
+  min-height:100dvh;
+  box-sizing:border-box;
+}
+/* Tall stacked content: land at the top so the section intro is visible */
+.snap-section.snap-section--courses,
+#goals,
+.faq{
+  scroll-snap-align:start;
+  scroll-snap-stop:normal;
+}
+/* Mid-page “chapters”: centered in the viewport */
+#supporters,
+.about,
+footer{
+  scroll-snap-align:center;
+  scroll-snap-stop:normal;
+}
+section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:normal}
 .snap-section--bento{display:flex;flex-direction:column;justify-content:center;padding:max(36px,env(safe-area-inset-top)) 0 max(40px,env(safe-area-inset-bottom));scroll-snap-align:center}
 .snap-section--bento > .wrap{width:100%;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 0 max(22px,env(safe-area-inset-left,0px))}
 .snap-section--courses{padding:max(40px,env(safe-area-inset-top)) 0 max(48px,env(safe-area-inset-bottom))}
 .snap-section--courses > .rail-section{margin-top:0!important}
 .snap-section--courses > .rail-section + .rail-section{margin-top:40px}
 .snap-section--courses > #courses-ai{margin-top:0!important}
-/* Mandatory page snap: every major block needs a snap target or scroll “sticks” at the last one (e.g. courses → timeline). */
-#goals,#supporters,.about,.faq,footer{scroll-snap-align:start;scroll-snap-stop:normal}
 .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
 .section-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
 .section-sub{margin:0 0 28px;color:var(--muted);font-size:15px;line-height:1.6}
@@ -101,7 +122,7 @@ section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
 /* ── 1  hero — .bento-3d + perspective → #heroTiltLayer tilts .hero-tilt-row; .hero-3d-surface translateZ(52px) @681px ── */
 .hero{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100dvh;min-height:100svh;height:auto;position:relative;box-sizing:border-box;padding:max(20px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));overflow:visible}
 .hero-3d-root{
-  flex:1 1 min(560px,calc(100% - 100px));min-width:0;width:100%;max-width:min(560px,calc(100vw - max(40px,calc(env(safe-area-inset-left,0px) + env(safe-area-inset-right,0px) + 24px))));pointer-events:auto;position:relative;z-index:1;
+  flex:1 1 min(500px,calc(100% - 100px));min-width:0;width:100%;max-width:min(500px,calc(100vw - max(40px,calc(env(safe-area-inset-left,0px) + env(safe-area-inset-right,0px) + 24px))));pointer-events:auto;position:relative;z-index:1;
 }
 .hero-bento-3d.bento-3d{width:100%;min-width:0}
 .hero-3d-surface{position:relative;width:100%;min-width:0;pointer-events:auto}
@@ -207,7 +228,7 @@ section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
 .fut-info-copy strong{color:var(--text);font-weight:600}
 #futInfoOverlay .qr-panel{width:min(400px,calc(100vw - 40px))}
 .hero-panel{
-  position:relative;z-index:8;display:flex;flex-direction:column;gap:10px;padding:18px 20px 20px;background:var(--card);border-top:1px solid var(--line);pointer-events:auto;
+  position:relative;z-index:8;display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;background:var(--card);border-top:1px solid var(--line);pointer-events:auto;
 }
 .hero-content{position:static;text-align:left;padding:0;width:100%;max-width:none;box-sizing:border-box}
 /* While intro opacity runs, don’t let the (invisible) block steal clicks from the links row below */
@@ -233,7 +254,10 @@ section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
   .hero-status-column{align-items:flex-end;max-width:100%;padding-right:4px}
   .hero-activity{text-align:right;max-width:100%}
 }
-.hero-lede{display:block;margin:12px 0 14px;font-size:15px;line-height:1.45;color:var(--muted);font-weight:400;max-width:40ch}
+.hero-lede{display:block;margin:12px 0 14px;font-size:15px;line-height:1.45;color:var(--muted);font-weight:400;max-width:min(52ch,100%)}
+.hero-lede a{color:var(--text);text-decoration:none;transition:color .2s ease}
+.hero-lede a:hover{color:var(--pink)}
+.hero-lede a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
 .hero-actions{display:none;flex-wrap:wrap;gap:8px;align-items:center}
 .hero-links-slot:empty{display:none}
 .hero-links-slot:not(:empty){position:relative;z-index:30;margin-top:6px;padding-top:16px;border-top:1px solid var(--line);pointer-events:auto}
@@ -266,7 +290,7 @@ section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
 /* hero — main card (tilt row centers surface on cross-axis) */
 .hero-layout{
   display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0;
-  width:100%;max-width:min(760px,calc(100vw - max(36px,calc(env(safe-area-inset-left,0px) + env(safe-area-inset-right,0px) + 16px))));flex-wrap:wrap;pointer-events:auto;
+  width:100%;max-width:min(660px,calc(100vw - max(36px,calc(env(safe-area-inset-left,0px) + env(safe-area-inset-right,0px) + 16px))));flex-wrap:wrap;pointer-events:auto;
 }
 .hero-tilt-row{
   display:flex;flex-direction:row;align-items:center;justify-content:center;gap:clamp(10px,2.4vw,18px);
@@ -346,25 +370,40 @@ section#links.snap-section{scroll-snap-align:center;scroll-snap-stop:always}
 button.icon-item{font-family:inherit;font-size:inherit;color:inherit;padding:0;border:none;background:none;cursor:pointer}
 button.icon-item:focus-visible{outline:none;border-radius:10px;box-shadow:var(--focus)}
 button.icon-item:focus-visible .icon-link{box-shadow:0 3px 10px rgba(0,0,0,.34)}
-/* My Links — desktop: single row, shrink to fit card */
+/* My Links — desktop: single row, larger tiles, tight gap, centered pack */
 @media(min-width:681px){
   #linksCell .icon-row{
-    flex-wrap:nowrap;justify-content:space-between;align-items:flex-start;gap:clamp(2px,0.8vw,8px);margin-top:12px;
+    flex-wrap:nowrap;justify-content:center;align-items:flex-start;gap:clamp(0px,0.45vw,5px);margin-top:12px;
   }
   #linksCell .icon-row > li{
-    flex:1 1 0;min-width:0;display:flex;justify-content:center;
+    flex:0 0 auto;min-width:0;display:flex;justify-content:center;
   }
   #linksCell .icon-item{
-    max-width:none;width:100%;min-width:0;
+    max-width:none;width:auto;min-width:0;
   }
   #linksCell .icon-link{
-    width:clamp(32px,4.2vw,40px);height:clamp(32px,4.2vw,40px);
+    width:clamp(42px,5.4vw,50px);height:clamp(42px,5.4vw,50px);
   }
   #linksCell .icon-link svg.icon-svg{
-    max-width:24px;max-height:24px;
+    max-width:30px;max-height:30px;
   }
   #linksCell .icon-item-label{
-    font-size:clamp(7px,1.35vw,9px);line-height:1.15;
+    font-size:clamp(8px,1.5vw,10px);line-height:1.15;
+  }
+  /* Hero card is narrow — tighter tap targets + capped icon max so 8 tiles fit */
+  .hero-links-slot #linksCell a.icon-item,
+  .hero-links-slot #linksCell button.icon-item{
+    min-width:0;
+    padding:8px 2px;
+    margin:-4px -1px;
+    min-height:70px;
+  }
+  .hero-links-slot #linksCell .icon-link{
+    width:clamp(40px,4.9vw,46px);
+    height:clamp(40px,4.9vw,46px);
+  }
+  .hero-links-slot #linksCell .icon-link svg.icon-svg{
+    max-width:28px;max-height:28px;
   }
 }
 .uline{position:relative;text-decoration:none;color:var(--text);font-weight:500;font-size:14px;padding:4px 0}
@@ -616,6 +655,35 @@ button.chip{
 .pal-trigger__ic{width:15px;height:15px;flex-shrink:0;opacity:.5}
 .pal-trigger__text{color:#999;white-space:nowrap}
 .pal-trigger kbd{padding:3px 8px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-family:inherit;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+/* Desktop — floating vertical grey island (dots only) */
+.section-rail{display:none}
+@media(min-width:681px){
+  .section-rail{
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    position:fixed;top:50%;right:max(12px,env(safe-area-inset-right,0px));
+    transform:translateY(-50%);z-index:62;
+    padding:12px 9px;border-radius:999px;box-sizing:border-box;
+    background:rgba(36,36,36,.82);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 10px 36px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);
+    pointer-events:auto;
+  }
+  html.splash-active .section-rail{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s}
+  .section-rail__btn{
+    display:block;margin:0;padding:0;width:6px;height:6px;border:none;border-radius:50%;
+    background:#2e2e2e;cursor:pointer;flex-shrink:0;
+    transition:background .2s ease,transform .2s ease;
+  }
+  .section-rail__btn:hover{background:#454545;transform:scale(1.15)}
+  .section-rail__btn:focus-visible{outline:none;box-shadow:var(--focus)}
+  .section-rail__btn.is-active{background:#9a9a9a;transform:scale(1)}
+  .section-rail__btn.is-active:hover{background:#b0b0b0}
+}
+@media(min-width:681px) and (prefers-reduced-motion:reduce){
+  .section-rail__btn{transition:background .15s ease}
+  .section-rail__btn:hover,.section-rail__btn.is-active{transform:none}
+}
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s;z-index:200;display:grid;place-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-sizing:border-box}
 .backdrop.is-open{opacity:1;visibility:visible;pointer-events:auto}
 .palette{width:min(500px,calc(100vw - 32px));max-height:min(560px,calc(100dvh - 32px),calc(100svh - 32px));display:flex;flex-direction:column;background:#131313;border:1px solid var(--line);border-radius:16px;box-shadow:0 40px 80px rgba(0,0,0,.65);overflow:hidden;transform:translateY(-8px) scale(.98);transition:transform .2s ease}
@@ -656,7 +724,7 @@ button.chip{
 .dc-store:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
 
 /* ── 8a  timeline ── */
-.tl{margin-top:96px;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 0 max(22px,env(safe-area-inset-left,0px))}
+.tl{margin-top:96px;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) clamp(48px,10vh,120px) max(22px,env(safe-area-inset-left,0px))}
 .tl .tl-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
 .tl .tl-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
 .tl .tl-sub{margin:0 0 40px;color:var(--muted);font-size:15px;line-height:1.6}
@@ -750,8 +818,8 @@ button.chip{
 
 /* ── 8a2  top supporters (unified card — coming soon) ── */
 .supporters{
-  margin-top:88px;max-width:680px;margin-left:auto;margin-right:auto;
-  padding:0 max(22px,env(safe-area-inset-right,0px)) 8px max(22px,env(safe-area-inset-left,0px));
+  margin-top:clamp(120px,22vh,260px);max-width:680px;margin-left:auto;margin-right:auto;
+  padding:0 max(22px,env(safe-area-inset-right,0px)) clamp(56px,12vh,140px) max(22px,env(safe-area-inset-left,0px));
 }
 .supporters-card{
   border-radius:20px;border:1px solid var(--line);
@@ -830,7 +898,7 @@ button.chip{
 .sup-donate-btn{margin:0 auto;display:flex;justify-content:center;min-width:min(240px,100%)}
 
 /* ── 8b  about me (editorial) ── */
-.about{margin-top:88px;max-width:660px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 64px max(22px,env(safe-area-inset-left,0px))}
+.about{margin-top:clamp(96px,16vh,200px);max-width:660px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 64px max(22px,env(safe-area-inset-left,0px))}
 .about .about-kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
 .about h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;margin:0 0 28px}
 .about .lead{font-size:1.1rem;line-height:1.7;color:#b0b0b0;font-weight:300;margin:0 0 32px}
@@ -842,7 +910,7 @@ button.chip{
 .cert-list li:last-child{border-bottom:none}
 .cert-list .badge{width:18px;height:18px;flex-shrink:0}
 /* FAQ — Lab 10 accordion (<details>) */
-.faq{margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 64px max(22px,env(safe-area-inset-left,0px))}
+.faq{margin-top:clamp(48px,9vh,100px);max-width:640px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 64px max(22px,env(safe-area-inset-left,0px))}
 .faq .faq-kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
 .faq .faq-title{margin:0 0 28px;font-size:clamp(1.5rem,4vw,1.85rem);font-weight:600;letter-spacing:-.03em;line-height:1.15}
 .faq details{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:10px;overflow:hidden}
@@ -965,7 +1033,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 @media(max-width:680px){
   .hero{padding:max(28px,calc(env(safe-area-inset-top,0px) + 14px)) max(18px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left))}
   .hero-3d-root{max-width:100%}
-  .hero-panel{gap:8px;padding:15px 16px 17px}
+  .hero-panel{gap:8px;padding:15px clamp(18px,5vw,22px) 17px}
   .hero-content .hero-name h1{font-size:clamp(1.65rem,6.5vw,2rem)}
   .hero-name{gap:6px}
   .hero-verified img{width:clamp(18px,5vw,22px);height:clamp(18px,5vw,22px)}
@@ -985,15 +1053,27 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   .pal-trigger{top:max(8px,calc(env(safe-area-inset-top,0px) + 4px));padding:8px 18px 8px 14px;max-width:min(300px,calc(100vw - 24px))}
   .pal-trigger kbd{display:none}
   .hero-scroll-hint{margin-top:28px;padding:0 16px;max-width:min(340px,calc(100vw - 32px));margin-left:auto;margin-right:auto}
-  /* My Links: one row, shrink to fit viewport (no horizontal scroll) */
+  /* Hero My Links: extra inset so row never hugs card edges; even spacing */
+  .hero-links-slot:not(:empty){
+    padding-left:clamp(10px,3.5vw,18px);
+    padding-right:clamp(10px,3.5vw,18px);
+    box-sizing:border-box;
+  }
+  /* My Links: one row; default centered (bento / fallback) */
   #linksCell .icon-row{
-    display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:space-between;align-items:flex-start;
-    gap:clamp(0px,1vw,5px);
+    display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:center;align-items:flex-start;
+    gap:clamp(0px,0.5vw,3px);
     overflow-x:visible;
     padding:2px 0 8px;margin:0;
   }
+  .hero-links-slot #linksCell .icon-row{
+    justify-content:space-evenly;
+    gap:clamp(1px,0.7vw,4px);
+    padding:4px 2px 10px;
+    box-sizing:border-box;
+  }
   #linksCell .icon-row > li{
-    flex:1 1 0;
+    flex:0 0 auto;
     min-width:0;
     display:flex;
     justify-content:center;
@@ -1002,7 +1082,14 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     max-width:none;width:100%;min-width:0;box-sizing:border-box;
   }
   .hero-links-slot #linksCell a.icon-item,
-  .hero-links-slot #linksCell button.icon-item,
+  .hero-links-slot #linksCell button.icon-item{
+    min-width:0;
+    min-height:0;
+    padding:6px 1px 5px;
+    margin:0;
+    justify-content:center;
+    align-items:center;
+  }
   #links #linksCell a.icon-item,
   #links #linksCell button.icon-item{
     min-width:0;
@@ -1012,19 +1099,34 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     justify-content:center;
     align-items:center;
   }
-  .hero-links-slot #linksCell .icon-link,
-  #links #linksCell .icon-link{
-    width:clamp(22px,9vw,36px);
-    height:clamp(22px,9vw,36px);
-    border-radius:clamp(8px,2.2vw,12px);
+  /* Hero: slightly smaller tiles so row + insets fit narrow cards cleanly */
+  .hero-links-slot #linksCell .icon-link{
+    width:clamp(26px,8vw,36px);
+    height:clamp(26px,8vw,36px);
+    border-radius:clamp(8px,2.2vw,11px);
   }
-  .hero-links-slot #linksCell .icon-link svg.icon-svg,
+  .hero-links-slot #linksCell .icon-link svg.icon-svg{
+    max-width:clamp(16px,5.4vw,26px);
+    max-height:clamp(16px,5.4vw,26px);
+  }
+  #links #linksCell .icon-link{
+    width:clamp(30px,10.5vw,44px);
+    height:clamp(30px,10.5vw,44px);
+    border-radius:clamp(9px,2.5vw,13px);
+  }
   #links #linksCell .icon-link svg.icon-svg{
-    max-width:clamp(14px,5.5vw,26px);
-    max-height:clamp(14px,5.5vw,26px);
+    max-width:clamp(18px,6.2vw,30px);
+    max-height:clamp(18px,6.2vw,30px);
+  }
+  .hero-links-slot #linksCell .icon-item-label{
+    font-size:clamp(6px,2.05vw,8px);
+    line-height:1.12;
+    padding:0 1px;
+    hyphens:auto;
+    overflow-wrap:break-word;
   }
   #linksCell .icon-item-label{
-    font-size:clamp(5px,2.1vw,8px);
+    font-size:clamp(6px,2.35vw,9px);
     line-height:1.1;
   }
 }
@@ -1063,7 +1165,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   .wrap{padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
   .cell{padding:18px}
   .chip{flex:0 0 min(88vw,calc(100vw - 24px))}
-  .tl{padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+  .tl{padding:0 max(16px,env(safe-area-inset-right,0px)) clamp(40px,9vh,100px) max(16px,env(safe-area-inset-left,0px))}
   .about,.faq{padding:0 max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
   .icon-link{width:42px;height:42px;border-radius:10px}
   .pal-trigger{font-size:12px;padding:7px 16px 7px 12px;max-width:min(280px,calc(100vw - 20px))}
@@ -1144,6 +1246,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 <div id="splash" class="splash" aria-live="polite" aria-busy="true">
   <p class="splash__text">Welcome.</p>
 </div>
+<nav class="section-rail" id="sectionRail" aria-label="On-page sections"></nav>
 
 <!-- ═══ 1. HERO — card (image + links + copy) ═══ -->
 <section class="hero snap-section" id="top" aria-label="Hero">
@@ -1172,7 +1275,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             <p class="hero-activity" id="heroActivityLine" aria-live="polite"></p>
           </div>
         </div>
-        <p class="hero-lede">im tired 🥱🥱</p>
+        <p class="hero-lede">Documenting my journey<br/>To purchase a <a href="https://www.porsche.com/international/models/911/911-gt3-rs/911-gt3-rs/" target="_blank" rel="noopener noreferrer">@Porsche</a></p>
         <div class="hero-actions">
           <a class="btn btn--solid" href="#links">My links</a>
           <a class="btn btn--ghost" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -1200,12 +1303,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h3>My Links</h3>
       <ul class="icon-row">
         <li>
-          <a class="icon-item" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Github.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
-            <span class="icon-item-label">GitHub</span>
-          </a>
-        </li>
-        <li>
           <a class="icon-item" href="https://www.instagram.com/delexooo/" target="_blank" rel="noopener noreferrer">
             <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Instagram.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
             <span class="icon-item-label">Instagram</span>
@@ -1216,6 +1313,12 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             <span class="icon-link icon-link--on-light" aria-hidden="true"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Discord.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
             <span class="icon-item-label">Discord</span>
           </button>
+        </li>
+        <li>
+          <a class="icon-item" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">
+            <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Github.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
+            <span class="icon-item-label">GitHub</span>
+          </a>
         </li>
         <li>
           <a class="icon-item" href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer">
@@ -1240,11 +1343,11 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         <li>
           <a class="icon-item" href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">
             <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Stripe.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
-            <span class="icon-item-label">Support Me!</span>
+            <span class="icon-item-label">Tip Me!</span>
           </a>
         </li>
         <li>
-          <button type="button" class="icon-item" id="linksShareBtn" aria-haspopup="dialog" aria-controls="pageToolsOverlay" aria-label="Share page, QR code, and copy link">
+          <button type="button" class="icon-item" id="linksShareBtn" aria-haspopup="dialog" aria-controls="pageToolsOverlay" aria-label="Spread the word — share, QR code, or copy link">
             <span class="icon-link" aria-hidden="true">
               <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
             </span>
@@ -1611,7 +1714,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (securely)</span><span class="pal-hint">↗</span></a>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer" role="option"><span>Venmo</span><span class="pal-hint">↗</span></a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer" role="option"><span>Cashapp</span><span class="pal-hint">↗</span></a>
-      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer" role="option"><span>Support Me!</span><span class="pal-hint">↗</span></a>
+      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer" role="option"><span>Tip Me!</span><span class="pal-hint">↗</span></a>
       <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" role="option"><span>Free University Tools</span><span class="pal-hint">↗</span></a>
       <a href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer" role="option"><span>Build Your Own Discord Template</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" role="option"><span>Nothing. (app)</span><span class="pal-hint">↗</span></a>
@@ -1661,7 +1764,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <button type="button" class="qr-x" id="pageToolsClose" aria-label="Close dialog">×</button>
     </div>
     <div class="qr-panel__body">
-      <h2 id="pageToolsTitle" class="qr-title">This page — Share, scan the QR code, or copy the link.</h2>
+      <h2 id="pageToolsTitle" class="qr-title">Spread the word!</h2>
       <img class="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&amp;data=https%3A%2F%2Fdelexo.store%2F" alt="QR code for delexo.store" width="200" height="200" loading="lazy" decoding="async"/>
       <p class="qr-domain">delexo.store</p>
       <div class="mobile-tools-actions">
@@ -1793,7 +1896,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   </details>
   <details name="faq">
     <summary>How can I donate? Ur cool ig.</summary>
-    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">Support Me</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Support.”</div>
+    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">Tip Me!</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Tip.”</div>
   </details>
   <details name="faq">
     <summary>What's your Geometry Dash username?</summary>
@@ -1815,7 +1918,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h4>Payments</h4>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noreferrer">Venmo</a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noreferrer">Cashapp</a>
-      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noreferrer">Support Me!</a>
+      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noreferrer">Tip Me!</a>
     </div>
     <div class="foot-col">
       <h4>Courses</h4>
@@ -1953,6 +2056,96 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     const block=el.id==="links"?"center":"start";
     el.scrollIntoView({behavior:instant?"auto":"smooth",block});
   });
+})();
+
+/* Desktop section rail — dots match keyboard nav sections */
+(function(){
+  const SECTION_SEL="section#top, section#links, div.snap-section.snap-section--courses, section#goals, section#supporters, section#about, section#faq";
+  const rail=document.getElementById("sectionRail");
+  if(!rail) return;
+  const mq=window.matchMedia("(min-width:681px)");
+  let secs=[];
+  let btns=[];
+
+  function labelFor(el){
+    const id=el.id;
+    if(id==="top") return "Hero";
+    if(id==="links") return "Links";
+    if(id==="goals") return "Journey";
+    if(id==="supporters") return "Supporters";
+    if(id==="about") return "About";
+    if(id==="faq") return "FAQ";
+    if(el.matches&&el.matches("div.snap-section.snap-section--courses")) return "Courses";
+    return "Section";
+  }
+  function blockFor(el){
+    return el.id==="links"?"center":"start";
+  }
+  function build(){
+    rail.innerHTML="";
+    secs=[...document.querySelectorAll(SECTION_SEL)];
+    secs.forEach((el,i)=>{
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="section-rail__btn";
+      const lab=labelFor(el);
+      b.setAttribute("aria-label","Go to: "+lab);
+      b.title=lab;
+      b.dataset.index=String(i);
+      rail.appendChild(b);
+    });
+    btns=[...rail.querySelectorAll(".section-rail__btn")];
+  }
+  function updateActive(){
+    if(!mq.matches||!btns.length) return;
+    let best=0;
+    let maxVis=0;
+    secs.forEach((el,i)=>{
+      const r=el.getBoundingClientRect();
+      const vis=Math.max(0,Math.min(r.bottom,window.innerHeight)-Math.max(r.top,0));
+      if(vis>maxVis){maxVis=vis;best=i;}
+    });
+    if(maxVis<4&&secs.length){
+      const y=window.innerHeight*0.35;
+      let d=Infinity;
+      secs.forEach((el,i)=>{
+        const r=el.getBoundingClientRect();
+        const c=r.top+r.height/2;
+        const dd=Math.abs(c-y);
+        if(dd<d){d=dd;best=i;}
+      });
+    }
+    btns.forEach((b,j)=>{
+      const on=j===best;
+      b.classList.toggle("is-active",on);
+      if(on) b.setAttribute("aria-current","true");
+      else b.removeAttribute("aria-current");
+    });
+  }
+  function go(i){
+    const el=secs[i];
+    if(!el) return;
+    const instant=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({behavior:instant?"auto":"smooth",block:blockFor(el)});
+  }
+  rail.addEventListener("click",e=>{
+    const t=e.target.closest(".section-rail__btn");
+    if(!t) return;
+    go(+t.dataset.index);
+  });
+  let scrollTick=false;
+  window.addEventListener("scroll",()=>{
+    if(!mq.matches) return;
+    if(scrollTick) return;
+    scrollTick=true;
+    requestAnimationFrame(()=>{scrollTick=false;updateActive();});
+  },{passive:true});
+  window.addEventListener("resize",()=>{if(mq.matches) updateActive();});
+  mq.addEventListener("change",()=>{
+    if(mq.matches){build();updateActive();}
+    else{rail.innerHTML="";secs=[];btns=[];}
+  });
+  if(mq.matches){build();updateActive();}
 })();
 
 /* In-page #links targets (hero button, palette): match centered snap, not default fragment top */
