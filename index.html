@@ -2266,7 +2266,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             </tr>
           </thead>
           <tbody id="supportersTbody" data-static-fallback="1">
-            <tr><td class="sup-rank">—</td><td class="sup-name">Loading…</td><td class="sup-note">Fetching live supporters</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
+            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
             <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
             <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
             <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
@@ -2294,31 +2294,11 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             <div class="sup-social-grid" id="supSocialGrid">
               <div class="sup-social-item">
                 <label for="supIg">Instagram (optional)</label>
-                <input id="supIg" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+                <input id="supIg" type="text" inputmode="text" autocomplete="off" placeholder="@username"/>
               </div>
               <div class="sup-social-item">
                 <label for="supTt">TikTok (optional)</label>
-                <input id="supTt" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
-              </div>
-              <div class="sup-social-item">
-                <label for="supSc">Snapchat (optional)</label>
-                <input id="supSc" type="text" inputmode="text" autocomplete="off" placeholder="username or URL"/>
-              </div>
-              <div class="sup-social-item">
-                <label for="supPi">Pinterest (optional)</label>
-                <input id="supPi" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
-              </div>
-              <div class="sup-social-item">
-                <label for="supFb">Facebook (optional)</label>
-                <input id="supFb" type="text" inputmode="text" autocomplete="off" placeholder="username/page or URL"/>
-              </div>
-              <div class="sup-social-item">
-                <label for="supYt">YouTube (optional)</label>
-                <input id="supYt" type="text" inputmode="text" autocomplete="off" placeholder="@handle or URL"/>
-              </div>
-              <div class="sup-social-item">
-                <label for="supX">X (optional)</label>
-                <input id="supX" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+                <input id="supTt" type="text" inputmode="text" autocomplete="off" placeholder="@username"/>
               </div>
             </div>
           </div>
@@ -3712,11 +3692,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   const supNote=document.getElementById("supNote");
   const supIg=document.getElementById("supIg");
   const supTt=document.getElementById("supTt");
-  const supSc=document.getElementById("supSc");
-  const supPi=document.getElementById("supPi");
-  const supFb=document.getElementById("supFb");
-  const supYt=document.getElementById("supYt");
-  const supX=document.getElementById("supX");
   const nameCount=document.getElementById("supNameCount");
   const noteCount=document.getElementById("supNoteCount");
   if(!tbody) return;
@@ -3776,27 +3751,16 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   function buildSocialUrl(kind,val){
     const raw=(val||"").trim();
     if(!raw) return "";
-    if(/^https?:\/\//i.test(raw)) return raw;
     const h=normalizeHandle(raw);
     if(!h) return "";
     if(kind==="instagram") return `https://www.instagram.com/${h}/`;
     if(kind==="tiktok") return `https://www.tiktok.com/@${h}`;
-    if(kind==="snapchat") return `https://www.snapchat.com/add/${h}`;
-    if(kind==="pinterest") return `https://www.pinterest.com/${h}/`;
-    if(kind==="facebook") return `https://www.facebook.com/${h}`;
-    if(kind==="youtube") return `https://www.youtube.com/@${h}`;
-    if(kind==="x") return `https://x.com/${h}`;
     return "";
   }
   function getPickedSocial(){
     const items=[
       {kind:"instagram",el:supIg},
       {kind:"tiktok",el:supTt},
-      {kind:"snapchat",el:supSc},
-      {kind:"pinterest",el:supPi},
-      {kind:"facebook",el:supFb},
-      {kind:"youtube",el:supYt},
-      {kind:"x",el:supX},
     ].filter(x=>x.el);
     const filled=items
       .map(it=>({kind:it.kind,val:(it.el.value||"").trim()}))
@@ -3806,11 +3770,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     const one=filled[0];
     const built=buildSocialUrl(one.kind,one.val);
     const safe=safeUrl(built);
-    if(!safe) return {error:"That social link looks invalid. Paste a full https:// link or just your username."};
+    if(!safe) return {error:"That handle looks invalid. Use just your @username."};
     return {social_url:safe};
   }
   function lockSocialInputs(active){
-    const els=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
+    const els=[supIg,supTt].filter(Boolean);
     const hasActive=!!active;
     els.forEach(el=>{
       const mine=el===active;
@@ -3950,7 +3914,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   }
   supName?.addEventListener("input",updateCounts);
   supNote?.addEventListener("input",updateCounts);
-  const socialEls=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
+  const socialEls=[supIg,supTt].filter(Boolean);
   socialEls.forEach(el=>{
     el.addEventListener("input",()=>{
       const v=(el.value||"").trim();
