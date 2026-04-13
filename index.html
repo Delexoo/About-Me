@@ -1208,13 +1208,79 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 .supporters-blurb strong{color:#c8c8c8;font-weight:600}
 .supporters-card__table{border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
 .supporters-card__scroll{
-  height:420px; /* ~10 rows + header, scroll for the rest (top 25) */
+  position:relative;
+  height:420px; /* ~10 rows + header, scroll for the rest */
   max-height:min(420px,calc(100svh - 240px));
   overflow-y:auto;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
   touch-action:pan-x pan-y;
+}
+/* Leaderboard loading overlay — blurred placeholder “donations”, then real data */
+.sup-leaderboard-loading{
+  position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border-radius:0;
+  transition:opacity .35s ease,visibility .35s ease;
+}
+.sup-leaderboard-loading[hidden]{
+  display:none!important;
+}
+.sup-leaderboard-loading.is-done{
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.sup-leaderboard-loading__blur{
+  position:absolute;inset:0;padding:48px 14px 14px;
+  display:flex;flex-direction:column;gap:10px;
+  filter:blur(10px);-webkit-filter:blur(10px);
+  opacity:.65;pointer-events:none;
+}
+.sup-skel-row{
+  display:flex;align-items:center;gap:12px;height:42px;padding:0 14px;
+  border-radius:10px;
+  background:linear-gradient(90deg,rgba(232,99,154,.12),rgba(255,255,255,.06),rgba(232,99,154,.1));
+  background-size:200% 100%;
+  animation:sup-skel-shimmer 2.2s ease-in-out infinite;
+}
+.sup-skel-row:nth-child(2){animation-delay:.2s;opacity:.85}
+.sup-skel-row:nth-child(3){animation-delay:.35s;opacity:.75}
+.sup-skel-row:nth-child(4){animation-delay:.5s;opacity:.65}
+.sup-skel-row:nth-child(5){animation-delay:.65s;opacity:.55}
+.sup-skel-row:nth-child(6){animation-delay:.8s;opacity:.45}
+@keyframes sup-skel-shimmer{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+@media(prefers-reduced-motion:reduce){
+  .sup-skel-row{animation:none}
+  .sup-loading-dot{animation:none;opacity:.85}
+}
+.sup-leaderboard-loading__veil{
+  position:absolute;inset:0;
+  background:rgba(17,17,17,.52);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  pointer-events:none;
+}
+.sup-leaderboard-loading__text{
+  position:relative;z-index:2;margin:0;
+  font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  color:#e0e0e0;
+  display:flex;align-items:center;gap:2px;
+}
+.sup-loading-dot{
+  display:inline-block;width:.35em;animation:sup-dot-pulse 1s ease-in-out infinite;
+}
+.sup-loading-dot:nth-child(2){animation-delay:.15s}
+.sup-loading-dot:nth-child(3){animation-delay:.3s}
+.sup-loading-dot:nth-child(4){animation-delay:.45s}
+@keyframes sup-dot-pulse{
+  0%,100%{opacity:.2;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-2px)}
+}
+@media(max-width:680px){
+  .sup-table .sup-col-note,
+  .sup-table thead th.sup-col-note{display:none!important}
+  .sup-table{min-width:280px}
 }
 .sup-table{width:100%;min-width:360px;border-collapse:separate;border-spacing:0;font-size:14px}
 .sup-table thead th{
@@ -2169,26 +2235,34 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
     </header>
     <p class="supporters-blurb" id="supportersDesc">
-      A quick thank-you wall for voluntary support — <strong>rank, support level, and a short note</strong> per person. <strong>No obligation.</strong>
+      A quick thank-you wall for voluntary support — <strong>rank and support level</strong> for everyone who donates (notes on larger screens). <strong>No obligation.</strong>
     </p>
     <div class="supporters-card__table">
-      <div class="supporters-card__scroll">
+      <div class="supporters-card__scroll" id="supportersScroll">
+        <div class="sup-leaderboard-loading" id="supLeaderboardLoading" aria-busy="true" aria-label="Loading leaderboard">
+          <div class="sup-leaderboard-loading__blur" aria-hidden="true">
+            <div class="sup-skel-row"></div>
+            <div class="sup-skel-row"></div>
+            <div class="sup-skel-row"></div>
+            <div class="sup-skel-row"></div>
+            <div class="sup-skel-row"></div>
+            <div class="sup-skel-row"></div>
+          </div>
+          <div class="sup-leaderboard-loading__veil" aria-hidden="true"></div>
+          <p class="sup-leaderboard-loading__text" aria-live="polite">
+            <span>Loading</span><span class="sup-loading-dot">.</span><span class="sup-loading-dot">.</span><span class="sup-loading-dot">.</span>
+          </p>
+        </div>
         <table class="sup-table">
           <thead>
             <tr>
               <th scope="col">Rank</th>
               <th scope="col">Supporter</th>
-              <th scope="col">Note</th>
+              <th scope="col" class="sup-col-note">Note</th>
               <th scope="col">Support</th>
             </tr>
           </thead>
-          <tbody id="supportersTbody" data-static-fallback="1">
-            <tr><td class="sup-rank">1</td><td class="sup-name">Jesus</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">$5</span></td></tr>
-            <tr><td class="sup-rank">2</td><td class="sup-name">Bri</td><td class="sup-note">tysm i will save this website forever youre an actual life saver</td><td class="sup-amt"><span class="sup-amt-tag">$3</span></td></tr>
-            <tr><td class="sup-rank">3</td><td class="sup-name">Joseph</td><td class="sup-note">I'm buggin im broke</td><td class="sup-amt"><span class="sup-amt-tag">$1.67</span></td></tr>
-            <tr><td class="sup-rank">4</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-            <tr><td class="sup-rank">5</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-          </tbody>
+          <tbody id="supportersTbody"></tbody>
         </table>
       </div>
       <div class="supporters-card__foot">
@@ -3638,7 +3712,24 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   const supX=document.getElementById("supX");
   const nameCount=document.getElementById("supNameCount");
   const noteCount=document.getElementById("supNoteCount");
+  const loadingEl=document.getElementById("supLeaderboardLoading");
   if(!tbody) return;
+
+  const LB_LIMIT=10000;
+
+  function showLeaderboardLoading(on){
+    if(!loadingEl) return;
+    if(on){
+      loadingEl.hidden=false;
+      loadingEl.classList.remove("is-done");
+      loadingEl.setAttribute("aria-busy","true");
+    }else{
+      loadingEl.classList.add("is-done");
+      loadingEl.setAttribute("aria-busy","false");
+      window.setTimeout(()=>{ loadingEl.hidden=true; },380);
+    }
+  }
+  showLeaderboardLoading(true);
 
   function fmtMoneyFromCents(cents){
     const n=Number(cents||0)/100;
@@ -3650,25 +3741,33 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   }
 
   async function load(){
+    showLeaderboardLoading(true);
+    tbody.innerHTML="";
     try{
       const api=apiBase();
-      const res=await fetch((api?`${api}/leaderboard?limit=50`:"/leaderboard?limit=50"),{headers:{"Accept":"application/json"}});
-      if(!res.ok) return;
-      const data=await res.json();
-      if(!data||!Array.isArray(data.rows)) return;
-      const rows=data.rows.slice(0,50);
-      if(rows.length===0) return;
-      tbody.innerHTML=rows.map((r,i)=>{
-        const name=(r.display_name||"—").toString();
-        const note=(r.note||"—").toString();
-        const amt=Number.isFinite(Number(r.total_cents))?fmtMoneyFromCents(r.total_cents):"—";
-        const social=(r.social_url||"").toString();
-        const safeSocial=safeUrl(social);
-        const nameHtml=safeSocial ? `<a class="sup-name-link" href="${escapeHtml(safeSocial)}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>` : escapeHtml(name);
-        return `<tr><td class="sup-rank">${i+1}</td><td class="sup-name">${nameHtml}</td><td class="sup-note">${escapeHtml(note)}</td><td class="sup-amt"><span class="sup-amt-tag">${escapeHtml(amt)}</span></td></tr>`;
-      }).join("");
+      const res=await fetch((api?`${api}/leaderboard?limit=${LB_LIMIT}`:`/leaderboard?limit=${LB_LIMIT}`),{headers:{"Accept":"application/json"}});
+      const data=res.ok?await res.json().catch(()=>null):null;
+      const raw=data&&Array.isArray(data.rows)?data.rows:[];
+      const donors=raw.filter(r=>Number(r.total_cents)>0);
+      if(donors.length===0){
+        tbody.innerHTML=`<tr><td class="sup-rank">—</td><td class="sup-name">No supporters yet — be the first.</td><td class="sup-note sup-col-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>`;
+      }else{
+        tbody.innerHTML=donors.map((r,i)=>{
+          const name=(r.display_name||"—").toString();
+          const note=(r.note||"—").toString();
+          const amt=fmtMoneyFromCents(r.total_cents);
+          const social=(r.social_url||"").toString();
+          const safeSocial=safeUrl(social);
+          const nameHtml=safeSocial ? `<a class="sup-name-link" href="${escapeHtml(safeSocial)}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>` : escapeHtml(name);
+          return `<tr><td class="sup-rank">${i+1}</td><td class="sup-name">${nameHtml}</td><td class="sup-note sup-col-note">${escapeHtml(note)}</td><td class="sup-amt"><span class="sup-amt-tag">${escapeHtml(amt)}</span></td></tr>`;
+        }).join("");
+      }
       tbody.dataset.staticFallback="0";
-    }catch(_){}
+    }catch(_){
+      tbody.innerHTML=`<tr><td class="sup-rank">—</td><td class="sup-name">Couldn’t load the leaderboard.</td><td class="sup-note sup-col-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>`;
+    }finally{
+      showLeaderboardLoading(false);
+    }
   }
 
   function escapeHtml(s){

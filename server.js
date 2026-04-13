@@ -78,8 +78,8 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 // Leaderboard API (used by index.html)
 app.get("/leaderboard", async (req, res) => {
   try {
-    const n = Number(req.query?.limit || 50);
-    const limit = Number.isFinite(n) ? Math.max(1, Math.min(200, Math.floor(n))) : 50;
+    const n = Number(req.query?.limit || 10000);
+    const limit = Number.isFinite(n) ? Math.max(1, Math.min(10000, Math.floor(n))) : 10000;
     const sb = supabaseAdmin();
     const { data, error } = await sb
       .from("supporters")
