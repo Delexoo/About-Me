@@ -164,17 +164,10 @@ app.post("/save-note", express.json(), async (req, res) => {
       }
     }
 
-    // IMPORTANT:
-    // - If a repeat donor leaves fields blank, do NOT wipe their existing note/link.
-    // - Only include optional fields when they are explicitly provided.
-    const upsertRow = { email, display_name: displayName };
-    if (note) upsertRow.note = note;
-    if (social_url) upsertRow.social_url = social_url;
-
     const sb = supabaseAdmin();
     const { data, error } = await sb
       .from("supporters")
-      .upsert(upsertRow, { onConflict: "email" })
+      .upsert({ email, display_name: displayName, note: note || null, social_url }, { onConflict: "email" })
       .select("display_name,note,total_cents,social_url")
       .single();
 
@@ -187,6 +180,35 @@ app.post("/save-note", express.json(), async (req, res) => {
       res.status(500).json({ error: "missing_env", detail: msg });
       return;
     }
+    res.status(500).json({ error: "server_error", detail: msg || "unknown" });
+  }
+});
+
+// Prefill supporter data by session_id (same email => can edit/update note/name)
+app.get("/supporter", async (req, res) => {
+  try {
+    const sessionId = typeof req.query?.session_id === "string" ? req.query.session_id : "";
+    if (!sessionId) return res.status(400).json({ error: "missing_fields" });
+
+    const stripe = stripeServer();
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!session || session.payment_status !== "paid") return res.status(403).json({ error: "not_paid" });
+
+    const email = session.customer_details?.email || session.customer_email;
+    if (!email) return res.status(400).json({ error: "missing_email" });
+
+    const sb = supabaseAdmin();
+    const { data, error } = await sb
+      .from("supporters")
+      .select("display_name,note,social_url,total_cents")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (error) return res.status(500).json({ error: "db_error", detail: error.message, code: error.code });
+    res.json({ supporter: data || null });
+  } catch (e) {
+    console.error("supporter prefill error:", e);
+    const msg = e?.message ? String(e.message) : "";
     res.status(500).json({ error: "server_error", detail: msg || "unknown" });
   }
 });

@@ -1171,37 +1171,6 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 24px 54px -34px rgba(0,0,0,.7);
   position:relative;overflow:hidden;
 }
-.supporters-live{
-  position:absolute;
-  top:16px;
-  right:16px;
-  z-index:3;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:#ffd6d6;
-  background:rgba(255,64,64,.12);
-  border:1px solid rgba(255,64,64,.28);
-  box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 10px 28px rgba(0,0,0,.35);
-  user-select:none;
-  pointer-events:none;
-}
-.supporters-live__dot{
-  width:7px;height:7px;border-radius:50%;
-  background:#ff3d3d;
-  box-shadow:0 0 0 3px rgba(255,61,61,.18),0 0 18px rgba(255,61,61,.35);
-  animation:sup-live-pulse 1.35s ease-in-out infinite;
-}
-@keyframes sup-live-pulse{
-  0%,100%{transform:scale(1);box-shadow:0 0 0 3px rgba(255,61,61,.18),0 0 18px rgba(255,61,61,.35)}
-  50%{transform:scale(1.25);box-shadow:0 0 0 8px rgba(255,61,61,0),0 0 28px rgba(255,61,61,.55)}
-}
 .supporters-card::before{
   content:"";position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
@@ -1230,34 +1199,6 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
   margin:0 0 14px;font-family:var(--serif);font-weight:400;font-size:clamp(1.85rem,4.5vw,2.35rem);
   letter-spacing:-.02em;line-height:1.12;color:var(--text);
 }
-.supporters-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.supporters-live{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:#ffbcbc;
-  background:rgba(255,59,59,.14);
-  border:1px solid rgba(255,59,59,.28);
-  box-shadow:0 1px 0 rgba(255,255,255,.06) inset;
-  flex-shrink:0;
-}
-.supporters-live__dot{
-  width:7px;height:7px;border-radius:50%;
-  background:#ff3b3b;
-  box-shadow:0 0 0 0 rgba(255,59,59,.55);
-  animation:sup-live-pulse 1.25s ease-in-out infinite;
-}
-@keyframes sup-live-pulse{
-  0%,100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(255,59,59,.55)}
-  50%{transform:scale(1.15);box-shadow:0 0 0 8px rgba(255,59,59,0)}
-}
-@media(prefers-reduced-motion:reduce){
-  .supporters-live__dot{animation:none}
-}
 .supporters-blurb{
   margin:0;padding:0 22px 20px;font-size:14px;line-height:1.65;color:var(--muted);font-weight:400;
 }
@@ -1267,8 +1208,10 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 .supporters-blurb strong{color:#c8c8c8;font-weight:600}
 .supporters-card__table{border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
 .supporters-card__scroll{
-  max-height:520px; /* ~10 rows + header */
-  overflow:auto;
+  height:420px; /* ~10 rows + header, scroll for the rest (top 25) */
+  max-height:min(420px,calc(100svh - 240px));
+  overflow-y:auto;
+  overflow-x:auto;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
   touch-action:pan-x pan-y;
@@ -1379,32 +1322,6 @@ html.splash-active .side-island-stack{opacity:0;visibility:hidden;pointer-events
 .sup-msg{margin:10px 0 0;color:#8a8a8a;font-size:12px;line-height:1.45}
 .sup-foot-msg{margin:10px auto 0;max-width:520px;color:#8a8a8a;font-size:12px;line-height:1.45}
 
-/* Supporters table — mobile cleanup (avoid super-tall wrapping rows) */
-@media(max-width:520px){
-  .supporters{max-width:720px}
-  .supporters-live{top:12px;right:12px}
-  .sup-table{
-    min-width:0;
-    table-layout:fixed;
-    font-size:13px;
-  }
-  .sup-table thead th,
-  .sup-table tbody td{padding:10px 12px}
-  .sup-table thead th:nth-child(1){width:52px}
-  .sup-table thead th:nth-child(2){width:32%}
-  .sup-table thead th:nth-child(4){width:92px}
-  .sup-table .sup-note{
-    max-width:none;
-    overflow:hidden;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    line-clamp:2;
-    word-break:break-word;
-  }
-  .sup-amt-tag{padding:3px 9px;font-size:11px}
-}
-
 /* ── 8b  about me (editorial) ── */
 .about{margin-top:clamp(32px,6vh,72px);max-width:660px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) max(40px,min(8vh,72px)) max(22px,env(safe-area-inset-left,0px))}
 section#about.about{padding-top:clamp(24px,5vh,56px)}
@@ -1437,8 +1354,12 @@ section#about.about{padding-top:clamp(24px,5vh,56px)}
 .faq details[data-gd-egg] .gd-egg{
   position:relative;
   display:inline-block;
+  /* Give the icon room to run across (full container feel) */
+  width:clamp(200px,42vw,420px);
+  max-width:100%;
   padding:0 22px 16px 2px;
   vertical-align:baseline;
+  overflow:hidden;
 }
 .faq details[data-gd-egg] .gd-handle{position:relative;z-index:2}
 .faq details[data-gd-egg] .gd-icon{
@@ -1449,7 +1370,9 @@ section#about.about{padding-top:clamp(24px,5vh,56px)}
   opacity:0;
   z-index:1;
   pointer-events:none;
-  filter:drop-shadow(0 8px 18px rgba(0,0,0,.55));
+  filter:none;
+  image-rendering:auto;
+  box-shadow:0 8px 18px rgba(0,0,0,.55);
   transform:translate3d(-140%,6px,0);
   will-change:transform;
 }
@@ -2243,13 +2166,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   <div class="supporters-card">
     <header class="supporters-card__head">
       <p class="supporters-kicker"><span class="supporters-kicker__dot" aria-hidden="true"></span> Support the journey</p>
-      <div class="supporters-title-row">
-        <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
-        <span class="supporters-live" aria-label="Live leaderboard">
-          <span class="supporters-live__dot" aria-hidden="true"></span>
-          Live
-        </span>
-      </div>
+      <h2 class="supporters-card__title" id="supportersTitle">Top supporters</h2>
     </header>
     <p class="supporters-blurb" id="supportersDesc">
       A quick thank-you wall for voluntary support — <strong>rank, support level, and a short note</strong> per person. <strong>No obligation.</strong>
@@ -2266,11 +2183,11 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             </tr>
           </thead>
           <tbody id="supportersTbody" data-static-fallback="1">
-            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
-            <tr><td class="sup-rank">—</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
+            <tr><td class="sup-rank">1</td><td class="sup-name">Jesus</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">$5</span></td></tr>
+            <tr><td class="sup-rank">2</td><td class="sup-name">Bri</td><td class="sup-note">tysm i will save this website forever youre an actual life saver</td><td class="sup-amt"><span class="sup-amt-tag">$3</span></td></tr>
+            <tr><td class="sup-rank">3</td><td class="sup-name">Joseph</td><td class="sup-note">I'm buggin im broke</td><td class="sup-amt"><span class="sup-amt-tag">$1.67</span></td></tr>
+            <tr><td class="sup-rank">4</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
+            <tr><td class="sup-rank">5</td><td class="sup-name">—</td><td class="sup-note">—</td><td class="sup-amt"><span class="sup-amt-tag">—</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -2282,6 +2199,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         <form class="sup-thanks" id="supportersThanks" hidden>
           <div class="sup-thanks__head">
             <p class="sup-thanks__title">Add your name + note</p>
+            <button type="button" class="sup-thanks__close" id="supCloseBtn" aria-label="Close">×</button>
           </div>
           <p class="sup-thanks__sub">This shows on the leaderboard (max 40 chars name, 140 chars note).</p>
           <div class="sup-field">
@@ -2294,11 +2212,31 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             <div class="sup-social-grid" id="supSocialGrid">
               <div class="sup-social-item">
                 <label for="supIg">Instagram (optional)</label>
-                <input id="supIg" type="text" inputmode="text" autocomplete="off" placeholder="@username"/>
+                <input id="supIg" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
               </div>
               <div class="sup-social-item">
                 <label for="supTt">TikTok (optional)</label>
-                <input id="supTt" type="text" inputmode="text" autocomplete="off" placeholder="@username"/>
+                <input id="supTt" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supSc">Snapchat (optional)</label>
+                <input id="supSc" type="text" inputmode="text" autocomplete="off" placeholder="username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supPi">Pinterest (optional)</label>
+                <input id="supPi" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supFb">Facebook (optional)</label>
+                <input id="supFb" type="text" inputmode="text" autocomplete="off" placeholder="username/page or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supYt">YouTube (optional)</label>
+                <input id="supYt" type="text" inputmode="text" autocomplete="off" placeholder="@handle or URL"/>
+              </div>
+              <div class="sup-social-item">
+                <label for="supX">X (optional)</label>
+                <input id="supX" type="text" inputmode="text" autocomplete="off" placeholder="@username or URL"/>
               </div>
             </div>
           </div>
@@ -3687,11 +3625,17 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   const supMsg=document.getElementById("supMsg");
   const supFootMsg=document.getElementById("supFootMsg");
   const skipBtn=document.getElementById("supSkipBtn");
+  const closeBtn=document.getElementById("supCloseBtn");
   const saveBtn=document.getElementById("supSaveNoteBtn");
   const supName=document.getElementById("supName");
   const supNote=document.getElementById("supNote");
   const supIg=document.getElementById("supIg");
   const supTt=document.getElementById("supTt");
+  const supSc=document.getElementById("supSc");
+  const supPi=document.getElementById("supPi");
+  const supFb=document.getElementById("supFb");
+  const supYt=document.getElementById("supYt");
+  const supX=document.getElementById("supX");
   const nameCount=document.getElementById("supNameCount");
   const noteCount=document.getElementById("supNoteCount");
   if(!tbody) return;
@@ -3751,16 +3695,27 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   function buildSocialUrl(kind,val){
     const raw=(val||"").trim();
     if(!raw) return "";
+    if(/^https?:\/\//i.test(raw)) return raw;
     const h=normalizeHandle(raw);
     if(!h) return "";
     if(kind==="instagram") return `https://www.instagram.com/${h}/`;
     if(kind==="tiktok") return `https://www.tiktok.com/@${h}`;
+    if(kind==="snapchat") return `https://www.snapchat.com/add/${h}`;
+    if(kind==="pinterest") return `https://www.pinterest.com/${h}/`;
+    if(kind==="facebook") return `https://www.facebook.com/${h}`;
+    if(kind==="youtube") return `https://www.youtube.com/@${h}`;
+    if(kind==="x") return `https://x.com/${h}`;
     return "";
   }
   function getPickedSocial(){
     const items=[
       {kind:"instagram",el:supIg},
       {kind:"tiktok",el:supTt},
+      {kind:"snapchat",el:supSc},
+      {kind:"pinterest",el:supPi},
+      {kind:"facebook",el:supFb},
+      {kind:"youtube",el:supYt},
+      {kind:"x",el:supX},
     ].filter(x=>x.el);
     const filled=items
       .map(it=>({kind:it.kind,val:(it.el.value||"").trim()}))
@@ -3770,11 +3725,11 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     const one=filled[0];
     const built=buildSocialUrl(one.kind,one.val);
     const safe=safeUrl(built);
-    if(!safe) return {error:"That handle looks invalid. Use just your @username."};
+    if(!safe) return {error:"That social link looks invalid. Paste a full https:// link or just your username."};
     return {social_url:safe};
   }
   function lockSocialInputs(active){
-    const els=[supIg,supTt].filter(Boolean);
+    const els=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
     const hasActive=!!active;
     els.forEach(el=>{
       const mine=el===active;
@@ -3800,13 +3755,48 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
       const prev=localStorage.getItem("sup_display_name");
       if(prev && supName && !supName.value) supName.value=prev.slice(0,40);
     }catch(_){}
-    // Prefill note if they've used it before (so repeat donors can edit it)
-    try{
-      const prevNote=localStorage.getItem("sup_note");
-      if(prevNote && supNote && !supNote.value) supNote.value=prevNote.slice(0,140);
-    }catch(_){}
     updateCounts();
     if(supName && !supName.value) supName.focus();
+  }
+
+  function prefillSocialFromUrl(url){
+    const safe=safeUrl(url);
+    if(!safe) return;
+    let host="";
+    try{ host=new URL(safe).hostname.toLowerCase(); }catch(_){ return; }
+    const map=[
+      {match:["instagram.com"], el:supIg},
+      {match:["tiktok.com"], el:supTt},
+      {match:["snapchat.com"], el:supSc},
+      {match:["pinterest.com"], el:supPi},
+      {match:["facebook.com","fb.com"], el:supFb},
+      {match:["youtube.com","youtu.be"], el:supYt},
+      {match:["x.com","twitter.com"], el:supX},
+    ];
+    const chosen=map.find(m=>m.el && m.match.some(k=>host===k || host.endsWith("."+k)));
+    if(!chosen) return;
+    // Fill this one with the URL (so it's always valid) and lock others.
+    chosen.el.value=safe;
+    lockSocialInputs(chosen.el);
+  }
+
+  async function prefillFromBackend(sessionId){
+    try{
+      const api=apiBase();
+      const url=(api?`${api}/supporter?session_id=${encodeURIComponent(sessionId)}`:`/supporter?session_id=${encodeURIComponent(sessionId)}`);
+      const res=await fetch(url,{headers:{"Accept":"application/json"}});
+      if(!res.ok) return;
+      const data=await res.json().catch(()=>null);
+      const s=data && data.supporter ? data.supporter : null;
+      if(!s) return;
+      if(supName && typeof s.display_name==="string") supName.value=s.display_name.slice(0,40);
+      if(supNote && typeof s.note==="string") supNote.value=s.note.slice(0,140);
+      // Clear + refill social
+      const socialEls=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
+      socialEls.forEach(el=>{ el.value=""; el.disabled=false; });
+      if(typeof s.social_url==="string" && s.social_url.trim()) prefillSocialFromUrl(s.social_url);
+      updateCounts();
+    }catch(_){}
   }
 
   async function startCheckout(){
@@ -3864,17 +3854,10 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
         setMsg((data&&(data.detail||data.error)) || "Couldn’t save your note.");
         throw new Error((data&&data.error)||"save_failed");
       }
-      try{
-        localStorage.setItem("sup_display_name",name.slice(0,40));
-        if(note) localStorage.setItem("sup_note",note.slice(0,140));
-      }catch(_){}
+      try{ localStorage.setItem("sup_display_name",name.slice(0,40)); }catch(_){}
       setMsg("Saved. Thank you for supporting!");
       await load();
-      // Refresh so the user sees their updated spot immediately.
-      window.setTimeout(()=>{
-        if(window.location.hash!=="#supporters") window.location.hash="#supporters";
-        window.location.reload();
-      },650);
+      // Keep it visible so they see confirmation.
     }catch(_e){
       if(!supFootMsg?.textContent && !supMsg?.textContent){
         setMsg("Couldn’t save your note. Check backend logs for /save-note.");
@@ -3890,6 +3873,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     const sessionId=u.searchParams.get("session_id");
     if(thanksFlag==="1" && sessionId){
       showThanksForm(sessionId);
+      prefillFromBackend(sessionId);
       // clean URL (keep hash)
       u.searchParams.delete("thanks");
       u.searchParams.delete("session_id");
@@ -3902,11 +3886,10 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   skipBtn?.addEventListener("click",()=>{
     if(thanks) thanks.hidden=true;
     setMsg("");
-    // Refresh so they can see the current leaderboard state right away.
-    window.setTimeout(()=>{
-      if(window.location.hash!=="#supporters") window.location.hash="#supporters";
-      window.location.reload();
-    },250);
+  });
+  closeBtn?.addEventListener("click",()=>{
+    if(thanks) thanks.hidden=true;
+    setMsg("");
   });
   function updateCounts(){
     if(nameCount && supName) nameCount.textContent=`${(supName.value||"").length}/40`;
@@ -3914,7 +3897,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   }
   supName?.addEventListener("input",updateCounts);
   supNote?.addEventListener("input",updateCounts);
-  const socialEls=[supIg,supTt].filter(Boolean);
+  const socialEls=[supIg,supTt,supSc,supPi,supFb,supYt,supX].filter(Boolean);
   socialEls.forEach(el=>{
     el.addEventListener("input",()=>{
       const v=(el.value||"").trim();

@@ -6,10 +6,14 @@ create table if not exists supporters (
   email text not null unique,
   display_name text not null,
   note text,
+  social_url text,
   total_cents integer not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- If the table already exists, run this once:
+alter table supporters add column if not exists social_url text;
 
 create table if not exists donations (
   id uuid primary key default gen_random_uuid(),
