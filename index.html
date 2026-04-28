@@ -6,16 +6,16 @@
 <meta name="color-scheme" content="dark"/>
 <meta name="description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
 <meta property="og:site_name" content="DELEXO"/>
-<meta property="og:title" content="Delexo | Links &amp; Projects"/>
+<meta property="og:title" content="Delexo | Projects"/>
 <meta property="og:description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
 <meta property="og:url" content="https://delexo.store/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Delexo | Links &amp; Projects"/>
+<meta name="twitter:title" content="Delexo | Projects"/>
 <meta name="twitter:description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
-<title>Delexo | Links &amp; Projects</title>
+<title>Delexo | Projects</title>
 <link rel="icon" href="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png" type="image/png" sizes="any"/>
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
 <link rel="preconnect" href="https://raw.githubusercontent.com"/>
@@ -141,6 +141,7 @@ section#faq.faq{
 .snap-section--courses > .rail-section + .rail-section{margin-top:40px}
 .snap-section--courses > #courses-ai{margin-top:0!important}
 .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.snap-section--bento .kicker{text-align:center}
 .section-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
 .section-sub{margin:0 0 28px;color:var(--muted);font-size:15px;line-height:1.6}
 .divider{border:none;border-top:1px solid var(--line);margin:48px 0}
@@ -357,8 +358,9 @@ section#faq.faq{
 
 /* ── 3  bento ── */
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:10px}
+.bento > *{justify-self:center}
 .bento-3d{min-width:0}
-.bento-3d--wide{grid-column:span 8;position:relative;z-index:1}
+.bento-3d--wide{grid-column:3 / span 8;position:relative;z-index:1}
 /* Apps column above Projects in paint/hit order so tilted wide card cannot eat clicks on the right */
 .bento-3d--sq{grid-column:span 4;position:relative;z-index:24}
 .bento-3d__shell{pointer-events:auto}
@@ -1977,7 +1979,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 <!-- ═══ 3. BENTO GRID ═══ -->
 <section class="snap-section snap-section--bento" id="links">
   <div class="wrap">
-  <p class="kicker reveal">Links</p>
+  <p class="kicker reveal">Projects</p>
   <div class="bento">
     <!-- My Links (icon row) — placed in hero card via script -->
     <div class="cell cell--full reveal" id="linksCell">
@@ -2022,7 +2024,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
           </a>
         </li>
         <li>
-          <a class="icon-item" href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">
+          <a class="icon-item" href="#supporters" data-tip-scroll="1">
             <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Stripe.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
             <span class="icon-item-label">Tip Me!</span>
           </a>
@@ -2041,7 +2043,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     <div class="bento-3d bento-3d--wide reveal">
     <div class="bento-3d__shell" id="projectsShell3d">
     <div class="cell cell--wide">
-      <h3>Projects</h3>
       <div class="project-featured">
         <a class="project-card" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
           <div class="project-card__media">
@@ -2062,16 +2063,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
           </div>
         </a>
       </div>
-    </div>
-    </div>
-    </div>
-    <!-- apps -->
-    <div class="bento-3d bento-3d--sq reveal">
-    <div class="bento-3d__shell" id="appsShell3d">
-    <div class="cell cell--sq">
-      <h3>Apps</h3>
-      <p>Designed, built, and shipped by me.</p>
-      <div class="links links--stack">
+      <div class="links links--stack" style="margin-top:14px">
         <a class="btn btn--ghost btn--launch" href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer">
           <span class="btn-launch-main">
             <span class="btn-launch-title">Nothing.</span>
@@ -2345,7 +2337,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h2 class="supporters-card__title" id="supportersTitle">Top 10 supporters</h2>
     </header>
     <p class="supporters-blurb" id="supportersDesc">
-      So much gratitude for any support you choose to give—it truly means a lot. Donate with the button below and you can earn your place on the leaderboard for good, then leave a little note for the world to see.
+      So much gratitude for any support you choose to give—it truly means a lot. I’ll add the Top 10 supporters’ names drawn on my car. Donate with the button below and you can earn your place on the leaderboard for good, then leave a little note for the world to see.
       <button type="button" class="supporters-info-btn supporters-info-btn--inline" id="supportersInfoOpen" aria-label="What your support helps fund" title="What your support helps fund" aria-haspopup="dialog" aria-controls="supportersInfoOverlay">i</button>
     </p>
     <div class="supporters-card__table">
@@ -2465,7 +2457,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (securely)</span><span class="pal-hint">↗</span></a>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer" role="option"><span>Venmo</span><span class="pal-hint">↗</span></a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer" role="option"><span>Cashapp</span><span class="pal-hint">↗</span></a>
-      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer" role="option"><span>Tip Me!</span><span class="pal-hint">↗</span></a>
+      <a href="#supporters" data-tip-scroll="1" role="option"><span>Tip Me!</span><span class="pal-hint">↓</span></a>
       <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" role="option"><span>Free University Tools</span><span class="pal-hint">↗</span></a>
       <a href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer" role="option"><span>Build Your Own Discord Template</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" role="option"><span>Nothing. (app)</span><span class="pal-hint">↗</span></a>
@@ -2664,7 +2656,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   </details>
   <details name="faq">
     <summary>How can I donate? Ur cool ig.</summary>
-    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer">Tip Me!</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Tip.”</div>
+    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="#supporters" data-tip-scroll="1">Tip Me!</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Tip.”</div>
   </details>
   <details name="faq" data-gd-egg>
     <summary>What's your Geometry Dash username?</summary>
@@ -2692,7 +2684,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h4>Payments</h4>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noreferrer">Venmo</a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noreferrer">Cashapp</a>
-      <a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noreferrer">Tip Me!</a>
+      <a href="#supporters" data-tip-scroll="1">Tip Me!</a>
     </div>
     <div class="foot-col">
       <h4>Courses</h4>
@@ -2852,7 +2844,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   function labelFor(el){
     const id=el.id;
     if(id==="top") return "Hero";
-    if(id==="links") return "Links";
+    if(id==="links") return "Projects";
     if(id==="goals") return "Journey";
     if(id==="supporters") return "Supporters";
     if(id==="about") return "About";
@@ -3897,6 +3889,37 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   /* Homepage leaderboard: exactly this many rows on every viewport; full list on site-information.html#supporters */
   const HOME_SUPPORTERS_TOP_N=10;
   const NOTE_MAX=100;
+
+  function prefersReduced(){
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+  function easeInOutCubic(t){
+    return t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  }
+  function smoothScrollToY(y,{duration=1400}={}){
+    if(prefersReduced()){ window.scrollTo(0,y); return; }
+    const start=window.scrollY;
+    const delta=y-start;
+    const t0=performance.now();
+    function step(now){
+      const t=Math.min(1,(now-t0)/duration);
+      window.scrollTo(0,start+delta*easeInOutCubic(t));
+      if(t<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  function scrollToSupportersTop(){
+    const target=document.getElementById("supportersTitle")||document.getElementById("supporters");
+    if(!target) return;
+    const top=target.getBoundingClientRect().top+window.scrollY-18;
+    smoothScrollToY(Math.max(0,top),{duration:1600});
+  }
+  document.addEventListener("click",e=>{
+    const a=e.target && e.target.closest ? e.target.closest('a[data-tip-scroll="1"]') : null;
+    if(!a) return;
+    e.preventDefault();
+    scrollToSupportersTop();
+  });
 
   function renderLeaderboard(donors){
     if(!donors.length){
