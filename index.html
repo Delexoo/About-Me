@@ -4,16 +4,16 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta name="description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
+<meta name="description" content="Follow my journey, projects, and updates in one place. Everything about me!"/>
 <meta property="og:site_name" content="DELEXO"/>
 <meta property="og:title" content="Delexo | Projects"/>
-<meta property="og:description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
+<meta property="og:description" content="Follow my journey, projects, and updates in one place. Everything about me!"/>
 <meta property="og:url" content="https://delexo.store/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Delexo | Projects"/>
-<meta name="twitter:description" content="Follow my journey, projects, courses, and updates in one place. Everything about me!"/>
+<meta name="twitter:description" content="Follow my journey, projects, and updates in one place. Everything about me!"/>
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
 <title>Delexo | Projects</title>
 <link rel="icon" href="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png" type="image/png" sizes="any"/>
@@ -55,9 +55,7 @@ html{
 @media(max-width:680px){
   html{scroll-snap-type:none}
   .snap-section,
-  .snap-section.snap-section--courses,
   section#links.snap-section,
-  #goals,
   #supporters,
   .about,
   #faq,
@@ -102,12 +100,6 @@ html.splash-active,html.splash-active body{overflow:hidden;overscroll-behavior:n
   min-height:100dvh;
   box-sizing:border-box;
 }
-/* Tall stacked content: land at the top so the section intro is visible */
-.snap-section.snap-section--courses,
-#goals{
-  scroll-snap-align:start;
-  scroll-snap-stop:normal;
-}
 /* Mid-page “chapters”: centered in the viewport */
 #supporters,
 .about,
@@ -136,10 +128,6 @@ section#faq.faq{
   box-sizing:border-box;
 }
 .snap-section--bento > .wrap{width:100%;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 max(22px,env(safe-area-inset-right,0px)) 0 max(22px,env(safe-area-inset-left,0px))}
-.snap-section--courses{padding:max(40px,env(safe-area-inset-top)) 0 max(48px,env(safe-area-inset-bottom))}
-.snap-section--courses > .rail-section{margin-top:0!important}
-.snap-section--courses > .rail-section + .rail-section{margin-top:40px}
-.snap-section--courses > #courses-ai{margin-top:0!important}
 .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
 .snap-section--bento .kicker{text-align:center}
 .section-title{margin:0 0 8px;font-size:1.6rem;font-weight:600;letter-spacing:-.03em}
@@ -468,264 +456,6 @@ button.icon-item:focus-visible .icon-link{box-shadow:0 3px 10px rgba(0,0,0,.34)}
 .uline{position:relative;text-decoration:none;color:var(--text);font-weight:500;font-size:14px;padding:4px 0}
 .uline::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .35s ease}
 .uline:hover::after{transform:scaleX(1);transform-origin:left}
-
-/* ── 4-6  scroll-snap rails ── */
-.rail-section{margin-top:56px}
-#courses-ai{margin-top:calc(56px + 36px)}
-.rail{
-  display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
-  padding:10px max(22px,env(safe-area-inset-right,0px)) 22px max(22px,env(safe-area-inset-left,0px));
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;
-  touch-action:pan-x pan-y;
-  overscroll-behavior-x:contain;
-}
-.rail::-webkit-scrollbar{display:none;height:0}
-.chip{flex:0 0 270px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:border-color .2s ease,transform .2s ease;overflow:hidden}
-.chip:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
-.chip:focus-visible{outline:none;box-shadow:var(--focus)}
-.chip__thumb{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center;background:#0c0c0c;border-bottom:1px solid var(--line);display:block;flex-shrink:0;pointer-events:none}
-.chip__body{padding:18px 20px 20px;display:flex;flex-direction:column;justify-content:flex-end;flex:1;min-height:118px}
-.chip .chip-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-.chip .chip-tag.chip-tag--price{text-transform:none;letter-spacing:.04em;font-weight:700;font-size:12px;color:var(--pink);font-variant-numeric:tabular-nums}
-.chip--soon .chip-tag.chip-tag--price{color:var(--pink)}
-.chip h4{margin:0 0 4px;font-size:1rem;font-weight:600}
-.chip p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
-.chip--soon{cursor:default;pointer-events:none;opacity:.78;background:#141414;border-color:rgba(255,255,255,.07)}
-.chip--soon:hover{border-color:rgba(255,255,255,.07);transform:none}
-.chip--soon .chip__body{opacity:.95}
-.chip--soon h4{color:#7a7a7a}
-.chip--soon p{color:#5c5c5c}
-.chip--soon .chip-tag{color:#666}
-.chip__thumb--soon{aspect-ratio:1/1;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,.12);background:linear-gradient(165deg,#fafafa 0%,#e4e4e4 42%,#c9c9c9 100%);display:flex;align-items:center;justify-content:center;box-sizing:border-box}
-.chip__thumb--soon::after{content:"Coming soon";font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#777}
-.chip--soon .tag-soon{margin-left:8px;vertical-align:middle}
-
-/* Course / product detail modal (rails) */
-.chip--opens-detail{cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent}
-button.chip{
-  -webkit-appearance:none;appearance:none;font:inherit;color:inherit;margin:0;padding:0;
-  border:none;background:transparent;text-align:left;width:auto;max-width:none;
-}
-.chip--opens-detail:focus-visible{outline:none;box-shadow:var(--focus)}
-.course-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.78);opacity:0;visibility:hidden;pointer-events:none;z-index:214;
-  display:grid;place-items:center;align-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
-  transition:opacity .22s ease,visibility .22s;box-sizing:border-box;
-}
-.course-overlay[hidden]{display:none!important}
-.course-overlay.is-open{opacity:1;visibility:visible;pointer-events:auto}
-.course-panel{
-  position:relative;width:min(920px,calc(100vw - 32px));max-height:min(90dvh,90svh);
-  display:flex;flex-direction:column;border-radius:18px;overflow:hidden;
-  background:linear-gradient(165deg,rgba(255,255,255,.05) 0%,transparent 40%),var(--card);
-  border:1px solid var(--line);
-  box-shadow:0 32px 64px rgba(0,0,0,.72),0 0 0 1px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
-  transform:scale(.97) translateY(12px);transition:transform .22s ease;
-  /* Compact, single-screen layout: no internal scrolling */
-  overflow:hidden;
-  touch-action:manipulation;
-}
-.course-overlay.is-open .course-panel{transform:scale(1) translateY(0)}
-/* Size to content so .course-panel is the only scroll root (better touch + sticky head) */
-.course-panel__scroll{overflow:visible;flex:0 0 auto;width:100%;min-width:0}
-.course-panel__head{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;
-  padding:12px 14px 10px;border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.2);
-  position:relative;z-index:2;
-}
-.course-panel__brand{display:flex;align-items:center;gap:10px;min-width:0;font-size:13px;color:var(--muted);line-height:1.35}
-.course-panel__brand > span{min-width:0}
-.course-panel__brand strong{color:var(--text);font-weight:600}
-.course-panel__avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--line);background:#222}
-.course-panel__close{
-  width:38px;height:38px;border:none;border-radius:12px;background:rgba(255,255,255,.08);color:var(--text);
-  font-size:24px;line-height:1;cursor:pointer;font-family:inherit;display:grid;place-items:center;padding:0;flex-shrink:0;
-  transition:background .2s ease;
-}
-.course-panel__close:hover{background:rgba(255,255,255,.14)}
-.course-panel__close:focus-visible{outline:none;box-shadow:var(--focus)}
-.course-panel__title{
-  margin:0;padding:12px 18px 10px;font-size:clamp(1.2rem,3.4vw,1.55rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;color:var(--text);
-  flex-shrink:0;
-}
-.course-panel__grid{
-  display:grid;
-  grid-template-columns:1fr min(300px,34%);
-  gap:0;
-  border-top:1px solid var(--line);
-  min-height:0;
-}
-@media(max-width:680px){
-  .course-panel__grid{grid-template-columns:1fr}
-}
-.course-panel__col{padding:16px 18px 18px;min-height:0}
-.course-panel__col--main{border-right:1px solid var(--line);min-width:0;position:relative;z-index:1}
-@media(max-width:680px){
-  .course-panel__col--main{border-right:none;border-bottom:1px solid var(--line)}
-}
-.course-panel__col--aside{
-  display:flex;flex-direction:column;gap:0;min-width:0;min-height:0;
-  background:rgba(0,0,0,.12);position:relative;z-index:2;isolation:isolate;
-}
-.course-aside-top{display:flex;flex-direction:column;gap:18px;flex:1 1 auto;min-height:0;padding-bottom:4px}
-.course-aside-footer{
-  display:flex;flex-direction:column;gap:18px;flex-shrink:0;margin-top:auto;padding-top:16px;
-  border-top:1px solid var(--line);position:relative;z-index:4;
-  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.35) 12%);
-}
-.course-about-card{
-  border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);padding:16px 18px;
-}
-.course-about-card__label{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.course-about-card__text{
-  margin:0;
-  font-size:13px;
-  line-height:1.55;
-  color:#b8b8b8;
-  font-weight:450;
-  overflow-wrap:break-word;
-  display:-webkit-box;
-  -webkit-line-clamp:4;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-.course-media{margin-top:12px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0c0c0c}
-.course-media__img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:center}
-.course-media--placeholder{aspect-ratio:1/1;background:linear-gradient(145deg,#1a1a1a 0%,#252525 45%,#1a1520 100%);position:relative}
-.course-media--placeholder::after{
-  content:"Preview";position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:#555;
-}
-.course-meta{
-  margin-top:12px;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);
-  background:rgba(255,255,255,.03);font-size:12px;color:var(--muted);
-}
-.course-meta__ic{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(232,99,154,.12);border:1px solid rgba(232,99,154,.22);display:grid;place-items:center;color:var(--pink)}
-.course-meta__ic svg{width:18px;height:18px;display:block}
-.course-meta__text{min-width:0}
-.course-meta__k{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#666;margin-bottom:2px}
-.course-meta__v{display:block;font-weight:600;color:var(--text);font-size:13px}
-.course-price-block{text-align:left}
-.course-price-block__price{margin:0;font-size:clamp(1.45rem,4vw,1.85rem);font-weight:900;letter-spacing:-.03em;color:var(--text);font-variant-numeric:tabular-nums}
-.course-price-block__note{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.35}
-.course-includes__title{margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.course-includes__list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.course-includes__list li{
-  display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.35;color:#c4c4c4;margin:0;
-  display:-webkit-box;
-  -webkit-line-clamp:1;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-.course-includes__list li svg{flex-shrink:0;margin-top:2px;color:var(--pink);opacity:.95}
-.course-includes__list li:nth-child(n+5){display:none}
-.course-panel__cta{width:100%;justify-content:center;box-sizing:border-box;padding:14px 20px;font-size:14px;font-weight:700;border-radius:12px;touch-action:manipulation}
-.course-panel__cta[disabled],.course-panel__cta[aria-disabled="true"]{
-  opacity:.55;cursor:not-allowed;pointer-events:none;background:rgba(255,255,255,.08)!important;color:var(--muted)!important;border-color:var(--line)!important;
-}
-.course-panel__cta--light{background:#f2f2f2!important;color:#111!important;border-color:transparent!important}
-.course-panel__cta--light:hover{filter:brightness(1.05);transform:translateY(-1px)}
-.course-panel__share{
-  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;flex-shrink:0;margin:0;padding:14px 16px;box-sizing:border-box;
-  min-height:48px;border:1px solid rgba(232,99,154,.45);border-radius:14px;background:rgba(232,99,154,.10);
-  font-family:inherit;font-size:14px;font-weight:750;letter-spacing:.02em;color:var(--pink);cursor:pointer;text-decoration:none;
-  touch-action:manipulation;-webkit-tap-highlight-color:rgba(232,99,154,.28);
-  transition:border-color .2s ease,background .2s ease,transform .15s ease,box-shadow .2s ease;
-  position:relative;z-index:6;pointer-events:auto;-webkit-user-select:none;user-select:none;
-  transform:translateZ(0);-webkit-transform:translateZ(0);
-}
-.course-panel__share:hover{border-color:rgba(232,99,154,.65);background:rgba(232,99,154,.2);box-shadow:0 6px 20px rgba(232,99,154,.12);text-decoration:none}
-.course-panel__share:active{transform:scale(.98);background:rgba(232,99,154,.24)}
-.course-panel__share:focus-visible{outline:none;box-shadow:var(--focus),0 0 0 2px rgba(232,99,154,.2)}
-.course-panel__share svg{width:22px;height:22px;flex-shrink:0;opacity:1;pointer-events:none}
-.course-panel__share span{pointer-events:none}
-@media(hover:none) and (pointer:coarse){
-  .course-panel__share{min-height:60px;padding:20px 22px;font-size:16px;gap:14px}
-  .course-panel__share svg{width:24px;height:24px}
-}
-.course-pay-line{margin:0;font-size:11px;color:#5a5a5a;text-align:center;line-height:1.5;letter-spacing:.02em}
-
-/* Course modal — phones: max canvas, safe areas, preview-first, sticky checkout */
-@media(max-width:680px){
-  .course-overlay{
-    padding:max(8px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
-    justify-items:stretch;
-    align-items:center;
-  }
-  .course-panel{
-    width:100%;
-    max-width:100%;
-    max-height:min(94dvh,calc(100svh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 20px));
-    border-radius:14px;
-  }
-  .course-panel__head{
-    padding:12px 14px 10px;
-    gap:10px;
-  }
-  .course-panel__brand{font-size:12px;line-height:1.3}
-  .course-panel__avatar{width:30px;height:30px}
-  .course-panel__close{
-    width:44px;height:44px;min-width:44px;min-height:44px;border-radius:12px;font-size:22px;
-  }
-  .course-panel__title{
-    padding:10px 14px 8px;
-    font-size:clamp(1.1rem,5.2vw,1.35rem);
-  }
-  .course-panel__col{padding:14px 16px 16px}
-  /* Preview image before copy — faster visual scan on small screens */
-  .course-panel__col--main{
-    display:flex;
-    flex-direction:column;
-  }
-  .course-panel__col--main .course-media{
-    order:1;
-    margin-top:0;
-  }
-  .course-panel__col--main .course-about-card{
-    order:2;
-    margin-top:14px;
-  }
-  .course-panel__col--main .course-meta{
-    order:3;
-  }
-  .course-about-card{padding:14px 14px;border-radius:12px}
-  .course-about-card__text{font-size:14px;line-height:1.55;-webkit-line-clamp:5}
-  .course-media{border-radius:12px}
-  .course-meta{margin-top:12px;padding:10px 12px}
-  .course-meta__ic{width:34px;height:34px}
-  .course-meta__ic svg{width:17px;height:17px}
-  .course-price-block__price{font-size:clamp(1.55rem,6vw,2rem)}
-  .course-includes__list{gap:8px}
-  .course-includes__list li{font-size:14px;line-height:1.5}
-  .course-aside-top{gap:14px;padding-bottom:2px}
-  .course-aside-footer{
-    position:relative;
-    bottom:auto;
-    margin-top:10px;
-    padding-top:12px;
-    padding-bottom:0;
-    gap:10px;
-    border-top-color:rgba(255,255,255,.12);
-    background:transparent;
-    box-shadow:none;
-    z-index:6;
-  }
-  .course-panel__cta{
-    min-height:48px;
-    padding:14px 18px;
-    font-size:15px;
-    border-radius:12px;
-  }
-  .course-panel__share{
-    min-height:52px;
-    padding:16px 18px;
-    font-size:15px;
-    border-radius:12px;
-  }
-  .course-panel__share svg{width:22px;height:22px}
-  .course-pay-line{font-size:10px;padding:0 4px}
-}
 
 /* ── 7  command palette — Quick Search in .side-island-stack (mobile pill / desktop icon) ── */
 .pal-trigger{
@@ -1560,7 +1290,7 @@ section#about.about{padding-top:clamp(24px,5vh,56px)}
 }
 /* ── 9  footer ── */
 footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(safe-area-inset-left,0px));max-width:960px;margin:clamp(72px,14vh,140px) auto 0;margin-bottom:0}
-.foot-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-bottom:36px}
+.foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:36px}
 .foot-col h4{margin:0 0 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .foot-col a{display:block;padding:5px 0;color:#b0b0b0;text-decoration:none;font-size:14px}
 .foot-col a:hover{color:var(--text)}
@@ -1607,9 +1337,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 .foot-bottom a{color:#b0b0b0;text-decoration:none}
 .foot-bottom a:hover{color:var(--text)}
 .foot-bottom a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
-
-/* ── rail scroll-end fix (prevents collapsed padding) ── */
-.rail::after{content:"";flex:0 0 8px;height:1px}
 
 /* ── responsive ── */
 
@@ -1759,7 +1486,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 
 /* phones */
 @media(max-width:520px){
-  .chip{flex:0 0 min(85vw,calc(100vw - 32px))}
   .about blockquote{font-size:1.1rem;padding-left:18px}
   .about h2{margin-bottom:20px}
   .foot-cols{grid-template-columns:1fr;text-align:center}
@@ -1787,7 +1513,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
 @media(max-width:380px){
   .wrap{padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
   .cell{padding:18px}
-  .chip{flex:0 0 min(88vw,calc(100vw - 24px))}
   .tl{padding:0 max(16px,env(safe-area-inset-right,0px)) clamp(40px,9vh,100px) max(16px,env(safe-area-inset-left,0px))}
   .about,.faq{padding:0 max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
   .supporters{
@@ -1853,7 +1578,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   .hero-img > img{transform:none!important}
   .hero-content .hero-name h1{-webkit-text-stroke:0}
   .hero-status__dot::after{animation:none!important}
-  .btn,.cell,.chip,.backdrop,.palette,.pal-trigger,.hero-side-tool-btn,.qr-overlay,.qr-panel,.course-overlay,.course-panel,.tl-item,.tl-node,.tl-media-card,.faq summary::after,.dc-overlay,.dc-panel{transition:none}
+  .btn,.cell,.backdrop,.palette,.pal-trigger,.hero-side-tool-btn,.qr-overlay,.qr-panel,.tl-item,.tl-node,.tl-media-card,.faq summary::after,.dc-overlay,.dc-panel{transition:none}
   .pal-trigger:hover{transform:none}
   .tl-item{opacity:1;transform:none;filter:none}
   .tl-item .tl-date,.tl-item .tl-label,.tl-item .tl-label-with-badge,.tl-item .tl-desc,.tl-item .tl-link,.tl-item .tl-media-card{opacity:1;transform:none;transition:none}
@@ -1958,10 +1683,8 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
             <p class="hero-activity" id="heroActivityLine" aria-live="polite"></p>
           </div>
         </div>
-        <p class="hero-lede">Documenting my journey<br/>To purchase a <a href="https://www.porsche.com/international/models/911/911-gt3-rs/911-gt3-rs/" target="_blank" rel="noopener noreferrer">@Porsche</a></p>
         <div class="hero-actions">
           <a class="btn btn--solid" href="#links">My links</a>
-          <a class="btn btn--ghost" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a class="btn btn--ghost" href="https://www.instagram.com/delexooo/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
       </div>
@@ -1998,12 +1721,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
           </button>
         </li>
         <li>
-          <a class="icon-item" href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer">
-            <span class="icon-link icon-link--on-light"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Github.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
-            <span class="icon-item-label">GitHub</span>
-          </a>
-        </li>
-        <li>
           <a class="icon-item" href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer">
             <span class="icon-link">
               <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1DB954" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
@@ -2026,7 +1743,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
         <li>
           <a class="icon-item" href="#supporters" data-tip-scroll="1">
             <span class="icon-link"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Stripe.png" alt="" width="48" height="48" loading="lazy" decoding="async"/></span>
-            <span class="icon-item-label">Tip Me!</span>
+            <span class="icon-item-label">Stripe</span>
           </a>
         </li>
         <li>
@@ -2044,21 +1761,21 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     <div class="bento-3d__shell" id="projectsShell3d">
     <div class="cell cell--wide">
       <div class="project-featured">
-        <a class="project-card" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
-          <div class="project-card__media">
-            <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/FreeUniversityToolsLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
-          </div>
-          <div class="project-card__cap">
-            <span class="project-card__title">Free University Tools</span>
-            <span class="project-card__go" aria-hidden="true"><svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></span>
-          </div>
-        </a>
         <a class="project-card" href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer">
           <div class="project-card__media">
             <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/ServerlyLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
           </div>
           <div class="project-card__cap">
             <span class="project-card__title">Build Your Own Discord Template</span>
+            <span class="project-card__go" aria-hidden="true"><svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></span>
+          </div>
+        </a>
+        <a class="project-card" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
+          <div class="project-card__media">
+            <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/FreeUniversityToolsLandingPage.png" alt="" loading="lazy" decoding="async" width="640" height="360"/>
+          </div>
+          <div class="project-card__cap">
+            <span class="project-card__title">Free University Tools</span>
             <span class="project-card__go" aria-hidden="true"><svg class="launch-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></span>
           </div>
         </a>
@@ -2096,230 +1813,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     </div>
     </div>
   </div>
-  </div>
-</section>
-
-<div class="snap-section snap-section--courses" role="region" aria-label="Courses and digital products">
-<!-- ═══ 4. RAIL 1 — How I make money online ═══ -->
-<section class="rail-section reveal" id="courses-ai">
-  <div class="wrap">
-    <p class="kicker">Courses</p>
-    <h2 class="section-title">How I make money online.</h2>
-    <p class="section-sub">Coming soon — swipe to browse previews. Links go live when each course is ready.</p>
-  </div>
-  <div class="rail" tabindex="0" role="region" aria-label="How I make money online — courses (coming soon)">
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$24.99</span><h4>Website Selling</h4><p>Build &amp; flip websites for profit.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$24.99</span><h4>AI Receptionist Course</h4><p>Automate front-desk with AI.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$34.99</span><h4>AI Empire Course</h4><p>Scale an AI-first business.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$49.99</span><h4>AI Leads Course</h4><p>Generate leads on autopilot.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$9.99</span><h4>OpenClaw AI Agency</h4><p>Launch your own AI agency.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$99.99</span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$99.99</span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$99.99</span><h4>Private Course</h4><p>Not listed publicly yet.</p></div></button>
-  </div>
-</section>
-
-<!-- ═══ 5. RAIL 2 — My favorite courses ═══ -->
-<section class="rail-section reveal" id="courses-skills">
-  <div class="wrap">
-    <h2 class="section-title">My favorite courses.</h2>
-    <p class="section-sub">Coming soon — links will be added when each course is available.</p>
-  </div>
-  <div class="rail" tabindex="0" role="region" aria-label="My favorite courses (coming soon)">
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$49.99</span><h4>Discord Server Hustle</h4><p>Monetise community from day one.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$19.99</span><h4>Cybersecurity Course</h4><p>Defensive skills that pay.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$19.99</span><h4>AP Computer Science Principles</h4><p>Ace the AP exam.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$74.99</span><h4>Notion Marketplace Course</h4><p>Sell templates at scale.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$9.99</span><h4>The Faceless Blueprint</h4><p>Anonymous content empire.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$9.99</span><h4>Cold Call</h4><p>Close on the first ring.</p></div></button>
-    <button type="button" class="chip chip--soon chip--opens-detail"><div class="chip__thumb chip__thumb--soon" aria-hidden="true"></div><div class="chip__body"><span class="chip-tag chip-tag--price">$24.99</span><h4>AI Course</h4><p>Fundamentals to advanced AI.</p></div></button>
-          </div>
-</section>
-
-<!-- ═══ 6. RAIL 3 — Personal use or resell these products ═══ -->
-<section class="rail-section reveal" id="bundles">
-  <div class="wrap">
-    <h2 class="section-title">Personal use or resell these products.</h2>
-    <p class="section-sub">Tap a product to view details and purchase.</p>
-  </div>
-  <div class="rail" tabindex="0" role="region" aria-label="Personal use or resell these products">
-    <!-- PLR thumbnail: About-Me/doc/1400+ Viral Women’s Reels… (URL encoded; chip order swapped with Luxurious) -->
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Luxurious%20B-Roll%20Clips%20%2B%20Bonuses.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$3.99</span><h4>Luxurious Clips For Posting</h4><p>Premium aesthetic clips.</p></div></a>
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/100k%20Ultimate%20B-Roll%20Clips%20Bundle.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$12.99</span><h4>100k Ultimate B-Roll Bundle</h4><p>Massive clip library.</p></div></a>
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/main/doc/1400%2B%20Viral%20Women%E2%80%99s%20Reels%20with%20Full%20PLR%20Rights%20%E2%80%93%20Ready-to-Post%20Video%20Pack.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$3.99</span><h4>1400+ Viral Women's Reels</h4><p>Ready to post with PLR rights.</p></div></a>
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/MASTER%20BUNDLE%20FOR%20CONTENT%20CREATORS.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$9.99</span><h4>Master Bundle for Creators</h4><p>Everything a creator needs.</p></div></a>
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/18%20Terabyte%20All%20In%20One%20Money%20Making%20Course%20Bundle.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$6.99</span><h4>All-In-One Money Making Bundle</h4><p>18 terabytes of value.</p></div></a>
-    <a class="chip chip--opens-detail" href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noreferrer"><img class="chip__thumb" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/30%2C000%2B%20High%20Quality%20Clips.png" alt="" loading="lazy" decoding="async" width="270" height="270"/><div class="chip__body"><span class="chip-tag chip-tag--price">$7.99</span><h4>30,000+ High Quality Clips</h4><p>Curated, high-res footage.</p></div></a>
-          </div>
-</section>
-</div>
-
-<!-- ═══ 7a. TIMELINE ═══ -->
-<section class="tl reveal" id="goals">
-  <p class="tl-kicker">The Journey</p>
-  <h2 class="tl-title">Where I've been &amp; where I'm going.</h2>
-  <p class="tl-sub">Milestones I've hit and ambitious goals still ahead — mapped out on one timeline.</p>
-
-  <div class="tl-track" id="tlTrack">
-    <div class="tl-line-glow" id="tlGlow"></div>
-    <div class="tl-scrub-dot" id="tlScrubDot" aria-hidden="true"></div>
-
-    <!-- year marker: 2025 -->
-    <div class="tl-year tl-year--start">2025</div>
-
-    <!-- ✓ 01  Start College (timeline progress starts here) -->
-    <div class="tl-item tl-item--left tl-item--done" id="tlCollege">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <h3 class="tl-label">Started College</h3>
-        <p class="tl-desc">Enrolled in Cybersecurity &amp; Computer Science — the foundation for everything that followed.</p>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- ✓ 02  Free University Tools -->
-    <div class="tl-item tl-item--right tl-item--done">
-      <div class="tl-node"></div>
-      <div class="tl-media"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <div class="tl-label-row">
-          <h3 class="tl-label">Free University Tools</h3>
-          <button type="button" class="tl-info-btn" id="futInfoOpen" aria-label="More about Free University Tools" aria-haspopup="dialog" aria-controls="futInfoOverlay">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          </button>
-        </div>
-        <p class="tl-desc">Built and launched Free University Tools — a site of utilities and resources for students, designed and shipped while I was still early in the program.</p>
-        <a class="tl-link" href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">
-          freeuniversitytools.com
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- ✓ 03  Google Cert -->
-    <div class="tl-item tl-item--left tl-item--done">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <div class="tl-label-with-badge">
-          <h3 class="tl-label">Google Cybersecurity Certificate</h3>
-          <span class="tl-verified-badge" aria-label="Verified"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="" width="19" height="19" loading="lazy" decoding="async"/></span>
-        </div>
-        <p class="tl-desc">Earned the Google Cybersecurity Professional Certificate — my first industry credential.</p>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- ✓ 04  Harvard CS50 -->
-    <div class="tl-item tl-item--right tl-item--done">
-      <div class="tl-node"></div>
-      <div class="tl-media"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <div class="tl-label-with-badge">
-          <h3 class="tl-label">Harvard CS50 Certificate</h3>
-          <span class="tl-verified-badge" aria-label="Verified"><img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/verified.png" alt="" width="19" height="19" loading="lazy" decoding="async"/></span>
-        </div>
-        <p class="tl-desc">Completed CS50 — Harvard's legendary intro to computer science. The course that levelled up my thinking.</p>
-      </div>
-    </div>
-
-    <!-- ✓ 05  AI Contest (scrub dot pauses here until startup nears viewport) -->
-    <div class="tl-item tl-item--left tl-item--done" id="tlAiContest">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <h3 class="tl-label">AI Contest Creation at School</h3>
-        <p class="tl-desc">Built an AI-powered system for my school's contest — designing, coding and shipping a real product under pressure.</p>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- ✓ 06  Serverly / Discord server -->
-    <div class="tl-item tl-item--right tl-item--done">
-      <div class="tl-node"></div>
-      <div class="tl-media"></div>
-      <div class="tl-content">
-        <p class="tl-date">Completed</p>
-        <h3 class="tl-label">Build your own Discord server</h3>
-        <p class="tl-desc">Shipped Serverly — a template and walkthrough to stand up a Discord server the right way, from structure to roles and moderation basics.</p>
-        <a class="tl-link" href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer">
-          Serverly
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- 07  Startup -->
-    <div class="tl-item tl-item--left" id="tlStartup">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Goal</p>
-        <h3 class="tl-label">Launch My Own Startup</h3>
-        <p class="tl-desc">Ship real products under my own brand. Securely is just the beginning.</p>
-        <a class="tl-link" href="https://instagram.com/trysecurely" target="_blank" rel="noopener noreferrer">
-          @trysecurely
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
-        </a>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- 08  Harvard visit -->
-    <div class="tl-item tl-item--right">
-      <div class="tl-node"></div>
-      <div class="tl-media"></div>
-      <div class="tl-content">
-        <p class="tl-date">Goal</p>
-        <h3 class="tl-label">Harvard — Meet David Malan</h3>
-        <p class="tl-desc">Travel to Cambridge, walk Harvard Yard, connect with CS50's David Malan face-to-face, and build relationships with the sharpest minds on campus.</p>
-      </div>
-    </div>
-
-    <!-- 09  VPAL -->
-    <div class="tl-item tl-item--left">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Goal</p>
-        <h3 class="tl-label">Graduate &amp; Earn Harvard VPAL Credentials</h3>
-        <p class="tl-desc">Complete the Cybersecurity for Business program and add Harvard VPAL credentials to the wall — proof that the grind paid off.</p>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- ★ 10  Porsche — featured -->
-    <div class="tl-item tl-item--right tl-item--featured">
-      <div class="tl-node"></div>
-      <div class="tl-media">
-        <button type="button" class="tl-porsche-lightbox-open" id="tlPorscheLightboxOpen" aria-haspopup="dialog" aria-controls="porscheLightbox" aria-label="View Porsche image larger">
-          <figure class="tl-media-card">
-            <img src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Porsche911GT3RS.png" alt="Porsche 911 GT3 RS" loading="lazy" decoding="async" width="800" height="500"/>
-          </figure>
-        </button>
-      </div>
-      <div class="tl-content">
-        <p class="tl-date">Goal</p>
-        <h3 class="tl-label"><a class="tl-label-link--dotted" href="https://www.porsche.com/international/models/911/911-gt3-rs/911-gt3-rs/" target="_blank" rel="noopener noreferrer">Porsche 911 GT3 RS</a></h3>
-        <p class="tl-desc">The dream car — the finish line I see when I close my eyes. Every project, late night, line of code, and side hustle is another step until that picture becomes real.</p>
-      </div>
-    </div>
-
-    <!-- 11  Retire parents + friends -->
-    <div class="tl-item tl-item--left">
-      <div class="tl-node"></div>
-      <div class="tl-content">
-        <p class="tl-date">Goal</p>
-        <h3 class="tl-label">Retire My Parents &amp; Hang Out with Friends More</h3>
-        <p class="tl-desc">The real endgame. Give back to the two people who made everything possible — and make more time for the people who were there before any of this.</p>
-      </div>
-      <div class="tl-media"></div>
-    </div>
-
-    <!-- year marker: 2029 -->
-    <div class="tl-year tl-year--end">2029</div>
-
   </div>
 </section>
 
@@ -2444,22 +1937,17 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
     <div class="pal-list" id="palList" role="listbox">
       <a href="#top" role="option"><span>Landing Page</span><span class="pal-hint">↑</span></a>
       <a href="#links" role="option"><span>My Links</span><span class="pal-hint">↓</span></a>
-      <a href="#courses-ai" role="option"><span>How I make money online</span><span class="pal-hint">↓</span></a>
-      <a href="#courses-skills" role="option"><span>My favorite courses</span><span class="pal-hint">↓</span></a>
-      <a href="#bundles" role="option"><span>Personal use or resell these products</span><span class="pal-hint">↓</span></a>
-      <a href="#goals" role="option"><span>The Journey</span><span class="pal-hint">↓</span></a>
       <a href="#supporters" role="option"><span>Top Supporters</span><span class="pal-hint">↓</span></a>
       <a href="#about" role="option"><span>About me</span><span class="pal-hint">↓</span></a>
       <a href="#faq" role="option"><span>FAQ</span><span class="pal-hint">↓</span></a>
-      <a href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer" role="option"><span>Github</span><span class="pal-hint">↗</span></a>
       <a href="https://www.instagram.com/delexooo/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (@delexooo)</span><span class="pal-hint">↗</span></a>
       <a href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer" role="option"><span>Spotify</span><span class="pal-hint">↗</span></a>
       <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer" role="option"><span>Instagram (securely)</span><span class="pal-hint">↗</span></a>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer" role="option"><span>Venmo</span><span class="pal-hint">↗</span></a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer" role="option"><span>Cashapp</span><span class="pal-hint">↗</span></a>
-      <a href="#supporters" data-tip-scroll="1" role="option"><span>Tip Me!</span><span class="pal-hint">↓</span></a>
-      <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" role="option"><span>Free University Tools</span><span class="pal-hint">↗</span></a>
+      <a href="#supporters" data-tip-scroll="1" role="option"><span>Stripe</span><span class="pal-hint">↓</span></a>
       <a href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer" role="option"><span>Build Your Own Discord Template</span><span class="pal-hint">↗</span></a>
+      <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" role="option"><span>Free University Tools</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" role="option"><span>Nothing. (app)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21" target="_blank" rel="noopener noreferrer" role="option"><span>Loading. (app)</span><span class="pal-hint">↗</span></a>
       <a href="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30" target="_blank" rel="noopener noreferrer" role="option"><span>Capes++ (app)</span><span class="pal-hint">↗</span></a>
@@ -2518,24 +2006,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   </div>
 </div>
 
-<div class="qr-overlay" id="futInfoOverlay" role="dialog" aria-modal="true" aria-labelledby="futInfoTitle" hidden>
-  <div class="qr-panel" role="document">
-    <div class="qr-panel__head">
-      <button type="button" class="qr-x" id="futInfoClose" aria-label="Close dialog">×</button>
-    </div>
-    <div class="qr-panel__body qr-panel__body--fut">
-      <h2 id="futInfoTitle" class="qr-title">Free University Tools</h2>
-      <div class="fut-info-copy">
-        <p>This website started as a simple idea: a collection of useful tools for everyone. At first, it was called <a href="https://delexoo.github.io/UTIL-FRAMEWORK/" target="_blank" rel="noopener noreferrer">UTIL-Framework</a>. The early versions weren&apos;t great, the design was messy, the flow felt off, and it wasn&apos;t something I was proud to share.</p>
-        <p>When I started college, I realized how many resources students actually need, books, collaboration tools, AI tools, and more. That&apos;s when UTIL-Framework evolved into <a href="https://quoteai.org/" target="_blank" rel="noopener noreferrer">quoteai.org</a>, a more advanced version of the idea. But it still wasn&apos;t enough.</p>
-        <p>Over time, I improved the design, clarified the purpose, made everything more professional and enhanced marketing. That&apos;s how <a href="https://quoteai.org/" target="_blank" rel="noopener noreferrer">quoteai.org</a> became <strong>freeuniversitytools.com</strong>.</p>
-        <p>Now, Free University Tools is a project I&apos;m proud of, built to give students easy access to the tools they need, all in one place.</p>
-        <p>Visit: <a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer">freeuniversitytools.com</a></p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="qr-overlay" id="supportersInfoOverlay" role="dialog" aria-modal="true" aria-labelledby="supportersInfoTitle" hidden>
   <div class="qr-panel" role="document">
     <div class="qr-panel__head">
@@ -2545,69 +2015,9 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h2 id="supportersInfoTitle" class="qr-title">What your support does</h2>
       <div class="fut-info-copy">
         <p>For everyone who backs this journey — thank you.</p>
-        <p><strong>Your support</strong> helps me fund <strong>future projects, courses, programs</strong>, and everything I&apos;m building next.</p>
+        <p><strong>Your support</strong> helps me fund <strong>future projects and programs</strong>, and everything I&apos;m building next.</p>
         <p><strong>Supporters get early access</strong> to new drops and updates when I ship them.</p>
         <p>And supporters get a <strong>huge discount</strong> across my pages — I don&apos;t forget the people who show up for me.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="qr-overlay porsche-lightbox" id="porscheLightbox" role="dialog" aria-modal="true" aria-label="Porsche 911 GT3 RS" hidden>
-  <button type="button" class="qr-x porsche-lightbox__close" id="porscheLightboxClose" aria-label="Close dialog">×</button>
-  <img class="porsche-lightbox__img" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/Porsche911GT3RS.png" alt="Porsche 911 GT3 RS" width="1200" height="750" loading="eager" decoding="async"/>
-</div>
-
-<div class="course-overlay" id="courseOverlay" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle" hidden>
-  <div class="course-panel" role="document">
-    <div class="course-panel__head">
-      <div class="course-panel__brand">
-        <img class="course-panel__avatar" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/discordpfp.png" alt="" width="32" height="32" loading="lazy" decoding="async"/>
-        <span>Digital product by <strong>@delexo</strong></span>
-      </div>
-      <button type="button" class="course-panel__close" id="courseModalClose" aria-label="Close">×</button>
-    </div>
-    <div class="course-panel__scroll">
-      <h2 id="courseModalTitle" class="course-panel__title">Product</h2>
-      <div class="course-panel__grid">
-        <div class="course-panel__col course-panel__col--main">
-          <div class="course-about-card">
-            <p class="course-about-card__label">About this product</p>
-            <p id="courseModalAbout" class="course-about-card__text"></p>
-          </div>
-          <div class="course-media course-media--placeholder" id="courseModalMedia">
-            <img class="course-media__img" id="courseModalImg" alt="" width="800" height="800" hidden/>
-          </div>
-          <div class="course-meta">
-            <div class="course-meta__ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-            </div>
-            <div class="course-meta__text">
-              <span class="course-meta__k" id="courseModalMetaK">Format</span>
-              <span class="course-meta__v" id="courseModalMetaV">Digital download</span>
-            </div>
-          </div>
-        </div>
-        <aside class="course-panel__col course-panel__col--aside">
-          <div class="course-aside-top">
-            <div class="course-price-block">
-              <p id="courseModalPrice" class="course-price-block__price"></p>
-              <p id="courseModalPriceNote" class="course-price-block__note">One-time purchase</p>
-            </div>
-            <div>
-              <p class="course-includes__title">What&apos;s included</p>
-              <ul id="courseModalIncludes" class="course-includes__list"></ul>
-            </div>
-          </div>
-          <div class="course-aside-footer">
-            <a class="btn btn--solid course-panel__cta course-panel__cta--light" id="courseModalCta" href="#">Purchase now</a>
-            <button type="button" class="course-panel__share" id="courseModalShare">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg>
-              <span>Share this product</span>
-            </button>
-            <p class="course-pay-line">Visa · Mastercard · Amex — secure checkout via Beacons</p>
-          </div>
-        </aside>
       </div>
     </div>
   </div>
@@ -2618,7 +2028,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   <p class="about-kicker">About</p>
   <h2>The person behind the page.</h2>
   <p class="lead">
-    I'm a Cybersecurity and Computer Science Major, I spend a lot of my time creating new projects, tools and courses, and I like the color pink!
+    I'm a Cybersecurity and Computer Science Major, I spend a lot of my time creating new projects and tools, and I like the color pink!
   </p>
   <p>
     Below are the verified certifications I've earned along the way.
@@ -2656,14 +2066,14 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   </details>
   <details name="faq">
     <summary>How can I donate? Ur cool ig.</summary>
-    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="#supporters" data-tip-scroll="1">Tip Me!</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Tip.”</div>
+    <div class="faq-body">Haha, appreciate you. You can tip on <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer">Venmo</a>, <a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer">Cash App</a>, or <a href="#supporters" data-tip-scroll="1">Stripe</a> (card). Same links live under <strong>My Links</strong> — or open <strong>Quick Search</strong> and type “Venmo,” “Cashapp,” or “Stripe.”</div>
   </details>
   <details name="faq" data-gd-egg>
     <summary>What's your Geometry Dash username?</summary>
     <div class="faq-body">
       <span class="gd-egg">
         <strong class="gd-handle">@Vans</strong>
-        <img class="gd-icon" src="https://github.com/Delexoo/About-Me/blob/main/doc/icon.png?raw=true" alt="" aria-hidden="true" width="16" height="16" decoding="async"/>
+        <img class="gd-icon" src="https://raw.githubusercontent.com/Delexoo/About-Me/refs/heads/main/doc/icon.png" alt="" aria-hidden="true" width="16" height="16" decoding="async"/>
       </span>
       — that's where I am if you're looking me up.
     </div>
@@ -2675,7 +2085,6 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
   <div class="foot-cols">
     <div class="foot-col">
       <h4>Socials</h4>
-      <a href="https://github.com/Delexoo/" target="_blank" rel="noreferrer">Github</a>
       <a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer">Instagram (securely)</a>
       <a href="https://www.instagram.com/delexooo/" target="_blank" rel="noopener noreferrer">Instagram (@delexooo)</a>
       <a href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer">Spotify</a>
@@ -2684,13 +2093,7 @@ footer{padding:44px max(22px,env(safe-area-inset-right,0px)) 28px max(22px,env(s
       <h4>Payments</h4>
       <a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noreferrer">Venmo</a>
       <a href="https://cash.app/$vxqq" target="_blank" rel="noreferrer">Cashapp</a>
-      <a href="#supporters" data-tip-scroll="1">Tip Me!</a>
-    </div>
-    <div class="foot-col">
-      <h4>Courses</h4>
-      <a href="#courses-ai">How I make money online</a>
-      <a href="#courses-skills">My favorite courses</a>
-      <a href="#bundles">Personal use or resell these products</a>
+      <a href="#supporters" data-tip-scroll="1">Stripe</a>
     </div>
     <div class="foot-col">
       <h4>Legal</h4>
@@ -2768,7 +2171,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
 
 /* Full-page section snap: ArrowDown / ArrowUp jump to next/previous major block */
 (function(){
-  const SECTION_SEL="section#top, section#links, div.snap-section.snap-section--courses, section#goals, section#supporters, section#about, section#faq, body > footer";
+  const SECTION_SEL="section#top, section#links, section#supporters, section#about, section#faq, body > footer";
   function sections(){
     return [...document.querySelectorAll(SECTION_SEL)];
   }
@@ -2776,12 +2179,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     if(document.documentElement.classList.contains("splash-active")) return true;
     const pageTools=document.getElementById("pageToolsOverlay");
     if(pageTools&&pageTools.classList.contains("is-open")) return true;
-    const fut=document.getElementById("futInfoOverlay");
-    if(fut&&fut.classList.contains("is-open")) return true;
-    const plb=document.getElementById("porscheLightbox");
-    if(plb&&plb.classList.contains("is-open")) return true;
-    const courseOv=document.getElementById("courseOverlay");
-    if(courseOv&&courseOv.classList.contains("is-open")) return true;
     const dc=document.getElementById("dcBackdrop");
     if(dc&&!dc.hidden) return true;
     const pal=document.getElementById("palBg");
@@ -2806,8 +2203,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     return idx;
   }
   function blockForSection(el){
-    if(el.matches&&el.matches("div.snap-section.snap-section--courses")) return "start";
-    if(el.id==="goals") return "start";
     if(el.tagName==="FOOTER") return "end";
     return "center";
   }
@@ -2834,7 +2229,7 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
 
 /* Desktop section rail — dots match keyboard nav sections */
 (function(){
-  const SECTION_SEL="section#top, section#links, div.snap-section.snap-section--courses, section#goals, section#supporters, section#about, section#faq";
+  const SECTION_SEL="section#top, section#links, section#supporters, section#about, section#faq";
   const rail=document.getElementById("sectionRail");
   if(!rail) return;
   const mq=window.matchMedia("(min-width:681px)");
@@ -2845,16 +2240,12 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     const id=el.id;
     if(id==="top") return "Hero";
     if(id==="links") return "Projects";
-    if(id==="goals") return "Journey";
     if(id==="supporters") return "Supporters";
     if(id==="about") return "About";
     if(id==="faq") return "FAQ";
-    if(el.matches&&el.matches("div.snap-section.snap-section--courses")) return "Courses";
     return "Section";
   }
   function blockFor(el){
-    if(el.matches&&el.matches("div.snap-section.snap-section--courses")) return "start";
-    if(el.id==="goals") return "start";
     if(el.tagName==="FOOTER") return "end";
     return "center";
   }
@@ -3381,129 +2772,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   els.forEach(el=>io.observe(el));
 })();
 
-/* timeline: staggered item reveal + scroll-scrub dot (stops just before startup) */
-(function(){
-  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const items=[...document.querySelectorAll(".tl-item")];
-  const glow=document.getElementById("tlGlow");
-  const dot=document.getElementById("tlScrubDot");
-  const track=document.getElementById("tlTrack");
-  const startup=document.getElementById("tlStartup");
-  const collegeWrap=document.getElementById("tlCollege");
-  if(!items.length||!track) return;
-
-  if(reduce){
-    items.forEach(el=>el.classList.add("is-tl-visible"));
-    if(glow&&collegeWrap){
-      const cn=collegeWrap.querySelector(".tl-node");
-      const tr=track.getBoundingClientRect();
-      const cy=cn?cn.getBoundingClientRect().top+cn.offsetHeight/2-tr.top:0;
-      glow.style.top=cy+"px";
-      glow.style.height=Math.max(0,track.offsetHeight-cy)+"px";
-    }else if(glow){ glow.style.top="0"; glow.style.height="100%"; }
-    if(dot) dot.style.top=track.offsetHeight+"px";
-    track.querySelectorAll(".tl-node").forEach(n=>n.classList.add("is-passed"));
-    return;
-  }
-
-  let revealed=0;
-  const io=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(!e.isIntersecting) return;
-      const el=e.target;
-      const idx=items.indexOf(el);
-      const delay=Math.max(0,(idx-revealed)*80);
-      setTimeout(()=>el.classList.add("is-tl-visible"),delay);
-      revealed=Math.max(revealed,idx+1);
-      io.unobserve(el);
-    });
-  },{rootMargin:"0px 0px -8% 0px",threshold:.15});
-  items.forEach(el=>io.observe(el));
-
-  const allNodes=[...track.querySelectorAll(".tl-node")];
-  let targetY=0,targetGlowH=0,currentY=null,currentGlowH=null,rafId=0;
-
-  function computeTargets(){
-    const tr=track.getBoundingClientRect();
-    const h=tr.height;
-    if(h<=0) return null;
-    const collegeNode=collegeWrap?.querySelector(".tl-node");
-    let collegeY=0;
-    if(collegeNode){
-      const cr=collegeNode.getBoundingClientRect();
-      collegeY=cr.top+cr.height/2-tr.top;
-    }
-    const anchor=window.innerHeight*0.42;
-    let rawY=anchor-tr.top;
-    rawY=Math.max(0,Math.min(h,rawY));
-    let y=Math.max(rawY,collegeY);
-
-    if(startup){
-      const sn=startup.querySelector(".tl-node");
-      if(sn){
-        const snR=sn.getBoundingClientRect();
-        const stopY=snR.top+snR.height/2-tr.top-20;
-        if(y>stopY) y=stopY;
-      }
-    }
-    return{y,collegeY};
-  }
-
-  function paintScrub(y,collegeY){
-    const tr=track.getBoundingClientRect();
-    if(dot) dot.style.top=y+"px";
-    if(glow){
-      glow.style.top=collegeY+"px";
-      glow.style.height=Math.max(0,y-collegeY)+"px";
-    }
-    allNodes.forEach(n=>{
-      const nY=n.getBoundingClientRect().top+n.offsetHeight/2-tr.top;
-      n.classList.toggle("is-passed",nY>=collegeY-1&&y>=nY);
-    });
-  }
-
-  function updateScrub(){
-    const pack=computeTargets();
-    if(!pack) return;
-    const{y,collegeY}=pack;
-    targetY=y;
-    targetGlowH=Math.max(0,y-collegeY);
-
-    if(currentY===null){
-      currentY=targetY;
-      currentGlowH=targetGlowH;
-      paintScrub(currentY,collegeY);
-      return;
-    }
-    if(!rafId) rafId=requestAnimationFrame(lerpScrub);
-  }
-
-  function lerpScrub(){
-    const pack=computeTargets();
-    if(!pack){ rafId=0; return; }
-    const collegeY=pack.collegeY;
-    targetY=pack.y;
-    targetGlowH=Math.max(0,targetY-collegeY);
-    const k=0.22;
-    currentY+=(targetY-currentY)*k;
-    currentGlowH+=(targetGlowH-currentGlowH)*k;
-    paintScrub(currentY,collegeY);
-    const settled=Math.abs(targetY-currentY)<0.45&&Math.abs(targetGlowH-currentGlowH)<0.45;
-    if(settled){
-      currentY=targetY;
-      currentGlowH=targetGlowH;
-      paintScrub(currentY,collegeY);
-      rafId=0;
-    }else{
-      rafId=requestAnimationFrame(lerpScrub);
-    }
-  }
-
-  window.addEventListener("scroll",updateScrub,{passive:true});
-  window.addEventListener("resize",updateScrub);
-  updateScrub();
-})();
-
 /* discord profile popout */
 (function(){
   const bd=document.getElementById("dcBackdrop");
@@ -3781,33 +3049,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   },{passive:true});
 })();
 
-/* Free University Tools — story modal (timeline info) */
-(function(){
-  const ov=document.getElementById("futInfoOverlay");
-  const openBtn=document.getElementById("futInfoOpen");
-  const closeBtn=document.getElementById("futInfoClose");
-  if(!ov||!openBtn||!closeBtn) return;
-  function openF(){
-    ov.hidden=false;
-    requestAnimationFrame(()=>ov.classList.add("is-open"));
-    closeBtn.focus();
-  }
-  function closeF(){
-    ov.classList.remove("is-open");
-    setTimeout(()=>{ov.hidden=true;},200);
-    openBtn.focus();
-  }
-  openBtn.addEventListener("click",openF);
-  closeBtn.addEventListener("click",closeF);
-  ov.addEventListener("click",e=>{ if(e.target===ov) closeF(); });
-  document.addEventListener("keydown",e=>{
-    if(e.key!=="Escape"||!ov.classList.contains("is-open")) return;
-    e.preventDefault();
-    closeF();
-  });
-  window.__futInfoClose=closeF;
-})();
-
 /* Supporters — info dialog (same shell as Free University Tools) */
 (function(){
   const ov=document.getElementById("supportersInfoOverlay");
@@ -3833,33 +3074,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
     closeS();
   });
   window.__supportersInfoClose=closeS;
-})();
-
-/* Porsche timeline image — lightbox */
-(function(){
-  const ov=document.getElementById("porscheLightbox");
-  const openBtn=document.getElementById("tlPorscheLightboxOpen");
-  const closeBtn=document.getElementById("porscheLightboxClose");
-  if(!ov||!openBtn||!closeBtn) return;
-  function openP(){
-    ov.hidden=false;
-    requestAnimationFrame(()=>ov.classList.add("is-open"));
-    closeBtn.focus();
-  }
-  function closeP(){
-    ov.classList.remove("is-open");
-    setTimeout(()=>{ov.hidden=true;},200);
-    openBtn.focus();
-  }
-  openBtn.addEventListener("click",openP);
-  closeBtn.addEventListener("click",closeP);
-  ov.addEventListener("click",e=>{ if(e.target===ov) closeP(); });
-  document.addEventListener("keydown",e=>{
-    if(e.key!=="Escape"||!ov.classList.contains("is-open")) return;
-    e.preventDefault();
-    closeP();
-  });
-  window.__porscheLightboxClose=closeP;
 })();
 
 /* Supporters leaderboard — render from API when available */
@@ -4224,176 +3438,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   readThanksParams();
 })();
 
-/* Course / product detail modal (rails) */
-(function(){
-  const root=document.querySelector(".snap-section--courses");
-  const ov=document.getElementById("courseOverlay");
-  const closeBtn=document.getElementById("courseModalClose");
-  const titleEl=document.getElementById("courseModalTitle");
-  const aboutEl=document.getElementById("courseModalAbout");
-  const imgEl=document.getElementById("courseModalImg");
-  const mediaBox=document.getElementById("courseModalMedia");
-  const metaK=document.getElementById("courseModalMetaK");
-  const metaV=document.getElementById("courseModalMetaV");
-  const priceEl=document.getElementById("courseModalPrice");
-  const noteEl=document.getElementById("courseModalPriceNote");
-  const listEl=document.getElementById("courseModalIncludes");
-  const cta=document.getElementById("courseModalCta");
-  const shareBtn=document.getElementById("courseModalShare");
-  const asideFooter=ov.querySelector(".course-aside-footer");
-  if(!root||!ov||!closeBtn||!titleEl||!aboutEl||!imgEl||!mediaBox||!metaK||!metaV||!priceEl||!noteEl||!listEl||!cta||!shareBtn) return;
-
-  const CHECK_SVG="<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z\"/></svg>";
-  const LIVE_INCLUDES=[
-    "Instant download after purchase",
-    "Lifetime access to your files",
-    "Secure payment via Beacons checkout",
-    "Usage / PLR rights as described on the store page"
-  ];
-  const SOON_INCLUDES=[
-    "Full curriculum & resources when the course launches",
-    "Updates from me as the syllabus firms up",
-    "Secure checkout when enrollment opens",
-    "Refund & guarantee details at launch"
-  ];
-
-  let lastFocus=null;
-  let checkoutUrl="";
-
-  function esc(s){
-    const d=document.createElement("div");
-    d.textContent=s;
-    return d.innerHTML;
-  }
-
-  function parseIncludes(chip,soon){
-    const raw=chip.getAttribute("data-includes");
-    if(raw) return raw.split("|").map(x=>x.trim()).filter(Boolean);
-    return soon?[...SOON_INCLUDES]:[...LIVE_INCLUDES];
-  }
-
-  function populate(chip){
-    const title=chip.querySelector("h4")?.textContent?.trim()||"Product";
-    const price=chip.querySelector(".chip-tag--price")?.textContent?.trim()||"";
-    const teaser=chip.querySelector(".chip__body p")?.textContent?.trim()||"";
-    const soon=chip.classList.contains("chip--soon");
-    const aboutAttr=chip.getAttribute("data-about");
-    const about=aboutAttr||(soon
-      ? teaser+" This listing is still in the works — checkout and full details will go live when the course is ready."
-      : teaser+" Deliverables and licensing are summarized on the store page.");
-    const thumb=chip.querySelector(".chip__thumb[src]");
-    const src=thumb?thumb.getAttribute("src"):"";
-    const linkEl=chip.tagName==="A"&&chip.classList.contains("chip")?chip:chip.closest("a");
-    checkoutUrl=linkEl&&linkEl.href?linkEl.href:(chip.getAttribute("data-checkout")||"");
-
-    titleEl.textContent=title;
-    aboutEl.textContent=about;
-    priceEl.textContent=price||"—";
-    noteEl.textContent=soon?"Planned pricing — may change before launch.":"One-time purchase";
-
-    if(src){
-      imgEl.src=src;
-      imgEl.alt="";
-      imgEl.hidden=false;
-      mediaBox.classList.remove("course-media--placeholder");
-    }else{
-      imgEl.removeAttribute("src");
-      imgEl.hidden=true;
-      mediaBox.classList.add("course-media--placeholder");
-    }
-
-    if(soon){
-      metaK.textContent="Status";
-      metaV.textContent="Coming soon";
-    }else{
-      metaK.textContent="Format";
-      metaV.textContent="Digital download";
-    }
-
-    const items=parseIncludes(chip,soon);
-    listEl.innerHTML=items.map(t=>`<li>${CHECK_SVG}<span>${esc(t)}</span></li>`).join("");
-
-    cta.onclick=null;
-    if(soon){
-      cta.href="#";
-      cta.setAttribute("aria-disabled","true");
-      cta.textContent="Coming soon";
-      cta.classList.remove("btn--solid","course-panel__cta--light");
-      cta.classList.add("btn--ghost");
-      cta.removeAttribute("target");
-      cta.removeAttribute("rel");
-      cta.onclick=e=>e.preventDefault();
-    }else{
-      cta.removeAttribute("aria-disabled");
-      cta.href=checkoutUrl||"#";
-      cta.textContent="Purchase now";
-      cta.classList.add("btn--solid","course-panel__cta--light");
-      cta.classList.remove("btn--ghost");
-      cta.target="_blank";
-      cta.rel="noopener noreferrer";
-      if(!checkoutUrl) cta.onclick=e=>e.preventDefault();
-    }
-  }
-
-  function openFromChip(chip){
-    lastFocus=document.activeElement;
-    populate(chip);
-    ov.hidden=false;
-    requestAnimationFrame(()=>ov.classList.add("is-open"));
-    closeBtn.focus();
-  }
-
-  function closeCourse(){
-    ov.classList.remove("is-open");
-    setTimeout(()=>{ov.hidden=true;},220);
-    if(lastFocus&&typeof lastFocus.focus==="function") lastFocus.focus();
-  }
-
-  root.addEventListener("click",e=>{
-    const chip=e.target.closest(".chip--opens-detail,.chip.chip--opens-detail");
-    if(!chip||!root.contains(chip)) return;
-    if(chip.tagName==="A"){
-      if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey) return;
-      if(e.button!==0) return;
-      e.preventDefault();
-    }
-    openFromChip(chip);
-  });
-
-  closeBtn.addEventListener("click",closeCourse);
-  ov.addEventListener("click",e=>{ if(e.target===ov) closeCourse(); });
-
-  async function runCourseShare(){
-    const url=checkoutUrl||window.location.href;
-    const title=titleEl.textContent||"DELEXO";
-    try{
-      if(navigator.share) await navigator.share({title,text:title,url});
-      else if(navigator.clipboard&&navigator.clipboard.writeText) await navigator.clipboard.writeText(url);
-    }catch(err){
-      if(err&&err.name==="AbortError") return;
-      try{
-        if(navigator.clipboard&&navigator.clipboard.writeText) await navigator.clipboard.writeText(url);
-      }catch(_){ window.prompt("Copy link:",url); }
-    }
-  }
-  /* Footer delegation + capture: reliable when nested scrolling / iOS eats button clicks */
-  function onShareHit(e){
-    if(!e.target.closest("#courseModalShare")) return;
-    e.preventDefault();
-    e.stopPropagation();
-    void runCourseShare();
-  }
-  asideFooter?.addEventListener("click",onShareHit,true);
-
-  document.addEventListener("keydown",e=>{
-    if(e.key!=="Escape"||!ov.classList.contains("is-open")) return;
-    e.preventDefault();
-    closeCourse();
-  });
-
-  window.__courseModalClose=closeCourse;
-})();
-
 /* command palette */
 (function(){
   const bg=document.getElementById("palBg");
@@ -4418,12 +3462,6 @@ window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";
   bg.addEventListener("click",e=>{ if(e.target===bg) closeP(); });
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"){
-      const courseOv=document.getElementById("courseOverlay");
-      if(courseOv&&courseOv.classList.contains("is-open")){ window.__courseModalClose?.(); return; }
-      const plb=document.getElementById("porscheLightbox");
-      if(plb&&plb.classList.contains("is-open")){ window.__porscheLightboxClose?.(); return; }
-      const fut=document.getElementById("futInfoOverlay");
-      if(fut&&fut.classList.contains("is-open")){ window.__futInfoClose?.(); return; }
       const supInfo=document.getElementById("supportersInfoOverlay");
       if(supInfo&&supInfo.classList.contains("is-open")){ window.__supportersInfoClose?.(); return; }
       const pageTools=document.getElementById("pageToolsOverlay");
