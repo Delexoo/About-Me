@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="color-scheme" content="dark"/>
+<title>Site information — DELEXO</title>
+<link rel="icon" href="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png" type="image/png" sizes="any"/>
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Delexoo/Serverly/main/D.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#111111;--text:#f2f2f2;--muted:#888;--line:rgba(255,255,255,.1);
+  --pink:#e8639a;
+  --focus:0 0 0 3px rgba(255,255,255,.3);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-width:0;overflow-x:hidden;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.65;font-size:15px}
+@supports(overflow:clip){body{overflow-x:clip}}
+a{color:inherit}
+a:focus-visible{outline:none;box-shadow:var(--focus);border-radius:4px}
+.wrap{max-width:640px;margin:0 auto;padding:48px max(22px,env(safe-area-inset-right,0px)) 80px max(22px,env(safe-area-inset-left,0px))}
+.legal-panel p{overflow-wrap:break-word}
+.back{display:inline-block;margin-bottom:36px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--text)}
+h1{margin:0 0 8px;font-size:1.75rem;font-weight:600;letter-spacing:-.03em}
+.lead{margin:0 0 28px;color:var(--muted);font-size:14px}
+.legal-seg{
+  display:flex;flex-wrap:wrap;width:100%;max-width:100%;margin:0 0 32px;padding:4px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);gap:4px;box-sizing:border-box;
+}
+.legal-seg button{
+  flex:1 1 0;min-width:0;margin:0;border:none;border-radius:9px;padding:10px 8px;font-family:inherit;font-size:12px;font-weight:600;
+  letter-spacing:.02em;color:var(--muted);background:transparent;cursor:pointer;text-align:center;
+  transition:background .18s ease,color .18s ease,box-shadow .18s ease;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+@media(min-width:480px){
+  .legal-seg button{font-size:13px;padding:10px 12px}
+}
+.legal-seg button:hover{color:var(--text)}
+.legal-seg button[aria-selected="true"]{
+  background:rgba(255,255,255,.1);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,.06);
+}
+.legal-seg button:focus-visible{outline:none;box-shadow:var(--focus)}
+.legal-seg button[aria-selected="true"]:focus-visible{box-shadow:var(--focus),0 1px 0 rgba(255,255,255,.06)}
+.legal-panel{margin-bottom:48px}
+.legal-panel[hidden]{display:none}
+.legal-panel h2{margin:0 0 16px;font-size:1.05rem;font-weight:600;letter-spacing:.02em}
+.legal-panel__head-row{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:10px 12px;margin:0 0 16px;
+}
+.legal-panel__head-row h2{margin:0}
+.legal-sup-back-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 12px;border-radius:9px;box-sizing:border-box;
+  font-family:inherit;font-size:12px;font-weight:600;line-height:1.2;
+  text-decoration:none;color:var(--text);
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+  white-space:nowrap;-webkit-tap-highlight-color:transparent;
+}
+.legal-sup-back-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22)}
+.legal-sup-back-btn:focus-visible{outline:none;box-shadow:var(--focus)}
+.legal-panel p{margin:0 0 14px;color:#c4c4c4}
+.legal-panel p:last-child{margin-bottom:0}
+.legal-accent-link{
+  color:var(--pink);
+  font-weight:700;
+  text-decoration:none;
+}
+.legal-accent-link:hover{color:#f2a6c7}
+.legal-accent-link:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px}
+.legal-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:2px 8px;
+  border-radius:8px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#d0d0d0;
+  font-size:12px;
+  line-height:1.2;
+  font-weight:600;
+  white-space:nowrap;
+  vertical-align:baseline;
+}
+/* One line per row, no horizontal scroll — long text ellipsizes; full URL stays on link title="" */
+.legal-links-wrap{overflow-x:hidden;margin:0;padding:0;max-width:100%}
+.legal-links-table{
+  table-layout:fixed;
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+  line-height:1.25;
+}
+.legal-links-table caption{
+  caption-side:top;
+  text-align:left;
+  font-size:11px;
+  font-weight:500;
+  color:var(--muted);
+  margin-bottom:10px;
+  line-height:1.25;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.legal-links-table th,.legal-links-table td{
+  border-bottom:1px solid var(--line);
+  padding:8px 8px 8px 0;
+  text-align:left;
+  vertical-align:middle;
+}
+.legal-links-table thead th{
+  color:var(--muted);
+  font-weight:600;
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.legal-links-table thead th:first-child{width:34%}
+.legal-links-table thead th:last-child{width:66%}
+.legal-links-table tbody th[scope="row"]{
+  color:var(--muted);
+  font-weight:600;
+  font-size:10px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right:10px;
+}
+.legal-links-table td{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;
+}
+.legal-links-table td a{
+  display:block;
+  color:#c8c8c8;
+  text-decoration:underline;
+  text-decoration-color:rgba(255,255,255,.25);
+  text-underline-offset:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:100%;
+  max-width:100%;
+}
+.legal-links-table td a:hover{color:var(--text);text-decoration-color:rgba(255,255,255,.45)}
+.legal-links-table tbody tr:hover th,.legal-links-table tbody tr:hover td{background:rgba(255,255,255,.03)}
+.legal-links-table code{font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px}
+.updated{font-size:12px;color:var(--muted);margin-top:32px}
+.legal-sup-scroll{
+  max-height:min(70vh,640px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.22);
+}
+.legal-sup-table{width:100%;min-width:280px;border-collapse:separate;border-spacing:0;font-size:13px}
+.legal-sup-table thead th{
+  position:sticky;top:0;z-index:1;
+  padding:10px 12px;text-align:left;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--line);background:rgba(17,17,17,.95);
+}
+.legal-sup-table thead th:nth-child(1){width:3rem}
+.legal-sup-table thead th:nth-child(4){text-align:right}
+.legal-sup-table tbody td{
+  padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.06);color:#a8a8a8;font-weight:500;
+  vertical-align:middle;
+}
+.legal-sup-table tbody tr:last-child td{border-bottom:none}
+.legal-sup-table tbody tr:hover td{background:rgba(255,255,255,.03)}
+.legal-sup-table .legal-sup-rank{
+  font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;color:#d7d7d7;
+}
+.legal-sup-table tbody tr:nth-child(1) .legal-sup-rank,
+.legal-sup-table tbody tr:nth-child(2) .legal-sup-rank,
+.legal-sup-table tbody tr:nth-child(3) .legal-sup-rank{color:var(--pink)}
+.legal-sup-table .legal-sup-name{color:#c8c8c8;font-weight:600}
+.legal-sup-table .legal-sup-note{
+  color:#8a8a8a;font-size:12px;line-height:1.4;font-weight:400;max-width:14rem;
+  vertical-align:middle;overflow-wrap:anywhere;
+}
+.legal-sup-table .legal-sup-amt{text-align:right}
+.legal-sup-amt-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:3px 9px;border-radius:999px;font-variant-numeric:tabular-nums;
+  color:#e9e9e9;font-size:11px;font-weight:800;letter-spacing:.02em;
+  background:rgba(232,99,154,.16);border:1px solid rgba(232,99,154,.28);
+  white-space:nowrap;
+}
+.legal-sup-name-link{
+  color:var(--pink);font-weight:600;text-decoration:none;
+  border-bottom:2px solid rgba(232,99,154,.55);padding-bottom:1px;
+}
+.legal-sup-name-link:hover{color:#f5b8d4;border-bottom-color:rgba(232,99,154,.9)}
+.legal-sup-name-link:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px}
+@media(max-width:680px){
+  .legal-sup-table .legal-sup-note,
+  .legal-sup-table thead th.legal-sup-col-note{display:none!important}
+  .legal-sup-table{min-width:0}
+}
+@media(max-width:520px){
+  .legal-seg button{
+    flex:1 1 calc(50% - 2px);
+    min-width:min(100%,calc(50% - 2px));
+    box-sizing:border-box;
+  }
+}
+@media(max-width:420px){
+  .legal-seg button{font-size:11px;padding:9px 5px}
+}
+@media(max-width:360px){
+  .legal-seg button{
+    flex:1 1 100%;
+    min-width:0;
+  }
+}
+</style>
+<script>window.SUPPORTERS_API_BASE="https://support-leaderboard-backend.onrender.com";</script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Back to DELEXO</a>
+
+  <h1>Site information</h1>
+  <p class="lead">Privacy, terms, a link directory for delexo.store, and the full supporters leaderboard—policies and practical extras in one place.</p>
+
+  <div class="legal-seg" role="tablist" aria-label="Privacy, terms, links, and supporters">
+    <button type="button" role="tab" id="tab-privacy" aria-selected="true" aria-controls="panel-privacy">Privacy</button>
+    <button type="button" role="tab" id="tab-terms" aria-selected="false" aria-controls="panel-terms" tabindex="-1">Terms</button>
+    <button type="button" role="tab" id="tab-all-links" aria-selected="false" aria-controls="panel-all-links" tabindex="-1">All My Links</button>
+    <button type="button" role="tab" id="tab-supporters" aria-selected="false" aria-controls="panel-supporters" tabindex="-1">Supporters</button>
+  </div>
+
+  <div class="legal-panel" id="panel-privacy" role="tabpanel" aria-labelledby="tab-privacy">
+    <h2>Privacy</h2>
+    <p>I do not collect personal information for normal browsing on this website. There are no cookies used to identify you, no analytics or tracking scripts, and no advertising. I do not collect &amp; sell your data.</p>
+    <p>If you donate to the <a class="legal-accent-link" href="index.html#supporters" title="Homepage → Top Supporters → Donate">Top Supporters</a> section, I collect <span class="legal-tag">Donation amount</span> and <span class="legal-tag">Email</span>, plus an optional <span class="legal-tag">Name</span> and optional <span class="legal-tag">Note</span> (if you choose to provide them). This information is used to process your donation and (if provided) display your name/note on the leaderboard.</p>
+    <p>If you open links to other sites (ex. Stripe, Spotify, GitHub), those services have their own privacy practices. I do not control what they collect.</p>
+  </div>
+
+  <div class="legal-panel" id="panel-terms" role="tabpanel" aria-labelledby="tab-terms" hidden>
+    <h2>Terms</h2>
+    <p>By using this site, you agree to these terms. The site is provided as-is, without warranties. I&apos;m not liable for damages arising from your use of the site or from third-party sites you visit through links here.</p>
+    <p>Products, courses, or payments you buy elsewhere are governed by the seller&apos;s or platform&apos;s terms (for example Beacons or payment providers), not by this page.</p>
+  </div>
+
+  <div class="legal-panel" id="panel-all-links" role="tabpanel" aria-labelledby="tab-all-links" hidden>
+    <div class="legal-links-wrap">
+      <table class="legal-links-table">
+        <caption>Links on delexo.store. Discord and Share open from <strong>My Links</strong> on the homepage.</caption>
+        <thead>
+          <tr><th scope="col">Name</th><th scope="col">URL</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">GitHub</th><td><a href="https://github.com/Delexoo/" target="_blank" rel="noopener noreferrer" title="https://github.com/Delexoo/">github.com/Delexoo/</a></td></tr>
+          <tr><th scope="row">Instagram (@delexooo)</th><td><a href="https://www.instagram.com/delexooo/" target="_blank" rel="noopener noreferrer" title="https://www.instagram.com/delexooo/">instagram.com/delexooo/</a></td></tr>
+          <tr><th scope="row">Discord (@celebraciones)</th><td><a href="index.html#links" title="Homepage → My Links → Discord tile (Delexo, @celebraciones)">index.html#links</a></td></tr>
+          <tr><th scope="row">Spotify</th><td><a href="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ" target="_blank" rel="noopener noreferrer" title="https://open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju?si=ScPuuAGlQ4SfhGS1hfzMMQ">open.spotify.com/user/31dn6hrf3fbxdrfabi2wpqvwvaju</a></td></tr>
+          <tr><th scope="row">Instagram (trysecurely)</th><td><a href="https://www.instagram.com/trysecurely/" target="_blank" rel="noopener noreferrer" title="https://www.instagram.com/trysecurely/">instagram.com/trysecurely/</a></td></tr>
+          <tr><th scope="row">Venmo</th><td><a href="https://account.venmo.com/u/onepoundcoins" target="_blank" rel="noopener noreferrer" title="https://account.venmo.com/u/onepoundcoins">venmo.com/u/onepoundcoins</a></td></tr>
+          <tr><th scope="row">Cash App</th><td><a href="https://cash.app/$vxqq" target="_blank" rel="noopener noreferrer" title="https://cash.app/$vxqq">cash.app/$vxqq</a></td></tr>
+          <tr><th scope="row">Tip Me! (Stripe)</th><td><a href="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01" target="_blank" rel="noopener noreferrer" title="https://buy.stripe.com/4gMaEW87U7IO8C8azDcjS01">buy.stripe.com/4gMaEW87U7IO8C8azDcjS01</a></td></tr>
+          <tr><th scope="row">Share! (QR &amp; copy link)</th><td><a href="index.html#links" title="Homepage → My Links → Share tile">index.html#links</a></td></tr>
+          <tr><th scope="row">Free University Tools</th><td><a href="https://freeuniversitytools.com/" target="_blank" rel="noopener noreferrer" title="https://freeuniversitytools.com/">freeuniversitytools.com</a></td></tr>
+          <tr><th scope="row">Build Your Own Discord Template (Serverly)</th><td><a href="https://delexoo.github.io/Serverly/" target="_blank" rel="noopener noreferrer" title="https://delexoo.github.io/Serverly/">delexoo.github.io/Serverly/</a></td></tr>
+          <tr><th scope="row">Nothing. (app)</th><td><a href="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b">beacons.ai/delexo/32aaae4f-a575-42cd-b040-75f1eeb4677b</a></td></tr>
+          <tr><th scope="row">Loading. (app)</th><td><a href="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21">beacons.ai/delexo/b0bd7c3b-6c82-4515-b7ac-c11051c04a21</a></td></tr>
+          <tr><th scope="row">Capes++ (app)</th><td><a href="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30">beacons.ai/delexo/3f484dc8-435a-4a40-9be2-57b53c493c30</a></td></tr>
+          <tr><th scope="row">NameMC — Minecraft (@delexo)</th><td><a href="https://namemc.com/profile/Delexo" target="_blank" rel="noopener noreferrer" title="https://namemc.com/profile/Delexo">namemc.com/profile/Delexo</a></td></tr>
+          <tr><th scope="row">Luxurious Clips For Posting</th><td><a href="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae">beacons.ai/delexo/78f7e1c2-2be4-42b1-b0ed-e1bcd0fa91ae</a></td></tr>
+          <tr><th scope="row">100k Ultimate B-Roll Bundle</th><td><a href="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed">beacons.ai/delexo/586eb9d9-5b93-485e-be67-a7a82fbe6aed</a></td></tr>
+          <tr><th scope="row">1400+ Viral Women&apos;s Reels (PLR)</th><td><a href="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e">beacons.ai/delexo/da263d18-952e-4021-bfd6-bc9e5901d34e</a></td></tr>
+          <tr><th scope="row">Master Bundle for Creators</th><td><a href="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd">beacons.ai/delexo/8a1dd84d-a0ed-4e42-be66-1ec1686224fd</a></td></tr>
+          <tr><th scope="row">All-In-One Money Making Bundle (18 TB)</th><td><a href="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c">beacons.ai/delexo/393afdde-62df-43eb-828d-088d0cf7ff3c</a></td></tr>
+          <tr><th scope="row">30,000+ High Quality Clips</th><td><a href="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0" target="_blank" rel="noopener noreferrer" title="https://shop.beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0">beacons.ai/delexo/37df8eb5-9231-45cf-864a-bbd6f2a636c0</a></td></tr>
+          <tr><th scope="row">This site</th><td><a href="https://delexo.store/" target="_blank" rel="noopener noreferrer" title="https://delexo.store/">delexo.store</a></td></tr>
+          <tr><th scope="row">Supporters leaderboard (API)</th><td><a href="https://support-leaderboard-backend.onrender.com" target="_blank" rel="noopener noreferrer" title="https://support-leaderboard-backend.onrender.com/">support-leaderboard-backend.onrender.com</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="legal-panel" id="panel-supporters" role="tabpanel" aria-labelledby="tab-supporters" hidden>
+    <div class="legal-panel__head-row">
+      <h2>Supporters</h2>
+      <a class="legal-sup-back-btn" href="index.html#supporters">Back to Top Supporters</a>
+    </div>
+    <div class="legal-sup-scroll">
+      <table class="legal-sup-table">
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Supporter</th>
+            <th scope="col" class="legal-sup-col-note">Note</th>
+            <th scope="col">Support</th>
+          </tr>
+        </thead>
+        <tbody id="legalSupportersTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="updated">Last updated: April 13, 2026</p>
+</div>
+<script>
+(function(){
+  const TAB_HASHES=["#privacy","#terms","#all-links","#supporters"];
+  const tabs=[document.getElementById("tab-privacy"),document.getElementById("tab-terms"),document.getElementById("tab-all-links"),document.getElementById("tab-supporters")].filter(Boolean);
+  const panels=[document.getElementById("panel-privacy"),document.getElementById("panel-terms"),document.getElementById("panel-all-links"),document.getElementById("panel-supporters")].filter(Boolean);
+  const supTbody=document.getElementById("legalSupportersTbody");
+  if(tabs.length!==4||panels.length!==4) return;
+
+  let supportersState="idle";
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll("\"","&quot;")
+      .replaceAll("'","&#39;");
+  }
+  function safeUrl(url){
+    const u=(url||"").trim();
+    if(!u||u.length>220) return "";
+    try{
+      const parsed=new URL(u);
+      if(parsed.protocol==="http:"||parsed.protocol==="https:") return parsed.toString();
+    }catch(_){}
+    return "";
+  }
+  function fmtMoneyFromCents(cents){
+    const n=Number(cents||0)/100;
+    return n.toLocaleString(undefined,{style:"currency",currency:"USD"});
+  }
+
+  async function loadSupportersIfNeeded(){
+    if(supportersState==="loading"||supportersState==="ok"||supportersState==="nocfg"||!supTbody) return;
+    const api=(window.SUPPORTERS_API_BASE||"").replace(/\/+$/,"");
+    if(!api){
+      supportersState="nocfg";
+      supTbody.innerHTML=`<tr><td class="legal-sup-rank">—</td><td class="legal-sup-name" colspan="3">Set SUPPORTERS_API_BASE to load supporters.</td></tr>`;
+      return;
+    }
+    supportersState="loading";
+    supTbody.innerHTML="";
+    try{
+      const res=await fetch(`${api}/leaderboard?limit=10000`,{headers:{"Accept":"application/json"}});
+      const data=res.ok?await res.json().catch(()=>null):null;
+      const raw=data&&Array.isArray(data.rows)?data.rows:[];
+      const paid=raw.filter(r=>Number(r.total_cents)>0);
+      if(!paid.length){
+        supTbody.innerHTML=`<tr><td class="legal-sup-rank">—</td><td class="legal-sup-name">No supporters yet.</td><td class="legal-sup-note legal-sup-col-note">—</td><td class="legal-sup-amt"><span class="legal-sup-amt-tag">—</span></td></tr>`;
+        supportersState="ok";
+        return;
+      }
+      supTbody.innerHTML=paid.map((r,i)=>{
+        const name=(r.display_name||"—").toString();
+        const note=(r.note||"—").toString();
+        const amt=fmtMoneyFromCents(r.total_cents);
+        const social=(r.social_url||"").toString();
+        const safeSocial=safeUrl(social);
+        const nameHtml=safeSocial
+          ? `<a class="legal-sup-name-link" href="${escapeHtml(safeSocial)}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>`
+          : escapeHtml(name);
+        return `<tr><td class="legal-sup-rank">${i+1}</td><td class="legal-sup-name">${nameHtml}</td><td class="legal-sup-note legal-sup-col-note">${escapeHtml(note)}</td><td class="legal-sup-amt"><span class="legal-sup-amt-tag">${escapeHtml(amt)}</span></td></tr>`;
+      }).join("");
+      supportersState="ok";
+    }catch(_){
+      supportersState="idle";
+      supTbody.innerHTML=`<tr><td class="legal-sup-rank">—</td><td class="legal-sup-name" colspan="3">Couldn’t load the leaderboard.</td></tr>`;
+    }
+  }
+
+  function select(i){
+    const idx=Math.max(0,Math.min(i,tabs.length-1));
+    tabs.forEach((t,j)=>{
+      const on=j===idx;
+      t.setAttribute("aria-selected",on?"true":"false");
+      t.tabIndex=on?0:-1;
+    });
+    panels.forEach((p,j)=>{ p.hidden=j!==idx; });
+    if(idx===3) loadSupportersIfNeeded();
+  }
+
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener("click",()=>{
+      select(i);
+      tab.focus();
+      const hash=TAB_HASHES[i]||"#privacy";
+      if((location.hash||"").toLowerCase()!==hash) history.replaceState(null,"",hash);
+    });
+  });
+
+  const list=tabs[0].parentElement;
+  list.addEventListener("keydown",e=>{
+    const i=tabs.indexOf(document.activeElement);
+    if(i<0) return;
+    let next=-1;
+    if(e.key==="ArrowRight"||e.key==="ArrowDown") next=(i+1)%tabs.length;
+    else if(e.key==="ArrowLeft"||e.key==="ArrowUp") next=(i-1+tabs.length)%tabs.length;
+    else if(e.key==="Home") next=0;
+    else if(e.key==="End") next=tabs.length-1;
+    if(next>=0){
+      e.preventDefault();
+      select(next);
+      tabs[next].focus();
+      history.replaceState(null,"",TAB_HASHES[next]||"#privacy");
+    }
+  });
+
+  function applyHash(){
+    const h=(location.hash||"").toLowerCase();
+    if(h==="#terms") select(1);
+    else if(h==="#privacy") select(0);
+    else if(h==="#all-links"||h==="#links") select(2);
+    else if(h==="#supporters") select(3);
+  }
+  applyHash();
+  window.addEventListener("hashchange",applyHash);
+})();
+</script>
+</body>
+</html>
